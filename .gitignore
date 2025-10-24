@@ -416,3 +416,8 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+*.pdf
+!pdf/**/*.pdf
+*.html
+*.docx
