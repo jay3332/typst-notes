@@ -589,7 +589,30 @@ $
 
 == Kirchhoff's Junction Rule
 
-== Resistor-Capacitor Circuits
+== Resistor-Capacitor (RC) Circuits
+
+An *RC circuit* is a circuit consisting of resistors and capacitors connected to a voltage source.
+
+- The voltage source provides an electromotive force (emf) that drives current through the circuit.
+- The resistors impede the flow of current, while the capacitors store and release energy.
+
+By Kirchhoff's Loop Rule, the potential differences across the circuit must sum to zero: $
+  cal(E) - V_R - V_C = 0 space ==> space cal(E) = V_R + V_C.
+$
+
+The potential difference across the resistor is given by Ohm's Law: $V_R = I R$, and the potential difference across the capacitor is given by $V_C = q / C$.
+
+Thus, the equation for an RC circuit becomes: $
+  cal(E) = I R + q / C.
+$
+
+Since current $I$ is the time derivative of charge $dv(q, t)$, we can rewrite the equation as: $
+  cal(E) = R dv(q, t) + 1 / C q.
+$
+
+This is a first-order linear differential equation. If we assume the capacitor is initially uncharged ($q(0) = 0$), we can solve for $q(t)$: $
+  q(t) = C cal(E) (1 - e^(-t / (R C))).
+$
 
 #pagebreak()
 
@@ -666,20 +689,7 @@ $ where $theta$ is the angle between $dd(arrow(ell))$ and $hat(r)$.
         #cetz.canvas({
           import cetz.draw: *
 
-          // Draw the wire
-          line((0, -2), (0, 2), stroke: black, name: "wire", mark: (start: "arrow", end: "arrow"))
-          content("wire", anchor: "east", padding: 0.1)[$I$]
 
-          // Draw point P
-          circle((2, 0), name: "P", radius: 0.1, fill: black)
-          content("P", anchor: "east", padding: 0.2)[$P$]
-
-          // Draw distance r
-          line(
-            (0, 0.3), (2, 0.3), name: "rline", 
-            stroke: (paint: gray), mark: (start: "straight", end: "straight", length: 0.1)
-          )
-          content("rline", anchor: "south", padding: 0.1)[$r$]
         })
       ]
     ],
