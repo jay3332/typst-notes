@@ -601,7 +601,7 @@ $
 
 === Newton's Method
 
-= Second-Order Differential Equations
+= Higher-Order Differential Equations
 
 == Introduction to Second-Order Differential Equations
 
@@ -711,7 +711,31 @@ $
   y_2 ''(x) &= v''(x) y_1(x) + 2 v'(x) y_1 '(x) + v(x) y_1 ''(x).
 $
 
+== Euler Differential Equations
 
+== Power Series Solutions
+
+= Modeling Differential Equations
+
+== First-Order Linear Models
+
+=== Population Dynamics
+
+=== Radioactive Decay
+
+=== Salt Mixing Problems
+
+== Second-Order Linear Models
+
+=== Spring-Mass Systems
+
+=== Electrical Circuits
+
+== Nonlinear Models
+
+=== Predator-Prey Models
+
+=== Chemical Reactions
 
 = Laplace Transforms
 
@@ -721,7 +745,15 @@ $
   $
 ]
 
+
+
 = Systems of Differential Equations
+
+== Matrix Methods for Systems of DEs
+
+=== Writing Systems of DEs in Matrix Form
+
+== Numerical Methods
 
 = Fourier Series
 

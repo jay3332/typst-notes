@@ -729,8 +729,8 @@ $
 
 - Notice that the definition above only works when $arrow(v)$ is a unit vector.
 
-- An $n$-dimensional manifold has a directional derivative in the direction of an $(n-1)$-dimensional vector (e.g. a 4D
-  shape has a 3D directional vector)
+- An $n$-dimensional manifold has a directional derivative in the direction of an $(n-1)$-dimensional vector (e.g. a 3D
+  shape has a 2D dimensional gradient)
 
 - The notation $nabla_arrow(v)$ is sometimes used to denote $D_arrow(v)$. (e.g. $nabla_arrow(v) f$).
 
@@ -754,7 +754,7 @@ $
   $
   - Note: this $theta$ is *not* the angle between the x-axis and the direction vector!
 
-==== Normal Lines and Tanget Planes
+==== Normal Lines and Tangent Planes
 
 - The gradient vector at a point is *orthogonal* (perpendicular) to the level curve of the function at that point (or
   level surface if $f$ is a function of 3 variables).
@@ -762,22 +762,22 @@ $
   - A level curve of $f$ is in the form $f(x, y) = c$, where $c$ is a constant. A level surface of $f$ is in the form
     $f(x, y, z) = c$.
 
-- The *tangent line* to a level _curve_ using $grad f$ is $grad f(arrow(r)) dot (arrow(r) - arrow(r)_0) = 0$.
+- The *tangent line* to a level _curve_ using $grad f$ is $grad f(arrow(r)_0) dot (arrow(r) - arrow(r)_0) = 0$.
 
 - We can find the *normal line* and *tangent plane* to a level _surface_ using $grad f$:
 
   - The normal line at point $arrow(r)_0 = ang(x_0, y_0, z_0)$ is given by:
   $
-    arrow(r) = arrow(r)_0 + t space grad f(arrow(r)).
+    arrow(r) = arrow(r)_0 + t space grad f(arrow(r)_0).
   $
 
   - The tangent plane at $arrow(r)_0 = ang(x_0, y_0, z_0)$ is given by:
   $
-    grad f(arrow(r)) dot (arrow(r) - arrow(r)_0) = 0.
+    grad f(arrow(r)_0) dot (arrow(r) - arrow(r)_0) = 0.
   $
 
 === Generalization of a Linear Approximation
-
+                                                                                                                                                                                                                                                                                                                               
 Using the gradient vector, we can generalize the linear approximation for a multivariate function $f$, given its
 "center" $arrow(r)_0 = ang(x_0, y_0, z_0, ...)$ (i.e. the "given point"):
 $

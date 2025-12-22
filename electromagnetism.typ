@@ -2,7 +2,7 @@
 #import "@preview/unify:0.7.1": unit, qty
 #import "@preview/zap:0.2.0"
 
-#show: template.with(title: "Electricity & Magnetism")
+#show: template.with(title: "Electricity & Magnetism", font: "informal")
 
 = Electric Charges and Fields
 
@@ -71,7 +71,7 @@
 
   - In the case of $arrow(F)_G$, $hat(r)$ points _towards_ the other object rather than _away_. Gravity is always an attractive force. In contrast, electrostatic force can be either attractive or repulsive.
   
-#define("Law of Superposition for Coulomb's Law")[
+#define("Law of Superposition for Coulomb's Law (Discrete)")[
   Let $q_1, q_2, ..., q_n$ be a discrete set of charges in space. A particle of charge $Q$ will have its electrostatic force be the vector sum of all individual electrostatic forces: $
     arrow(F)_e = sum_i arrow(F)_e_(i,Q) = sum_i k_e (q_i Q) / r^2 hat(r). 
   $
@@ -81,9 +81,16 @@
 We can generalize this law to continuous charge distributions. For every small change in charge along a charged object $cblue(dd(q))$, the change in electrostatic force $dd(arrow(F)_e)$ is: $
   dd(arrow(F)_e) = k_e ( Q cblue(dd(q)) )/r^2 hat(r). 
 $
-Thus, by the law of superposition, the net electrostatic force $arrow(F)_e$ must be: $
-  arrow(F)_e = k_e integral Q/r^2 hat(r) cblue(dd(q)). 
-$
+Thus, by the law of superposition: 
+
+#define("Law of Superposition for Coulomb's Law (Continuous)")[
+  Let $Q$ be a point charge and let an object have a continuous charge distribution $cal(D)$. Then,
+  the net electrostatic force $arrow(F)_e$ must be: $
+    arrow(F)_e = k_e integral_cal(D) Q/r^2 hat(r) cblue(dd(q)). 
+  $ 
+]
+
+#pagebreak()
 
 == Conservation of Electric Charge
 
@@ -136,6 +143,8 @@ $
 
 - A nearby conductor may _induce_ a redistribution of charge in an object. We call this process *induction*. 
 
+#pagebreak()
+
 == Electric Fields
 
 #define("Electric Field")[
@@ -165,7 +174,9 @@ $
 - Electric field lines will always move away from positive charges and into negative charges.
 
 - Electric field lines will never cross, and by convention, lines drawn closer together indicate a greater magnitude of electric field.
-  
+
+#pagebreak()
+
 == Electric Fields of Charge Distributions
 
 We can apply the law of superposition for electrostatic force to electric fields.
@@ -177,10 +188,6 @@ For discrete charge distributions (a finite set of point charges): $
 $
 
 In other words, the net electric field at a given position is the sum of the electric fields induced by all individual point charges.
-
-#example("")[
-  
-]
 
 === Continuous Charge Distributions
 
@@ -218,8 +225,110 @@ Often times, the charge differential $dd(q)$ is not directly given to us, but ra
 
 If charge density is constant, the object is *uniformly charged*.
 
-#example("")[
+#import "@preview/cetz:0.4.2"
+
+#example("Finding the Electric Field from Discrete Charges")[
+  #grid(
+    columns: (1fr, 3fr),
+    align: (center, horizon),
+    cetz.canvas({
+      import cetz.draw: *
+
+      let s = 2.3
+      let h = s * calc.sqrt(3) / 2
+      
+      // Define vertices
+      let v_top = (0, h * 2/3)
+      let v_left = (-s/2, -h/3)
+      let v_right = (s/2, -h/3)
+      let center = (0, 0)
+
+      // Draw the triangle
+      line(v_left, v_top, v_right, close: true, stroke: 1pt)
+
+      // Draw the charges
+      let charge_radius = 0.3
+      let draw_charge(pos, label_text, color) = {
+        circle(pos, radius: charge_radius, fill: color)
+        content(pos, text(white)[#label_text])
+      }
+      draw_charge(v_top, $q$, red)
+      draw_charge(v_left, $2q$, red)
+      draw_charge(v_right, $3q$, red)
+
+      // Mark the center
+      circle(center, radius: 0.05, fill: black)
+      content(center, anchor: "north-west", padding: 0.05)[$P$]
+
+      content(midpoint(v_left, v_top), anchor: "east", padding: 0.2)[$a$]
+      content(midpoint(v_left, v_right), anchor: "north", padding: 0.05)[$a$]
+      content(midpoint(v_right, v_top), anchor: "west", padding: 0.2)[$a$]
+
+      // Optional: Draw distance r (dashed)
+      line(center, v_top, stroke: (dash: "dashed", paint: gray))
+      content((0.1, h/3), anchor: "west", text(gray)[$r$])
+    }),
+    [
+      Three point charges $q$, $2q$, and $3q$ are arranged in an equilateral triangle of side length $a$ as shown. Find the electric field at the center of the triangle.
+    ],
+  )
+  #lorange
+
+  The distance $r$ from a vertex to point $P$ is $r = a / sqrt(3)$. By Coulomb's law, the electric field magnitude due to a charge $Q$ a distance $r$ away is: $
+    E = (k_e Q) / r^2 = (k_e Q) / (a / sqrt(3))^2 = (3 k_e Q) / a^2.
+  $
+  #rsubtext[where $k_e$ is Coulomb's constant.]
+
+  Thus, the magnitudes of electric field caused by each charge is: $
+    E_1 = (3 k_e q) / a^2 #h(40pt) E_2 = (6 k_e q) / a^2 #h(40pt) E_3 = (9 k_e q) / a^2.
+  $
+
+  By the law of superposition, $arrow(E)_P = arrow(E)_1 + arrow(E)_2 + arrow(E)_3$. However, we only have magnitudes, so
+  we have to use trigonometry to break each magnitude into basis components.
+
+  Recall the electric field points _away_ from the charge. For example, at point $P$, $arrow(E)_1$ would point downwards.
+  This means $arrow(E)_1$ has no $x$-component and a negative $y$-component, so we derive $arrow(E)_1 = -E_1 hat(j)$.
+
+  $arrow(E)_2$ makes a $30 degree$ angle with the positive $x$-axis, so $arrow(E)_2 = E_2 (hat(i) cos 30 degree + hat(j) sin 30 degree)$. Similarly, $arrow(E)_3$ makes a $30 degree$ angle with the _negative_ $x$-axis, so $arrow(E)_3 = E_3 (-hat(i) cos 30 degree + hat(j) sin 30 degree)$.
+
+  Writing out the components: $
+    arrow(E)_P &= (E_2 cos 30 degree - E_3 cos 30 degree) hat(i) + (-E_1 + E_2 sin 30 degree + E_3 sin 30 degree) hat(j) \
+    &= (E_2 - E_3) sqrt(3)/2 hat(i) + (-E_1 + (E_2 + E_3)/2) hat(j) \
+    &= (-(3 k_e q) / a^2) sqrt(3)/2 hat(i) + (-3 + (6 + 9)/2) (k_e q)/a^2 hat(j)
+    = cgreen(- (3 sqrt(3) k_e q) / (2 a^2) hat(i) + (9 k_e q)/(2 a^2) hat(j)).
+  $
+]
+
+#example("Electric Field from a Continuous Charge Distribution")[
   Point $P$ is a distance $b$ directly to the left of a uniformly charged rod of length $L$ with linear mass density $lambda$. Derive an expression for the electric field at $P$.
+
+  #align(center)[
+    #cetz.canvas({
+      import cetz.draw: *
+
+      // Draw the rod
+      rect((0, -0.2), (rel: (4, 0.4)), name: "rod", fill: rgb(255, 120, 60), radius: 0.1)
+      content("rod", anchor: "center", padding: 0.1)[$lambda$]
+
+      // Draw distance L
+      line(
+        (0, 0.3), (4, 0.3), name: "Lline", 
+        stroke: (paint: gray), mark: (start: "straight", end: "straight", length: 0.1)
+      )
+      content("Lline", anchor: "south", padding: 0.1)[$L$]
+
+      // Draw point P
+      circle((-1, 0), name: "P", radius: 0.1, fill: black)
+      content("P", anchor: "east", padding: 0.2)[$P$]
+
+      // Draw distance b
+      line(
+        (-1, 0.3), (0, 0.3), name: "bline", 
+        stroke: (paint: gray), mark: (start: "straight", end: "straight", length: 0.1)
+      )
+      content("bline", anchor: "south", padding: 0.1)[$b$]
+    })
+  ]
   
   #lorange
 
@@ -257,11 +366,8 @@ If charge density is constant, the object is *uniformly charged*.
     Phi_E = integral.double_S arrow(E) dot dd(arrow(A))
   $
   - $arrow(E)$ is the electric field at each point on the surface.
-  - $dd(arrow(A))$ is the area vector differential ($dd(arrow(A)) = hat(n) dd(A)$ where $hat(n)$ is the unit normal to $S$)
-
-  #subtext[
-    The double integral here just specifies that we are integrating over two dimensions (e.g. $dd(A) = dd(x) dd(y)$).
-  ]
+  - $dd(arrow(A))$ is the vector with its magnitude being a small change in surface area, pointing perpendicularly outwards from the surface \ 
+    #subtext[($dd(arrow(A)) = hat(n) dd(A)$ where $hat(n)$ is the unit normal to $S$)]
 ]
 
 - *Electric flux* measures how much electric field "passes through" a given surface.
@@ -269,6 +375,8 @@ If charge density is constant, the object is *uniformly charged*.
   - If $arrow(E)$ is parallel to $dd(arrow(A))$, the flux is maximized.
   - If $arrow(E)$ is perpendicular to $dd(arrow(A))$, the flux is zero.
   - The dot product ensures that only the component of the electric field perpendicular to the surface contributes to flux.
+  - The surface here does not need to be an actual physical surface. It can be an imaginary surface which we use to 
+    analyze flux with, called a *Gaussian surface*.
 
 - The symbol $Phi_E$ or $phi_E$ is used to refer to electric flux. It is a scalar quantity. \
   #subtext[(or just $Phi$ if no need to clarify which type of flux)]
@@ -279,11 +387,11 @@ If charge density is constant, the object is *uniformly charged*.
   - A _volt_ ($"V"$) is a measure of _electrical potential energy per unit charge_ (which will be covered later), so volts have units of $"J/C" = unit("N m / C")$ (unit of energy divided by unit of charge).
   - Thus, a _volt-meter_ is equivalent to a _newton-meter squared per coulomb_.
 
-- If electric field is constant everywhere on the surface, then our equation simplifies: $
+- If electric field is constant everywhere on the surface AND our surface is flat, then our equation simplifies: $
     Phi_E = arrow(E) dot integral.double_S dd(arrow(A)) = arrow(E) dot arrow(A).
   $
 
-- By the definition of the dot product, we can also write electric flux as:
+- By the definition of the dot product, the electric field for flat surfaces is:
 
   - $Phi_E = E A cos theta$, if electric field is constant
   - $Phi_E = integral.double_S E cos theta dd(A)$, if electric field is not constant
@@ -291,26 +399,52 @@ If charge density is constant, the object is *uniformly charged*.
   $E$ is the magnitude of the electric field, $A$ is surface area, and $theta$ is the angle between the outwards-pointing normal vector to the surface and the electric field vector.
 
 #example("")[
-  A non-uniform electric field $arrow(E) = ang(2x y, z^2, 2x + 3y) "N/C"$ passes through a flat, rectangular surface $S$ as shown in the image. 
-  
-  #align(center)[
-    #image("assets/ex_electromagnetism_eflux.png", height: 150pt)
-  ]
-  
-  What is the electric flux passing through $S$? Assume $x,y,z$ are specified in meters.
+  #grid(
+    columns: (3fr, 1.6fr),
+    align: (horizon, center),
+    [
+        A non-uniform electric field $arrow(E) = ang(2x y, z^2, 2x + 3y) "N/C"$ passes through a flat, rectangular surface $S$ as shown in the diagram. What is the electric flux passing through $S$? Assume $x,y,z$ are specified in meters.
+    ],
+    [
+      #align(center)[
+        #cetz.canvas(length: 20pt, {
+          import cetz.draw: *
+
+          ortho(x: -65deg, y: 0deg, z: 17deg, {
+            on-xy({
+
+              circle((0, 0), radius: 0.05, fill: black)
+              content((0, 0), anchor: "south-east", padding: 0.05)[$cal(O)$]
+
+              rect((0, 0), (rel: (5, 4)), name: "surface", fill: rgb(100, 150, 255, 128))
+              content("surface", anchor: "center", padding: 0.1)[$S$]
+
+              content((0, 2), anchor: "east", padding: 0.1)[$4 space "m"$]
+              content((2.5, 0), anchor: "south", padding: 0.1)[$5 space "m"$]
+            })
+
+            line((2.5, 2, 0), (2.5, 2, 2), stroke: black, name: "Efield", mark: (end: "straight"))
+            content((2.5, 2, 2.0), anchor: "west", padding: 0.15)[$arrow(E)$]
+          })
+        })
+      ]
+    ]
+  )
 
   #lorange
 
-  First, since we are only concerned about the component of the electric field that is perpendicular to $S$, we know that our effective electric field is $E =2x + 3y$ (i.e. we only consider the $z$-component of the electric field).
+  First, since we are only concerned about the component of the electric field that is perpendicular to $S$, we know that our effective electric field is $E = 2x + 3y$ (i.e. we only consider the $z$-component of the electric field).
 
   Now, this becomes a simple double integral: $
     Phi_E &= integral.double_S (2x + 3y) dd(A) \
-    &= integral_0^4 integral_0^5 (2x + 3y) dd(x) dd(y) \
-    &= integral_0^4 evaluated((x^2 + 3x y))_(x=0)^(x=5) dd(y) \
+    &= integral_(y=0)^4 integral_(x=0)^5 (2x + 3y) dd(x) dd(y) \
+    &= integral_0^4 evaluated(lr((x^2 + 3x y), size: #150%))_(x=0)^(x=5) dd(y) \
     &= integral_0^4 (25 + 15y) dd(y) \
-    &= evaluated((25y + 7.5y^2))_0^4 = cgreen(220 space "V" dot "m").
+    &= evaluated(lr((25y + 7.5y^2), size: #150%))_0^4 = cgreen(220 space "V" dot "m").
   $
 ]
+
+#pagebreak()
 
 == Gauss' Law 
 
@@ -382,9 +516,39 @@ $
   - $epsilon_0$ is the permittivity of free space.
 ]
 
+#pagebreak()
+
 = Electric Potential
 
 == Electric Potential Energy
+
+Let $arrow(F)_e$ be the electrostatic force on a charge $q$ moving from point $A$ to point $B$. The *electric potential energy* $U_e$ is defined as the work done by an external agent to move the charge from $A$ to $B$ against the electrostatic force: $
+  U_e = W_"external" = - W_"electrostatic" = - integral arrow(F)_e dot dd(arrow(ell)).
+$
+
+If we assume $q$ is only affected by one other point charge $Q$, we can substitute in Coulomb's Law: $
+  U_e &= - integral k_e (q Q)/r^2 hat(r) dot dd(arrow(ell)).
+$ 
+
+Realize that $hat(r)$ and $dd(arrow(ell))$ are always in the same direction (since we are moving along the line between the two charges). Thus, we can let $dd(r) = hat(r) dot dd(arrow(ell))$: $
+  U_e &= - k_e q Q integral 1/r^2 dd(r).
+$
+
+Solving the integral: $
+  U_e &= - k_e q Q [-1/r]_(r_A)^(r_B) \
+  &= k_e q Q (1/r_B - 1/r_A).
+$
+
+If we let final point be infinitely far away from point $A$ ($r_B -> oo$), then the electric potential energy at point $A$ is: $
+  U_e = k_e q Q / r_A.
+$
+
+#define("Electric Potential Energy")[
+  Let $q$ be a charge in an electric field $arrow(E)$. The *electric potential energy* $U_e$ of the charge is: $
+    U_e = q V
+  $
+  where $V$ is the *electric potential* at the position of the charge.
+]
 
 == Electric Potential
 
@@ -427,13 +591,113 @@ $
 
 == Resistor-Capacitor Circuits
 
+#pagebreak()
+
 = Magnetic Fields and Electromagnetism
 
 == Magnetic Fields
 
+- Magnetic fields are produced by moving charges (currents).
+
+- Magnetic fields exert forces on moving charges.
+
+- The magnetic field is represented by the vector $arrow(B)$, measured in _Teslas_ (T).
+  - A 1 Tesla magnetic field exerts a force of 1 Newton on a 1 Coulomb point charge moving at $1 "m/s"$ perpendicular to the field. \
+    #subtext[$unit("T") = unit("N s / C / m") = unit("kg / s^2 / A")$ in SI base units.]
+
+#pagebreak()
+
 == Magnetism and Moving Charges
 
+#define("Magnetic Force")[
+  Let $q$ be a charge moving with velocity $arrow(v)$ in a magnetic field $arrow(B)$. The *magnetic force* $arrow(F)_b$ on the charge is: $
+    arrow(F)_b = q arrow(v) times arrow(B).
+  $
+]
+- The magnetic force is always perpendicular to both the velocity of the charge and the magnetic field.
+
+- The magnetic force does no work on the charge, since it is always perpendicular to the velocity of the charge.
+
+- If the charge is moving in a straight line (e.g. a straight wire), then the velocity is constant and we can write the magnetic force as: $
+   arrow(F)_b = (q L)/t B sin theta = I L B sin theta.
+$
+  - Here, $L$ is the length of a wire segment, and if it takes the charge $q$ a time $t$ to pass through the wire segment, then the current $I = q/t$.
+
+  - The magnetic force on a charge moving through a wire segment is proportional to the length of that segment, the current through that segment, and the magnetic field strength.
+
+#define("Lorentz Force Law")[
+  The *Lorentz force* $arrow(F)$ on a charge $q$ moving with velocity $arrow(v)$ in both electric and magnetic fields $arrow(E)$ and $arrow(B)$ is: $
+    arrow(F) = arrow(F)_e + arrow(F)_b = q arrow(E) + q arrow(v) times arrow(B) = q (arrow(E) + arrow(v) times arrow(B)).
+  $
+]
+
+The Lorentz force describes how charged particles behave in electromagnetic fields.
+
 == Magnetic Fields of Current-Carrying Wires
+
+#define("Biot-Savart Law")[
+  Let $I$ be the current through a wire segment $dd(arrow(ell))$. The magnetic field $dd(arrow(B))$ at a point $P$ due to this wire segment is: $
+    dd(arrow(B)) = (mu_0)/(4pi) (I dd(arrow(ell)) times hat(r))/r^2
+  $
+  where:
+  - $mu_0$ is the *permeability of free space*
+  - $hat(r)$ is the unit vector from the wire segment to point $P$
+  - $r$ is the distance from the wire segment to point $P$
+
+  If a wire is curved in a path $C$, then the total magnetic field at point $P$ is: $
+    arrow(B) = (mu_0)/(4pi) integral_C (I dd(arrow(ell)) times hat(r))/r^2.
+  $
+]
+
+By the definition of the cross product, the magnitude of the magnetic field contribution from the wire segment is: $
+  abs(dd(arrow(B))) = dd(B) = (mu_0)/(4pi) (I dd(ell) sin theta)/r^2
+$ where $theta$ is the angle between $dd(arrow(ell))$ and $hat(r)$.
+
+#example("Magnetic Field from a Straight Current-Carrying Wire")[
+  A long, straight wire carries a current $I$. What is the magnetic field $arrow(B)$ at a point $P$ a distance $r$ away from the wire?
+
+  #lorange
+
+  #grid(
+    columns: (3fr, 1.6fr),
+    align: (horizon, center),
+    [
+      #align(center)[
+        #cetz.canvas({
+          import cetz.draw: *
+
+          // Draw the wire
+          line((0, -2), (0, 2), stroke: black, name: "wire", mark: (start: "arrow", end: "arrow"))
+          content("wire", anchor: "east", padding: 0.1)[$I$]
+
+          // Draw point P
+          circle((2, 0), name: "P", radius: 0.1, fill: black)
+          content("P", anchor: "east", padding: 0.2)[$P$]
+
+          // Draw distance r
+          line(
+            (0, 0.3), (2, 0.3), name: "rline", 
+            stroke: (paint: gray), mark: (start: "straight", end: "straight", length: 0.1)
+          )
+          content("rline", anchor: "south", padding: 0.1)[$r$]
+        })
+      ]
+    ],
+    [
+      A long, straight wire carries a current $I$. What is the magnetic field $arrow(B)$ at a point $P$ a distance $r$ away from the wire?
+    ]
+  )
+
+  Consider a small wire segment $dd(ell)$ at an angle $theta$ from the horizontal axis. The distance from this wire segment to point $P$ is $r / (cos theta)$. Thus, by the Biot-Savart Law: $
+    dd(B) = (mu_0)/(4pi) (I dd(ell) sin theta)/(r/(cos theta))^2 = (mu_0 I)/(4pi r^2) dd(ell) sin theta cos^2 theta.
+  $
+
+
+
+
+]
+
+#pagebreak()
 
 == Ampere's Law
 
@@ -456,3 +720,9 @@ $
 == Circuits with Resistors and Inductors (LR)
 
 == Circuits with Capacitors and Inductors (LC)
+
+== Circuits with Resistors, Inductors, and Capacitors (RLC)
+
+$
+  L ndv(q, t, 2) + R dv(q, t) + 1/C q = cal(E)
+$

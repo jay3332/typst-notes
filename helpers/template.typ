@@ -12,6 +12,7 @@
   $lr(chevron.l #inner chevron.r)$
 }
 #let grad = $arrow(nabla "")$
+#let transpose = $sans(upright(T))$
 #let evaluated(expr, size: 100%) = $lr(#expr|, size: #size)$
 
 #let tred(x) = text(fill: red, x)
@@ -49,8 +50,8 @@
   ==== #text(fill: orange)[Example: ] #title
   #content
 ]
-#let resource(title, content) = boxed(stroke: purple)[
-  #text(fill: purple)[#align(center)[==== #title]]
+#let resource(title, content, _align: center) = boxed(stroke: purple)[
+  #text(fill: purple)[#align(_align)[==== #title]]
   #content
 ]
 #let note(title: "", content) = boxed(stroke: blue)[
@@ -64,6 +65,15 @@
 ]
 #let rsubtext(content) = align(right)[#subtext[#content]]
 
+// CeTZ helpers
+#let midpoint = (p1, p2) => ((p1.at(0) + p2.at(0))/2, (p1.at(1) + p2.at(1))/2)
+#let midpointn = (..points) => {
+  let n = points.pos().len()
+  let sum_x = points.pos().fold(0, (acc, p) => acc + p.at(0))
+  let sum_y = points.pos().fold(0, (acc, p) => acc + p.at(1))
+  (sum_x / n, sum_y / n)
+}
+
 // brief:
 // #let example(..args) = []
 // #let derivation(..args) = []
@@ -72,6 +82,7 @@
   title: "", 
   description: "", 
   toc_depth: 2,
+  font: "sans",
   body,
 ) = [
   // 1. HTML helpers
@@ -168,12 +179,25 @@
   // #show math.equation: set text(font: "GFS Neohellenic Math")
 
   // #set text(font: "HK Grotesk")
-  
-  #set text(font: "New Computer Modern Sans")
-  #show math.equation: set text(font: "New Computer Modern Sans Math")
 
   // #set text(font: "Noto Sans")
   // #show math.equation: set text(font: "Noto Sans Math")
+ 
+  #let text_font
+  #let math_font
+  #if font == "sans" {
+    text_font = "New Computer Modern Sans"
+    math_font = "New Computer Modern Sans Math"
+  } else if font == "informal" {
+    text_font = "Pennstander"
+    math_font = "Pennstander Math"
+  } else if font == "serif" {
+    text_font = "New Computer Modern"
+    math_font = "New Computer Modern Math"
+  }
+
+  #set text(font: text_font)
+  #show math.equation: set text(font: math_font)
 
   // 3. Define heading styles/numbering
   #set heading(numbering: "1.1")
