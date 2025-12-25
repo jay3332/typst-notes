@@ -599,9 +599,9 @@ It turns out that _all closed surfaces_ which enclose a volume ("*Gaussian surfa
 
       // Distance d
       let dlabel-z = -r - 0.2
-      line((0, 0, 0), (0, 0, dlabel-z), stroke: (paint: gray, dash: "dotted"))
-      line((0, 2, 0), (0, 2, dlabel-z), stroke: (paint: gray, dash: "dotted"))
-      line((0, 0, dlabel-z), (0, 2, dlabel-z), stroke: (paint: gray), mark: (start: "straight", end: "straight", length: 0.1))
+      line((0, 0, 0), (0, 0, dlabel-z), stroke: (dash: "dotted"))
+      line((0, 2, 0), (0, 2, dlabel-z), stroke: (dash: "dotted"))
+      line((0, 0, dlabel-z), (0, 2, dlabel-z), mark: (start: "straight", end: "straight", length: 0.1))
       content((0, 1, dlabel-z), anchor: "south", padding: 0.1)[$d$]
     })
     on-layer(-5, {
