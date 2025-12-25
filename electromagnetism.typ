@@ -419,12 +419,12 @@ If charge density is constant, the object is *uniformly charged*.
               rect((0, 0), (rel: (5, 4)), name: "surface", fill: rgb(100, 150, 255, 128))
               content("surface", anchor: "center", padding: 0.1)[$S$]
 
-              content((0, 2), anchor: "east", padding: 0.1)[$4 space "m"$]
-              content((2.5, 0), anchor: "south", padding: 0.1)[$5 space "m"$]
+              content((0, 2), anchor: "east", padding: 0.1)[#qty(4, "m")]
+              content((2.5, 0), anchor: "south", padding: 0.1)[#qty(5, "m")]
             })
 
             line((2.5, 2, 0), (2.5, 2, 2), stroke: black, name: "Efield", mark: (end: "straight"))
-            content((2.5, 2, 2.0), anchor: "west", padding: 0.15)[$arrow(E)$]
+            content((2.5, 2, 2.0), anchor: "west", padding: 0.15)[$arrow(E)_perp$]
           })
         })
       ]
@@ -481,6 +481,174 @@ It turns out that _all closed surfaces_ which enclose a volume ("*Gaussian surfa
   - $epsilon_0$ is the permittivity of free space. 
 ]
 
+- The electric flux through any closed surface is proportional to the net charge enclosed within that surface.
+
+- We can choose any closed surface we want (even imaginary ones) to take advantage of this law. 
+
+- A common strategy is to choose a Gaussian surface which takes advantage of symmetry to make calculating the electric field easier.
+
+  - Where the electric field is perfectly perpendicular to our surface, then it is parallel to $hat(n)$ and $arrow(E) dot dd(arrow(A)) = E dd(A)$ (or $-E dd(A)$ if the field points inwards).
+
+  - Where the electric field is perfectly parallel to our surface, then it is perpendicular to $hat(n)$ and $arrow(E) dot dd(arrow(A)) = 0$.
+
+#let gauss-law-diagram = cetz.canvas({
+  import cetz.draw: *
+  // standard ortho: x: -45deg, y: 0deg, z: 225deg
+
+  let view-x = -70deg
+  let view-y = 0deg
+  let view-z = 225deg
+  let r = 0.6
+
+  ortho(x: view-x, y: view-y, z: view-z, {
+    // Draw the sheet
+    on-xz({
+      on-layer(-2, {
+        rect((-2, -2), (rel: (4, 4)), name: "sheet", fill: red.transparentize(40%))
+      })
+      content((-1, 1), text(fill: red)[$sigma$])
+      // draw a bunch of + on the sheet
+      on-layer(-1, {
+        for i in (-1, -1/3, 1/3, 1) {
+          for j in (-1, -1/3, 1/3, 1) {
+            content((i * 1.5, j * 1.5), text(red.transparentize(20%))[$+$])
+          }
+        }
+      })
+      // Cross section
+      on-layer(1, 
+        circle((0, 0), radius: r, stroke: (dash: "dashed"), fill: purple.transparentize(50%))
+      )
+    })
+
+    // Draw the cylinder
+    // Cylinder Body Calculation
+    let vx = calc.sin(view-x) * calc.sin(view-z)
+    let vz = calc.cos(view-x)
+
+    // Calculate Silhouette Angle
+    // The edge is exactly 90 degrees offset from the view direction
+    let a = calc.atan2(vx, vz) + 90deg
+
+    let x1 = r * calc.cos(a) 
+    let z1 = r * calc.sin(a)
+    
+    let x1 = r * calc.cos(a)
+    let z1 = r * calc.sin(a)
+    let x2 = r * calc.cos(a + 180deg)
+    let z2 = r * calc.sin(a + 180deg)
+
+    // Define the 4 corners of the cylinder body in 3D (x, y, z)
+    // Note: The cylinder extends from y = -2 to y = 2
+    let p-bot-1 = (x1, -2, z1)
+    let p-mid-1 = (x1,  0, z1)
+    let p-top-1 = (x1,  2, z1)
+    let p-bot-2 = (x2, -2, z2)
+    let p-mid-2 = (x2,  0, z2)
+    let p-top-2 = (x2,  2, z2)
+
+    // Draw the shaded body
+    on-layer(1, {
+      line(p-mid-1, p-top-1, stroke: 1pt)
+      line(p-mid-2, p-top-2, stroke: 1pt)
+    })
+    merge-path(fill: blue.transparentize(20%), stroke: none, {
+      line(p-mid-1, p-top-1, p-top-2, p-mid-2)
+      on-xz(arc((x2, z2), start: 180deg + a, delta: 180deg, radius: r))
+    })
+
+    on-layer(-3, {
+      line(p-mid-1, p-bot-1, stroke: 1pt)
+      line(p-mid-2, p-bot-2, stroke: 1pt)
+    })
+    on-layer(-4, {
+      merge-path(fill: blue.transparentize(20%), stroke: none, {
+        line(p-mid-1, p-bot-1)
+        on-xz(y: -2, arc((x2, z2), start: 180deg + a, delta: 180deg, radius: r))
+        line(p-bot-2, p-mid-2)
+        on-xz(arc((x2, z2), start: 180deg + a, delta: 180deg, radius: r))
+      })
+    })
+
+    // circular ends
+    on-xz(y: 2, {
+      circle((0, 0), radius: r, stroke: black, name: "l", fill: blue)
+    })
+    on-layer(-3, on-xz(y: -2, {
+      arc((x2, z2), start: 180deg + a, delta: 180deg, radius: r, stroke: black, name: "r")
+      arc((x1, z1), start: a, delta: 180deg, radius: r, 
+        stroke: (paint: black.transparentize(90%)), name: "r")
+    }))
+
+    on-layer(5, {
+      // Label surface
+      let start = (-0.2, 2.2, r + 0.6)
+      let end = (0, 1.8, r)
+      line(start, end, stroke: blue, mark: (end: "straight"))
+      content(start, anchor: "north-west", padding: 0.05, text(fill: blue)[$S$])
+
+      // Label cross-sectional area
+      let a-start = (r + 0.6, 0, 0)
+      let a-end = (r, 0, 0)
+      line(a-start, a-end, stroke: purple, mark: (end: "straight"))
+      content(a-start, anchor: "south-east", padding: 0.05, text(fill: purple)[$A$])
+
+      // E field arrows
+      line((0, 2, 0), (0, 3, 0), stroke: black, mark: (end: "straight"))
+      content((0, 3, 0), anchor: "west", padding: 0.1)[$arrow(E)$]
+
+      // Distance d
+      let dlabel-z = -r - 0.2
+      line((0, 0, 0), (0, 0, dlabel-z), stroke: (paint: gray, dash: "dotted"))
+      line((0, 2, 0), (0, 2, dlabel-z), stroke: (paint: gray, dash: "dotted"))
+      line((0, 0, dlabel-z), (0, 2, dlabel-z), stroke: (paint: gray), mark: (start: "straight", end: "straight", length: 0.1))
+      content((0, 1, dlabel-z), anchor: "south", padding: 0.1)[$d$]
+    })
+    on-layer(-5, {
+      line((0, -2, 0), (0, -3, 0), stroke: black, mark: (end: "straight"))
+      content((0, -3, 0), anchor: "east", padding: 0.1)[$arrow(E)$]
+    })
+  })
+})
+
+#example("Using Gauss' Law to find Electric Field")[
+  An infinite sheet of charge has a uniform surface charge density $sigma$. Use Gauss' Law to derive an expression for the electric field a distance $d$ from the sheet.
+  #lorange
+
+  #grid(
+    columns: (3fr, 1.6fr),
+    align: (horizon, center),
+    [
+      The first step is to choose the Gaussian surface.
+      - The electric field points directly away from the sheet on both sides 
+          
+      - We can choose a cylindrical surface where the electric field pierces through
+            the two circular ends perpendicularly, and is parallel to the curved side of the cylinder. This way, we only have to consider the flux through the two circular ends of the cylinder.
+    ],
+    gauss-law-diagram,
+  )
+
+  Let the area of each circular end be $A$, and have the cylinder extend a distance $d$ on either side of the sheet. We can then let the magnitude of electric field at each end be $E$.
+
+  Let's evaluate the left-hand side of Gauss' Law, the flux integral.
+
+  The electric field is parallel to the curved side of the cylinder, so they contribute no flux. At each circular end, the electric field is perpendicular to the surface, so the flux through each end is simply $E A$. Since there are two ends, the total flux is: $
+    Phi_E = E A + E A = 2 E A.
+  $
+
+  For the right-hand side, the total charge enclosed by the cylinder is simply the charge on the portion of the sheet inside the cylinder. Since the sheet has a uniform surface charge density $sigma$, the total charge enclosed is: $
+    Q_"enclosed" = sigma A.
+  $
+
+  Finally, applying Gauss' Law: $
+    Phi_E &= Q_"enclosed"/epsilon_0 \
+    2 E A &= (sigma A)/epsilon_0 \
+    cgreen(E &= sigma/(2 epsilon_0)).
+  $
+]
+
+=== Introduction to Maxwell's Equations
+
 Gauss' Law is typically the first equation introduced in the set of four equations fundamental to electromagnetism known as _Maxwell's Equations_:
 
 #resource("Maxwell's Equations")[
@@ -497,7 +665,9 @@ Gauss' Law is typically the first equation introduced in the set of four equatio
 
 === Differential Form of Gauss' Law
 
-The *divergence theorem* tells us that if $V$ is the volume enclosed by a closed surface $S$, then the total flux through $S$ ("total outwards flow through the surface") is equal to the sum of all "small outward flows" (divergences) contained in $V$. Mathematically: $
+The *divergence theorem* tells us that if $V$ is the volume enclosed by a closed surface $S$, then the total flux through $S$ ("total outwards flow through the surface") is equal to the sum of all "small outward flows" (divergences) contained in $V$. 
+
+Mathematically: $
   integral.surf_S arrow(F) dot dd(arrow(A)) = integral.triple_V grad dot arrow(F) dd(V).
 $
 
@@ -543,14 +713,190 @@ If we let final point be infinitely far away from point $A$ ($r_B -> oo$), then 
   U_e = k_e q Q / r_A.
 $
 
+Thus, we arrive at the general formula for electric potential energy between two point charges:
+
+#define("Electric Potential Energy from a Point Charge")[
+  The electric potential energy of a point charge $q$ a distance $r$ from another point charge $Q$ is: $
+    U_e = k_e (q Q) / r.
+  $
+  This is the amount of work available to move the charge $q$ from distance $r$ to an infinite distance away from $Q$.
+]
+
+- Just like all forms of energy, electric potential energy is a _scalar quantity_ and is measured in _joules_ (J).
+
+- If both charges have the same sign, then $U_e$ is positive, indicating that work wants to be done to separate the charges (they repel each other). 
+
+- If the charges have opposite signs, then $U_e$ is negative, indicating that work is released when the charges come together (they attract each other).
+
+#example("Electric Potential Energy of a Discrete System")[
+  #grid(
+    columns: (1fr, 4fr),
+    align: (center, horizon),
+    cetz.canvas({
+      import cetz.draw: *
+      
+      // Define vertices
+      let v_top = (0, 1)
+      let v_left = (-1, -0.5)
+      let v_right = (1, -0.8)
+
+      // Draw the triangle
+      line(v_left, v_top, v_right, close: true, stroke: 1pt)
+
+      // Draw the charges
+      let charge_radius = 0.3
+      let draw_charge(pos, label_text, color) = {
+        circle(pos, radius: charge_radius, fill: color)
+        content(pos, text(white, size: 9pt)[#label_text])
+      }
+      draw_charge(v_top, $+q$, red)
+      draw_charge(v_left, $-2q$, blue)
+      draw_charge(v_right, $+3q$, red)
+
+      content(midpoint(v_left, v_top), anchor: "east", padding: 0.2)[$a$]
+      content(midpoint(v_right, v_top), anchor: "west", padding: 0.2)[$b$]
+      content(midpoint(v_left, v_right), anchor: "north", padding: 0.05)[$c$]
+    }),
+    [
+      A system of three point charges $+q$, $-2q$, and $+3q$ are arranged in a triangle with side lengths
+      $a$, $b$, and $c$ as shown. Calculate the total electric potential energy of the system.
+    ],
+  )
+
+  #lorange
+
+  The total potential energy in a system of discrete objects is the sum of
+  potential energies between all pairs of objects.
+
+  Between $+q$ and $-2q$: $display(U_1 = k_e ((+q)(-2q))/a = -2 k_e q^2 / a)$.
+
+  Between $+q$ and $+3q$: $display(U_2 = k_e ((+q)(+3q))/b = 3 k_e q^2 / b)$.
+
+  Between $-2q$ and $+3q$: $display(U_3 = k_e ((-2q)(+3q))/c = -6 k_e q^2 / c)$.
+
+  Thus, the total electric potential energy of the system is: $
+    U_e = U_1 + U_2 + U_3 &= -2 k_e q^2 / a + 3 k_e q^2 / b - 6 k_e q^2 / c
+    &= cgreen(k_e q^2 (-2/a + 3/b - 6/c)).
+  $
+]
+
+
+
+#example("Electric Potential Energy of a Continuous System")[
+  A uniformly charged rod of length $L$ and linear charge density $lambda$ lies along the $x$-axis from $x=0$ to $x=L$. What is the electric potential energy of a point charge $q$ located a distance $d$ from the left end of the rod on the $x$-axis?
+
+  #align(center)[
+    #cetz.canvas({
+      import cetz.draw: *
+
+      // Draw the rod
+      rect((0, -0.2), (rel: (4, 0.4)), name: "rod", fill: rgb(255, 120, 60), radius: 0.1)
+      content("rod", anchor: "center", padding: 0.1)[$lambda$]
+
+      // Draw distance L
+      line(
+        (0, 0.3), (4, 0.3), name: "Lline", 
+        stroke: (paint: gray), mark: (start: "straight", end: "straight", length: 0.1)
+      )
+      content("Lline", anchor: "south", padding: 0.1)[$L$]
+
+      // Draw point P
+      circle((-1, 0), name: "P", radius: 0.1, fill: black)
+      content("P", anchor: "east", padding: 0.2)[$q$]
+
+      // Draw distance d
+      line(
+        (-1, 0.3), (0, 0.3), name: "dline", 
+        stroke: (paint: gray), mark: (start: "straight", end: "straight", length: 0.1)
+      )
+      content("dline", anchor: "south", padding: 0.1)[$d$]
+    })
+  ]
+
+  #lorange
+
+  Since we are dealing with a continuous charge distribution, we use integration to find the total electric potential energy: $
+    U_e = k_e q integral_(x=0)^(x=L) 1/r cblue(dd(q))
+  $
+  where $r$ is the distance from the point charge to each small portion of charge on the rod.
+
+  Let $x$ be how far from the left side of the rod we are (so we integrate from $0$ to $L$). Then, $cred(r = d + x)$ and $cblue(dd(q) = lambda dd(x))$: $
+    U_e = k_e q integral_0^L 1/(d+x) cblue(lambda dd(x)).
+  $
+  Since we know that the rod is _uniformly charged_, $lambda$ is constant, and we can now solve the integral and simplify: $
+    U_e &= k_e q lambda integral_0^L 1/(d+x) dd(x) \
+    &= k_e q lambda evaluated(ln(d+x), size: #150%)_(x=0)^(x=L) \
+    &= k_e q lambda (ln(d+L) - ln(d)) \
+    &= cgreen(k_e q lambda ln((d+L)/d)).
+  $
+]
+
+
+=== Electric Potential Energy and Electrostatic Force
+
+The electrostatic force is a *conservative force*. The work done by the force over a path
+ only depends on the starting and ending positions, not the path taken.
+
+The change in electric potential energy after following a path $C$ is: $
+  Delta U_e = - integral_C arrow(F)_e dot dd(arrow(ell)).
+$
+
+By the fundamental theorem of line integrals, we know that if a vector field $arrow(F)$ is the gradient of a scalar field $f$ ($arrow(F) = grad f$), then: $
+  integral_C arrow(F) dot dd(arrow(ell)) = integral_C grad f dot dd(arrow(ell)) = Delta f.
+$
+
+This property only holds for conservative vector fields. Since the electrostatic force is conservative, we can apply this theorem: $
+  integral_C grad U_e dot dd(l) = Delta U_e = integral_C -arrow(F)_e dot dd(arrow(ell)).                                                                                                                                     
+$
+
+Here, we see that $grad U_e = - arrow(F)_e$. This is the general definition of electric potential energy:
+
 #define("Electric Potential Energy")[
-  Let $q$ be a charge in an electric field $arrow(E)$. The *electric potential energy* $U_e$ of the charge is: $
+  The electrostatic force $arrow(F)_e$ on a charge is equal to the negative gradient of its electric potential energy $U_e$: $
+    arrow(F)_e = - grad U_e.
+  $
+  In one dimension, this simplifies to: $
+    F_e_x = - dv(U_e, x).
+  $
+]
+
+#pagebreak()
+
+== Electric Potential
+
+#define("Electric Potential from a Point Charge")[
+  Let $q$ be a charge in an electric field $arrow(E)$. The electric potential energy $U_e$ of the charge is: $
     U_e = q V
   $
   where $V$ is the *electric potential* at the position of the charge.
 ]
+- Electric potential is the electric potential energy per unit charge ($V = U_e slash q$).
+  - This is similar to how electric field is defined as force per unit charge.
 
-== Electric Potential
+- The unit of electric potential is the _volt_ ($"V"$). 
+  - A volt is defined as one joule per coulomb ($"V" = "J/C"$).
+  
+- The electric potential $V$ due to a point charge $Q$ at a distance $r$ is: $
+    V = U_e / q = k_e Q / r.
+  $
+
+- Electric potential is a _scalar quantity_.
+
+- Electric potential is often referred to as just "potential".
+
+- Since $-grad U_e = arrow(F)_e$, we can derive a relationship between electric potential and electric field: $
+    arrow(F)_e = - grad (q V) = - q grad V ==> arrow(E) = arrow(F)_e / q = - grad V.
+  $
+
+#define("Electric Field from Electric Potential")[
+  The electric field $arrow(E)$ at any point is equal to the negative gradient of the
+  electric potential $V$ at that point: $
+    arrow(E) = - grad V.
+  $
+  In one dimension, this simplifies to: $
+    E_x = - dv(V, x).
+  $
+]
 
 == Conservation of Electric Energy
 
