@@ -489,9 +489,9 @@ If charge density is constant, the object is *uniformly charged*.
     let efield-color = blue.darken(10%)
     let arr-style = (stroke: (thickness: 2pt, paint: efield-color), mark: (end: "triangle", fill: efield-color, scale: 1.2))
     // Arrow from left into A1
-    on-layer(1, {
-      line((-2, 0, 0), (0, 0, 0), ..arr-style)
-      content((-2, 0, 0), anchor: "east", padding: 0.2, text(fill: efield-color)[$arrow(E)$])
+    on-layer(-1, {
+      line((0, 0, 0), (2, 0, 0), ..arr-style)
+      content((2, 0, 0), anchor: "west", padding: 0.1, text(fill: efield-color)[$arrow(E)$])
     })
 
     // --- 4. SURFACE A1 (Flat) ---
