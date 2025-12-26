@@ -444,6 +444,123 @@ If charge density is constant, the object is *uniformly charged*.
   $
 ]
 
+=== Projection Principle
+
+#let projection-principle-diagram = cetz.canvas({
+  import cetz.draw: *
+
+  // Adjusted view angle to match the reference perspective better
+  ortho(x: 20deg, y: -35deg, z: 0deg, {
+    // --- 1. CONFIGURATION ---
+    let flow-len = 4      // Distance between A1 and A2
+    let s-size = 1.2      // Half-size of the square surfaces
+    
+    // Define the 4 corners of A1 (Flat Plane at x=0)
+    let a1-tl = (0, -s-size,  s-size)
+    let a1-bl = (0, -s-size, -s-size)
+    let a1-tr = (0,  s-size,  s-size)
+    let a1-br = (0,  s-size, -s-size)
+
+    // Define the 4 corners of A2 (Curved Surface base at x=flow-len)
+    // These match A1's y/z coordinates but are shifted down the X-axis
+    let a2-tl = (flow-len, -s-size,  s-size)
+    let a2-bl = (flow-len, -s-size, -s-size)
+    let a2-tr = (flow-len,  s-size,  s-size)
+    let a2-br = (flow-len,  s-size, -s-size)
+
+    // Control Point Offsets for the "Bulge" of A2
+    // We push the midpoints of the edges OUTWARD in +X and away from center
+    let bulge-x = 0.5 // How much it puffs out downstream
+    let bulge-y = -0.2 // How much it puffs sideways
+    
+    let surf-color = gray.transparentize(20%)
+
+    // --- 2. BACKGROUND (Dashed Lines) ---
+    // Connect corners of A1 to corners of A2
+    group({
+      set-style(stroke: (dash: "dashed", thickness: 1pt, paint: black.lighten(40%)))
+      line(a1-tl, a2-tl)
+      line(a1-bl, a2-bl)
+      line(a1-tr, a2-tr)
+      line(a1-br, a2-br)
+    })
+
+    // --- 3. DRAW ARROW (Part 1: Entering) ---
+    let efield-color = rgb("4da6ff")
+    let arr-style = (stroke: (thickness: 2pt, paint: efield-color), mark: (end: "triangle", fill: efield-color, scale: 1.2))
+    // Arrow from left into A1
+    on-layer(1, {
+      line((-2, 0, 0), (0, 0, 0), ..arr-style)
+      content((-2, 0, 0), anchor: "east", padding: 0.2, text(fill: efield-color)[$arrow(E)$])
+    })
+
+    // --- 4. SURFACE A1 (Flat) ---
+    // Simple polygon
+    line(a1-tl, a1-tr, a1-br, a1-bl, close: true, fill: surf-color, stroke: 1.5pt)
+    // Label
+    content(midpoint3d(a1-tl, a1-br))[$A_1$]
+
+    // --- 5. DRAW ARROW (Part 2: Middle) ---
+
+    // --- 6. SURFACE A2 (Curved "Sail") ---
+    // We construct this using 4 bezier curves connecting the 4 corners.
+    // The control points are calculated to make it bulge outward.
+    
+    merge-path(fill: surf-color, stroke: 1.5pt, close: true, {
+      // Edge 1: Top (TL -> TR) - Bulges Up (+Z) and Out (+X)
+      // Control points: 1/3 and 2/3 along the edge, lifted up/out
+      let cp1 = (flow-len + bulge-x, -s-size/2, s-size + bulge-y)
+      let cp2 = (flow-len + bulge-x,  s-size/2, s-size + bulge-y)
+      bezier(a2-tl, a2-tr, cp1, cp2)
+
+      // Edge 2: Right (TR -> BR) - Bulges Right (+Y) and Out (+X)
+      let cp3 = (flow-len + bulge-x, s-size + bulge-y, s-size/2)
+      let cp4 = (flow-len + bulge-x, s-size + bulge-y, -s-size/2)
+      bezier(a2-tr, a2-br, cp3, cp4)
+
+      // Edge 3: Bottom (BR -> BL) - Bulges Down (-Z) and Out (+X)
+      let cp5 = (flow-len + bulge-x,  s-size/2, -(s-size + bulge-y))
+      let cp6 = (flow-len + bulge-x, -s-size/2, -(s-size + bulge-y))
+      bezier(a2-br, a2-bl, cp5, cp6)
+
+      // Edge 4: Left (BL -> TL) - Bulges Left (-Y) and Out (+X)
+      let cp7 = (flow-len + bulge-x, -(s-size + bulge-y), -s-size/2)
+      let cp8 = (flow-len + bulge-x, -(s-size + bulge-y),  s-size/2)
+      bezier(a2-bl, a2-tl, cp7, cp8)
+    })
+    
+    // Label
+    let pos = midpoint3d(a2-tl, a2-br)
+    pos.at(0) += bulge-x
+    content(pos)[$A_2$]
+
+    // --- 7. DRAW ARROW (Part 3: Exiting) ---
+    // Start slightly inside A2 so it looks like it emerges from the surface
+    on-layer(-1, {
+      line((flow-len + bulge-x, 0, 0), (flow-len + bulge-x + 2, 0, 0), ..arr-style)
+      content((flow-len + bulge-x + 2, 0, 0), anchor: "west", padding: 0.1, text(fill: efield-color)[$arrow(E)$])
+    })
+  })
+})
+
+#grid(
+  columns: (5fr, 4fr),
+  align: (horizon, center),
+  [
+    The _projection principle_ states that the electric flux through any curved surface $S$ is equal to the electric flux through the projection of that surface onto a plane perpendicular to the electric field.
+
+    If the direction of the electric field is not constant, we can break the curved surface into many small flat surfaces where the electric field is approximately constant, and apply the projection principle to each small surface.
+
+    This principle holds because for every small patch of area $dd(A)$, the contribution to flux is: $
+      dd(Phi_E) = arrow(E) dot dd(arrow(A)) = E dd(A) cos theta = E dd(A_perp).
+    $
+  ],
+  align(center)[
+    #projection-principle-diagram
+    #subtext[The electric flux through $A_1$ is equal to the electric flux through $A_2$.]
+  ]
+)
+
 #pagebreak()
 
 == Gauss' Law 
