@@ -473,7 +473,7 @@ If charge density is constant, the object is *uniformly charged*.
     let bulge-x = 0.5 // How much it puffs out downstream
     let bulge-y = -0.2 // How much it puffs sideways
     
-    let surf-color = gray.transparentize(20%)
+    let surf-color = gray.lighten(30%).transparentize(30%)
 
     // --- 2. BACKGROUND (Dashed Lines) ---
     // Connect corners of A1 to corners of A2
@@ -486,7 +486,7 @@ If charge density is constant, the object is *uniformly charged*.
     })
 
     // --- 3. DRAW ARROW (Part 1: Entering) ---
-    let efield-color = rgb("4da6ff")
+    let efield-color = blue.darken(10%)
     let arr-style = (stroke: (thickness: 2pt, paint: efield-color), mark: (end: "triangle", fill: efield-color, scale: 1.2))
     // Arrow from left into A1
     on-layer(1, {
@@ -498,9 +498,6 @@ If charge density is constant, the object is *uniformly charged*.
     // Simple polygon
     line(a1-tl, a1-tr, a1-br, a1-bl, close: true, fill: surf-color, stroke: 1.5pt)
     // Label
-    content(midpoint3d(a1-tl, a1-br))[$A_1$]
-
-    // --- 5. DRAW ARROW (Part 2: Middle) ---
 
     // --- 6. SURFACE A2 (Curved "Sail") ---
     // We construct this using 4 bezier curves connecting the 4 corners.
@@ -532,7 +529,11 @@ If charge density is constant, the object is *uniformly charged*.
     // Label
     let pos = midpoint3d(a2-tl, a2-br)
     pos.at(0) += bulge-x
-    content(pos)[$A_2$]
+  
+    on-layer(2, {
+      content(midpoint3d(a1-tl, a1-br), anchor: "north", text(fill: black)[$A_1$])
+      content(pos, text(fill: black)[$A_2$])
+    })
 
     // --- 7. DRAW ARROW (Part 3: Exiting) ---
     // Start slightly inside A2 so it looks like it emerges from the surface
@@ -547,7 +548,7 @@ If charge density is constant, the object is *uniformly charged*.
   columns: (5fr, 4fr),
   align: (horizon, center),
   [
-    The _projection principle_ states that the electric flux through any curved surface $S$ is equal to the electric flux through the projection of that surface onto a plane perpendicular to the electric field.
+    The _projection principle_ states that the electric flux through a curved surface is equal to the electric flux through the projection of that surface onto a plane perpendicular to the electric field.
 
     If the direction of the electric field is not constant, we can break the curved surface into many small flat surfaces where the electric field is approximately constant, and apply the projection principle to each small surface.
 
