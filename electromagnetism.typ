@@ -1,6 +1,7 @@
 #import "helpers/template.typ": *
 #import "@preview/unify:0.7.1": unit, qty
 #import "@preview/zap:0.2.0"
+#import "@preview/cetz:0.4.2"
 
 #show: template.with(title: "Electricity & Magnetism", font: "informal")
 
@@ -61,6 +62,37 @@
     - in other words, if $q_1$ and $q_2$ are the same sign, the force will repel the charges _away_ from each other.
 ]
 
+#let coulomb-diagram = cetz.canvas({
+  import cetz.draw: *
+
+  let charge_radius = 0.3
+  let draw_charge(pos, label_text, color) = {
+    circle(pos, radius: charge_radius, fill: color)
+    content(pos, text(white)[#label_text])
+  }
+
+  // Draw charges
+  let q1_pos = (-1, 0)
+  let q2_pos = (1, 0)
+  on-layer(1, {
+    draw_charge(q1_pos, $q_1$, red)
+    draw_charge(q2_pos, $q_2$, red)
+  })
+
+  // Draw distance r
+  line(q1_pos, q2_pos, stroke: (paint: gray, dash: "dashed"))
+  content((0, 0.1), anchor: "south", padding: 0.1)[$r$]
+
+  // Draw force arrows
+  line(q1_pos, (q1_pos.at(0) - 1, q1_pos.at(1)), stroke: blue, mark: (end: "straight"))
+  content((q1_pos.at(0) - 1, q1_pos.at(1)), anchor: "east", padding: 0.1)[$arrow(F)_e_"2,1"$]
+
+  line(q2_pos, (q2_pos.at(0) + 1, q2_pos.at(1)), stroke: blue, mark: (end: "straight"))
+  content((q2_pos.at(0) + 1, q2_pos.at(1)), anchor: "west", padding: 0.1)[$arrow(F)_e_"1,2"$]
+})
+
+#align(center, coulomb-diagram)
+
 - By Newton's Third Law, $arrow(F)_e_"1,2" = -arrow(F)_e_"2,1"$. Two charges will always exert a pair of electrostatic forces on each other.
 
 - Notice that Coulomb's Law mirrors the Universal Law of Gravitation, $arrow(F)_G = G (m_1 m_2)/r^2 hat(r)$.
@@ -70,7 +102,159 @@
     However, it is often the case that large objects _aren't_ charged (they are neutral since), which is why we still see the effects of gravitational force.
 
   - In the case of $arrow(F)_G$, $hat(r)$ points _towards_ the other object rather than _away_. Gravity is always an attractive force. In contrast, electrostatic force can be either attractive or repulsive.
-  
+
+#example("Relative Electrostatic Force")[
+  Two charges of magnitude $q$ placed a distance $d$ from each other exhibit 
+  a repulsive force of magnitude $F$. What is the electrostatic force of two
+  charges of magnitude $3q$ placed a distance $2d$ from each other?
+  #lorange
+  By Coulomb's Law, the initial force is: $
+    F = k_e (q^2)/d^2.
+  $
+  For the new charges, the force is: $
+    F_"new" = k_e (3q)^2/(2d)^2 = k_e (9q^2)/(4d^2) = cgreen(9/4 F).
+  $ 
+]
+
+#example("Charged Bobs on a Pendulum")[
+  #let charged-bobs-diagram = cetz.canvas({
+    import cetz.draw: *
+
+    let string_length = 2.0
+    let angle = 30deg
+    let half_angle = angle / 2
+
+    let bob_radius = 0.25
+    let bob_color = red.darken(10%)
+    let string_color = black
+
+    // Calculate bob positions
+    let left_bob_pos = (
+      -string_length * calc.sin(half_angle),
+      -string_length * calc.cos(half_angle)
+    )
+    let right_bob_pos = (
+      string_length * calc.sin(half_angle),
+      -string_length * calc.cos(half_angle)
+    )
+
+    // Draw strings
+    line((0, 0), left_bob_pos, stroke: string_color)
+    line((0, 0), right_bob_pos, stroke: string_color)
+
+    // Draw bobs
+    circle(left_bob_pos, radius: bob_radius, fill: bob_color)
+    content(left_bob_pos, text(white)[$q$])
+    
+    circle(right_bob_pos, radius: bob_radius, fill: bob_color)
+    content(right_bob_pos, text(white)[$q$])
+    
+    // Draw ceiling and hang point
+    line((-1.2, 0.4), (-1.2, 0), (1.2, 0), (1.2, 0.4), fill: gray.darken(70%))
+    circle((0, 0), radius: 0.05, fill: black)
+
+    // Draw angle and theta label
+    cetz.angle.angle((0, 0), left_bob_pos, right_bob_pos, radius: 0.8)
+    content((0, -0.8), anchor: "north", padding: 0.1)[$theta$]
+  })
+  #grid(
+    columns: (3fr, 1fr),
+    align: (horizon, center),
+    [
+      Two identically charged balls of mass $m$ are in static equilibrium while hanging from the 
+      ceiling on strings of length $L$. The total angle between them is $theta$ ($0 degree <= theta < 180 degree$). 
+      Find the charge $q$ on each ball.
+      #lorange
+    ],
+    charged-bobs-diagram,
+  )
+
+  #let fbd = cetz.canvas(length: 34pt, {
+    import cetz.draw: *
+
+    let bob_radius = 0.25
+    let bob_color = red.darken(10%)
+
+    // Draw bob
+    on-layer(1, {
+      circle((0, 0), name: "bob", radius: bob_radius, fill: bob_color)
+      content("bob", text(white)[$q$])
+    })
+
+    // Gravitational force
+    line( // mg
+      (0, 0), (0, -1.5), 
+      name: "mg", stroke: blue, mark: (end: "straight")
+    )
+    content("mg.end", anchor: "south-west", padding: 0.2)[$m arrow(g)$]
+    
+    // Electrostatic force
+    line( // Fe
+      (0, 0), (-1.0, 0), 
+      name: "Fe", stroke: purple, mark: (end: "straight")
+    )
+    content("Fe.end", anchor: "south-west", padding: 0.2)[$arrow(F)_e$]
+
+    // Tension force
+    line(
+      (0, 0), (1.0, 1.5), 
+      name: "T", stroke: green, mark: (end: "straight")
+    )
+    content("T.end", anchor: "north-west", padding: 0.1)[$arrow(T)$]
+    // Components of T
+    line( // T cos(theta/2)
+      (0, 0), (1.0, 0), 
+      name: "Tx", stroke: (paint: green.transparentize(30%), dash: "densely-dashed"), mark: (end: "straight")
+    )
+    content("Tx.end", anchor: "north", padding: 0.1, text(size: 8pt)[$T_x$])
+
+    line( // T sin(theta/2)
+      (0, 0), (0, 1.5), 
+      name: "Ty", stroke: (paint: green.transparentize(30%), dash: "densely-dashed"), mark: (end: "straight")
+    )
+    content("Ty.end", anchor: "east", padding: 0.1, text(size: 8pt)[$T_y$])
+
+    // angle
+    line("T.end", (1.0, 0.6), name: "ang", stroke: (dash: "dashed"))
+    content("ang", anchor: "north-east", padding: 0.1, text(size: 7pt)[$theta/2$]) 
+  })
+
+  #grid(
+    columns: (1fr, 3fr),
+    align: (center, horizon),
+    [
+      #fbd
+      #subtext("FBD for the left-hanging ball")
+    ],
+    [
+      For vertical forces to balance, set $T_y = m g$: $
+        T_y = T cos(theta/2) = m g space ==> space T = (m g) / cos(theta/2).
+      $
+
+      For horizontal forces to balance, set $T_x = F_e$, where $F_e$ is
+      the magnitude of electrostatic repulsion: $
+        T_x = T sin(theta/2) = F_e = k_e (q^2) / r^2.                                      
+      $
+    ]
+  )
+
+  $r$ is the distance between the two balls. Since each ball is a distance $L sin(theta/2)$ from the center, $cblue(r = 2L sin(theta/2))$. Thus: $
+    T sin(theta/2) = k_e (q^2) / (cblue(2L sin(theta/2)))^2 = k_e (q^2) / (4L^2 sin^2(theta/2)).
+  $
+
+  Replace the expression for tension $corange(T)$ from earlier and using $cpurple(k_e = 1/(4pi epsilon_0))$: $
+    corange((m g) / cos(theta / 2)) sin(theta / 2) &= cpurple(k_e) (q^2) / (4L^2 sin^2(theta/2)) \
+    m g tan(theta / 2) &= cpurple(1/(4pi epsilon_0)) (q^2) / (4L^2 sin^2(theta/2)).
+  $
+
+  Solving for $q$: $
+    q^2 &= 16 L^2 sin^2 (theta/2) pi epsilon_0 m g tan(theta / 2) \
+    cgreen(q &= 4L sin(theta / 2) sqrt(pi epsilon_0 m g tan (theta / 2))).
+  $
+]
+
+=== Charge Distributions
+
 #define("Law of Superposition for Coulomb's Law (Discrete)")[
   Let $q_1, q_2, ..., q_n$ be a discrete set of charges in space. A particle of charge $Q$ will have its electrostatic force be the vector sum of all individual electrostatic forces: $
     arrow(F)_e = sum_i arrow(F)_e_(i,Q) = sum_i k_e (q_i Q) / r^2 hat(r). 
@@ -126,6 +310,12 @@ Thus, by the law of superposition:
   - *Semiconductors* have properties resembling both conductors and insulators. Electrons are somewhat bound to the atomic nuclei, and conductivity _varies_ based on the composition of materials.
 ]
 
+==== Charging by Friction
+
+- When two _insulating_ objects are rubbed together, electrons can be transferred from one object to another. This process is called _charging by friction_.
+
+- The object that _gains_ electrons becomes _negatively charged_, and the object that _loses_ electrons becomes _positively charged_.
+
 ==== Charging by Conduction (Contact)
 
 - When an object touches a _conductor_ charge can be directly transferred through physical contact. The total charge of the object-conductor system is conserved.
@@ -142,6 +332,36 @@ Thus, by the law of superposition:
 ==== Charging by Induction (Contactless)
 
 - A nearby conductor may _induce_ a redistribution of charge in an object. We call this process *induction*. 
+
+- For example, bringing a negatively charged object to the left of a neutral conductor 
+  will induce a positive charge on the left side of the conductor and a negative charge on the right side of the conductor.
+
+  - The net charge of the conductor remains _zero_ since no charge was added or removed.
+
+  - Taking away the charged object will cause the conductor to return to its original neutral state.
+
+#example("Permanent Induction")[
+  Two neutral conducting spheres $A$ and $B$ are placed next to and are touching each other.
+  A negatively charged rod is brought close to sphere $A$ without touching it. After charge 
+  distribution reaches equilibrium, sphere $B$ is separated from sphere $A$. Finally, the rod is removed. Describe the final charges on spheres $A$ and $B$.
+
+  #lorange
+  When the negatively charged rod is brought close to sphere $A$, it induces a positive charge on the left side of sphere $A$ and a negative charge on the right side of sphere $A$.
+
+  Since spheres $A$ and $B$ are touching, the negative charge on the right side of sphere $A$ repels electrons into sphere $B$, causing sphere $B$ to become negatively charged.
+
+  After sphere $B$ is separated from sphere $A$, sphere $A$ retains a net positive charge since it lost electrons to sphere $B$.
+
+  Finally, when the rod is removed, #tgreen[sphere $A$ remains positively charged and sphere $B$ remains negatively charged].
+]
+
+=== Grounding
+
+- A *ground* is a relatively large conductor which can accept or supply an essentially infinite amount of charge.
+
+  - Examples of grounds include the Earth, your body, or a large metal rod connected to the Earth.
+
+
 
 #pagebreak()
 
@@ -174,6 +394,50 @@ Thus, by the law of superposition:
 - Electric field lines will always move away from positive charges and into negative charges.
 
 - Electric field lines will never cross, and by convention, lines drawn closer together indicate a greater magnitude of electric field.
+
+#import "efield.typ": net-Efield, draw_streamlines, points-around
+
+#let efield-1 = cetz.canvas(length: 20pt, {
+  import cetz.draw: *
+
+  let (p, q) = net-Efield(
+    (1, (-1.5, 0)),
+    (-1, (1.5, 0)),
+  )
+
+  let charge-radius = 0.4
+  draw_streamlines(
+    p, q,
+    step-size: 0.02,
+    max-steps: 3000,
+    color: black,
+    direction: "forward",
+    arrows: true,
+    seeds: points-around((-1.5, 0), radius: charge-radius, count: 16),
+    dead-zones: ((1.5, 0),),
+  )
+  draw_streamlines(
+    p, q,
+    step-size: 0.02,
+    max-steps: 3000,
+    color: black,
+    direction: "backward",
+    arrows: true,
+    seeds: points-around((1.5, 0), radius: charge-radius, count: 7, start: -67.5deg, step: 22.5deg),
+    dead-zones: ((-1.5, 0),),
+  )
+
+  circle((1.5, 0), name: "neg", radius: charge-radius, fill: blue)
+  circle((-1.5, 0), name: "pos", radius: charge-radius, fill: red)
+
+  content("neg", anchor: "center", text(fill: white)[$-q$])
+  content("pos", anchor: "center", text(fill: white)[$+q$])
+  
+  // Frame
+  rect((-4, -4), (4, 4), stroke: black)
+})
+
+#align(center, efield-1)
 
 #pagebreak()
 
@@ -224,8 +488,6 @@ Often times, the charge differential $dd(q)$ is not directly given to us, but ra
   - SI units are _coulombs per cubic meter_, $"C/m"^3$
 
 If charge density is constant, the object is *uniformly charged*.
-
-#import "@preview/cetz:0.4.2"
 
 #example("Finding the Electric Field from Discrete Charges")[
   #grid(
