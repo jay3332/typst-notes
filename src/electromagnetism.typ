@@ -1,9 +1,9 @@
 #import "helpers/template.typ": *
 #import "@preview/unify:0.7.1": unit, qty
-#import "@preview/zap:0.2.0"
+#import "@preview/zap:0.5.0"
 #import "@preview/cetz:0.4.2"
 
-#show: template.with(title: "Electricity & Magnetism", font: "informal")
+#show: template.with(title: "Electricity & Magnetism", font: "times")
 
 = Electric Charges and Fields
 
@@ -141,6 +141,8 @@
     // Draw strings
     line((0, 0), left_bob_pos, stroke: string_color)
     line((0, 0), right_bob_pos, stroke: string_color)
+    content(midpoint((0, 0), left_bob_pos), anchor: "east", padding: 0.1)[$L$]
+    content(midpoint((0, 0), right_bob_pos), anchor: "west", padding: 0.1)[$L$]
 
     // Draw bobs
     circle(left_bob_pos, radius: bob_radius, fill: bob_color)
@@ -242,7 +244,7 @@
     T sin(theta/2) = k_e (q^2) / (cblue(2L sin(theta/2)))^2 = k_e (q^2) / (4L^2 sin^2(theta/2)).
   $
 
-  Replace the expression for tension $corange(T)$ from earlier and using $cpurple(k_e = 1/(4pi epsilon_0))$: $
+  Replace the expression for tension $corange(T)$ from earlier and substitute $cpurple(k_e = 1/(4pi epsilon_0))$: $
     corange((m g) / cos(theta / 2)) sin(theta / 2) &= cpurple(k_e) (q^2) / (4L^2 sin^2(theta/2)) \
     m g tan(theta / 2) &= cpurple(1/(4pi epsilon_0)) (q^2) / (4L^2 sin^2(theta/2)).
   $
@@ -289,26 +291,24 @@ Thus, by the law of superposition:
 
 - Charge cannot be created or destroyed, only _transferred_ between objects or particles.
 
-- Applies at all scales: subatomic (e.g., particle interactions), macroscopic (e.g., charging a balloon), and circuit-level.
+- The _charge distribution_ of an isolated system may change, but the _net charge_ of the system remains constant.
+
+=== Insulators and Conductors
+
+- It is difficult to redistribute charges in an *insulator*. Electrons are bound tightly to the atomic nuclei, and cannot easily move. (Electrons are _localized_).
+  - We say that the electrons _resist_ movement.
+  - The degree to which the electrons of a material resist movement is called _resistivity_.
+
+- It is easy to redistribute charges in a *conductor*. Electrons can freely move (they are _delocalized_).  
+    - The degree to which the electrons of a material are able to move is called _conductivity_. It is the inverse of resistivity ($"conductivity" = 1/"resistivity"$).
+
+- *Semiconductors* have properties resembling both conductors and insulators. Electrons are somewhat bound to the atomic nuclei, and conductivity _varies_ based on the composition of materials.
 
 === Methods of Charging
 
 - An object can have a change in charge when they are introduced into a new system, allowing the charge of the system to distribute into the object.
 
-  - In almost all cases, only electrons freely move and cause charge transfers.
-
 - When a previously neutral object obtains charge, we say that the object has been _charged_.
-
-#define("Insulators and Conductors")[
-  - It is difficult to change the charge of an *insulator*. Electrons are bound tightly to the atomic nuclei, and cannot easily move. (Electrons are _localized_).
-    - We say that the electrons _resist_ movement.
-    - The degree to which the electrons of a material resist movement is called _resistivity_.
-
-  - It is easy to change the charge of a *conductor*. Electrons can freely move (they are _delocalized_).  
-      - The degree to which the electrons of a material are able to move is called _conductivity_. It is the inverse of resistivity ($"conductivity" = 1/"resistivity"$).
-
-  - *Semiconductors* have properties resembling both conductors and insulators. Electrons are somewhat bound to the atomic nuclei, and conductivity _varies_ based on the composition of materials.
-]
 
 ==== Charging by Friction
 
@@ -318,7 +318,7 @@ Thus, by the law of superposition:
 
 ==== Charging by Conduction (Contact)
 
-- When an object touches a _conductor_ charge can be directly transferred through physical contact. The total charge of the object-conductor system is conserved.
+- When an object touches a _conductor_, charge can be directly transferred through physical contact. The total charge of the object-conductor system is conserved.
 
 - The distribution of charges between the individual objects depend _only_ on their *initial charges* and their *sizes (charge capacities)*.
 
@@ -331,13 +331,13 @@ Thus, by the law of superposition:
 
 ==== Charging by Induction (Contactless)
 
-- A nearby conductor may _induce_ a redistribution of charge in an object. We call this process *induction*. 
+- A nearby #underline[conductor] may _induce_ a redistribution of charge in an object. We call this process *induction* (_or *polarization*_).
+  - It is very difficult to induce charge in an insulator, since electrons are not free to move.
 
 - For example, bringing a negatively charged object to the left of a neutral conductor 
   will induce a positive charge on the left side of the conductor and a negative charge on the right side of the conductor.
 
   - The net charge of the conductor remains _zero_ since no charge was added or removed.
-
   - Taking away the charged object will cause the conductor to return to its original neutral state.
 
 #example("Permanent Induction")[
@@ -350,16 +350,24 @@ Thus, by the law of superposition:
 
   Since spheres $A$ and $B$ are touching, the negative charge on the right side of sphere $A$ repels electrons into sphere $B$, causing sphere $B$ to become negatively charged.
 
-  After sphere $B$ is separated from sphere $A$, sphere $A$ retains a net positive charge since it lost electrons to sphere $B$.
+  After separation, sphere $A$ retains a net positive charge since it lost electrons to sphere $B$.
 
   Finally, when the rod is removed, #tgreen[sphere $A$ remains positively charged and sphere $B$ remains negatively charged].
 ]
 
-=== Grounding
+=== Grounding 
 
-- A *ground* is a relatively large conductor which can accept or supply an essentially infinite amount of charge.
+#let ground-symbol = zap.circuit(zap.earth("ground", (0, 0)))
+
+- A *ground* #box(scale(60%, reflow: true)[#ground-symbol]) is a relatively large conductor which can accept or supply an essentially infinite amount of charge.
 
   - Examples of grounds include the Earth, your body, or a large metal rod connected to the Earth.
+
+- If electrons are able to freely move between a system and a ground, that system is *grounded*. 
+  A grounded system is allowed to reach equilibrium by transferring charge between the system and the ground. 
+
+  - If a system gains excess charge, that charge is transferred to the ground, allowing the
+    system to return to a neutral state.
 
 
 
@@ -395,49 +403,49 @@ Thus, by the law of superposition:
 
 - Electric field lines will never cross, and by convention, lines drawn closer together indicate a greater magnitude of electric field.
 
-#import "efield.typ": net-Efield, draw_streamlines, points-around
+// #import "efield.typ": net-Efield, draw_streamlines, points-around
 
-#let efield-1 = cetz.canvas(length: 20pt, {
-  import cetz.draw: *
+// #let efield-1 = cetz.canvas(length: 20pt, {
+//   import cetz.draw: *
 
-  let (p, q) = net-Efield(
-    (1, (-1.5, 0)),
-    (-1, (1.5, 0)),
-  )
+//   let (p, q) = net-Efield(
+//     (1, (-1.5, 0)),
+//     (-1, (1.5, 0)),
+//   )
 
-  let charge-radius = 0.4
-  draw_streamlines(
-    p, q,
-    step-size: 0.02,
-    max-steps: 3000,
-    color: black,
-    direction: "forward",
-    arrows: true,
-    seeds: points-around((-1.5, 0), radius: charge-radius, count: 16),
-    dead-zones: ((1.5, 0),),
-  )
-  draw_streamlines(
-    p, q,
-    step-size: 0.02,
-    max-steps: 3000,
-    color: black,
-    direction: "backward",
-    arrows: true,
-    seeds: points-around((1.5, 0), radius: charge-radius, count: 7, start: -67.5deg, step: 22.5deg),
-    dead-zones: ((-1.5, 0),),
-  )
+//   let charge-radius = 0.4
+//   draw_streamlines(
+//     p, q,
+//     step-size: 0.02,
+//     max-steps: 3000,
+//     color: black,
+//     direction: "forward",
+//     arrows: true,
+//     seeds: points-around((-1.5, 0), radius: charge-radius, count: 16),
+//     dead-zones: ((1.5, 0),),
+//   )
+//   draw_streamlines(
+//     p, q,
+//     step-size: 0.02,
+//     max-steps: 3000,
+//     color: black,
+//     direction: "backward",
+//     arrows: true,
+//     seeds: points-around((1.5, 0), radius: charge-radius, count: 7, start: -67.5deg, step: 22.5deg),
+//     dead-zones: ((-1.5, 0),),
+//   )
 
-  circle((1.5, 0), name: "neg", radius: charge-radius, fill: blue)
-  circle((-1.5, 0), name: "pos", radius: charge-radius, fill: red)
+//   circle((1.5, 0), name: "neg", radius: charge-radius, fill: blue)
+//   circle((-1.5, 0), name: "pos", radius: charge-radius, fill: red)
 
-  content("neg", anchor: "center", text(fill: white)[$-q$])
-  content("pos", anchor: "center", text(fill: white)[$+q$])
+//   content("neg", anchor: "center", text(fill: white)[$-q$])
+//   content("pos", anchor: "center", text(fill: white)[$+q$])
   
-  // Frame
-  rect((-4, -4), (4, 4), stroke: black)
-})
+//   // Frame
+//   rect((-4, -4), (4, 4), stroke: black)
+// })
 
-#align(center, efield-1)
+// #align(center, efield-1)
 
 #pagebreak()
 
@@ -666,6 +674,7 @@ If charge density is constant, the object is *uniformly charged*.
     align: (horizon, center),
     [
         A non-uniform electric field $arrow(E) = ang(2x y, z^2, 2x + 3y) "N/C"$ passes through a flat, rectangular surface $S$ as shown in the diagram. What is the electric flux passing through $S$? Assume $x,y,z$ are specified in meters.
+        #lorange
     ],
     [
       #align(center)[
@@ -692,8 +701,6 @@ If charge density is constant, the object is *uniformly charged*.
       ]
     ]
   )
-
-  #lorange
 
   First, since we are only concerned about the component of the electric field that is perpendicular to $S$, we know that our effective electric field is $E = 2x + 3y$ (i.e. we only consider the $z$-component of the electric field).
 
@@ -1090,7 +1097,7 @@ Solving the integral: $
 $
 
 If we let final point be infinitely far away from point $A$ ($r_B -> oo$), then the electric potential energy at point $A$ is: $
-  U_e = k_e q Q / r_A.
+  U_e = k_e (q Q) / r_A.
 $
 
 Thus, we arrive at the general formula for electric potential energy between two point charges:
@@ -1102,7 +1109,7 @@ Thus, we arrive at the general formula for electric potential energy between two
   This is the amount of work available to move the charge $q$ from distance $r$ to an infinite distance away from $Q$.
 ]
 
-- Just like all forms of energy, electric potential energy is a _scalar quantity_ and is measured in _joules_ (J).
+- Just like all forms of energy, electric potential energy is a _scalar quantity_ and is measured in _Joules_ (J).
 
 - If both charges have the same sign, then $U_e$ is positive, indicating that work wants to be done to separate the charges (they repel each other). 
 
@@ -1226,13 +1233,13 @@ By the fundamental theorem of line integrals, we know that if a vector field $ar
 $
 
 This property only holds for conservative vector fields. Since the electrostatic force is conservative, we can apply this theorem: $
-  integral_C grad U_e dot dd(l) = Delta U_e = integral_C -arrow(F)_e dot dd(arrow(ell)).                                                                                                                                     
+  integral_C grad U_e dot dd(ell) = Delta U_e = integral_C -arrow(F)_e dot dd(arrow(ell)).                                                                                                                                     
 $
 
 Here, we see that $grad U_e = - arrow(F)_e$. This is the general definition of electric potential energy:
 
 #define("Electric Potential Energy")[
-  The electrostatic force $arrow(F)_e$ on a charge is equal to the negative gradient of its electric potential energy $U_e$: $
+  The electrostatic force $arrow(F)_e$ on a charge is equal to the negative gradient of its *electric potential energy* $U_e$: $
     arrow(F)_e = - grad U_e.
   $
   In one dimension, this simplifies to: $
@@ -1296,7 +1303,7 @@ Here, we see that $grad U_e = - arrow(F)_e$. This is the general definition of e
 
 == Electric Circuits
 
-#zap.canvas({
+#zap.circuit({
     import zap: *
 
     vsource("v", (0,0), (5,0), label: $qty("9", "V")$, variant: "ieee")

@@ -73,10 +73,17 @@
   let sum_y = points.pos().fold(0, (acc, p) => acc + p.at(1))
   (sum_x / n, sum_y / n)
 }
+#let midpoint3d = (..points) => {
+  let n = points.pos().len()
+  let sum_x = points.pos().fold(0, (acc, p) => acc + p.at(0))
+  let sum_y = points.pos().fold(0, (acc, p) => acc + p.at(1))
+  let sum_z = points.pos().fold(0, (acc, p) => acc + p.at(2))
+  (sum_x / n, sum_y / n, sum_z / n)
+}
 
 // brief:
 // #let example(..args) = []
-// #let derivation(..args) = []
+// #let derivation(..args) = []    
 
 #let template(
   title: "", 
@@ -194,6 +201,21 @@
   } else if font == "serif" {
     text_font = "New Computer Modern"
     math_font = "New Computer Modern Math"
+  } else if font == "fira" {
+    text_font = "Fira Sans"
+    math_font = "Fira Math"
+  } else if font == "lato" {
+    text_font = "Lato"
+    math_font = "Lete Sans Math"
+  } else if font == "gfs" {
+    text_font = "GFS Neohellenic"
+    math_font = "GFS Neohellenic Math"
+  } else if font == "times" {
+    text_font = "XITS"
+    math_font = "XITS Math"
+  } else {
+    text_font = font
+    math_font = font + " Math"
   }
 
   #set text(font: text_font)
