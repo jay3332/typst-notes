@@ -1,4 +1,4 @@
-#import "helpers/template.typ": *
+#import "../helpers/template.typ": *
 #import "@preview/unify:0.7.1": unit, qty
 #import "@preview/zap:0.5.0"
 #import "@preview/cetz:0.4.2"
@@ -37,7 +37,7 @@
   An object consists of 4 protons and 6 electrons. What is its charge in Coulombs?
   
   $
-    Q = (n_"protons" - n_"electrons")e = (4 - 6)e &= -2e \
+    Q = (n_"protons" - n_"electrons")e = (4 - 6)e = -2e
     &= -2(qty("1.60e-19", "C")) \
     &= cgreen(qty("-3.20e-19", "C")).
   $
@@ -48,6 +48,13 @@
 ]
 
 - A *point charge* refers to an object or system which has charge, but has negligible physical size. Point charges are easy to deal with because the direction from the charge to any object solely depends on the position of the object.
+
+#resource("Atomic Constants")[
+  - Mass of a Proton and Neutron #footnote[$m_p != m_n$, but their difference is negligible.]: 
+    $m_p approx m_n approx #qty("1.67e-27", "kg")$ 
+  - Mass of an Electron: $m_e approx #qty("9.11e-31", "kg")$
+  - Elementary Charge: $e approx #qty("1.60e-19", "C")$
+]
 
 === Coulomb's Law
 
@@ -403,49 +410,49 @@ Thus, by the law of superposition:
 
 - Electric field lines will never cross, and by convention, lines drawn closer together indicate a greater magnitude of electric field.
 
-// #import "efield.typ": net-Efield, draw_streamlines, points-around
+#import "../helpers/efield.typ": net-Efield, draw_streamlines, points-around
 
-// #let efield-1 = cetz.canvas(length: 20pt, {
-//   import cetz.draw: *
+#let efield-1 = cetz.canvas(length: 20pt, {
+  import cetz.draw: *
 
-//   let (p, q) = net-Efield(
-//     (1, (-1.5, 0)),
-//     (-1, (1.5, 0)),
-//   )
+  let (p, q) = net-Efield(
+    (1, (-1.5, 0)),
+    (-1, (1.5, 0)),
+  )
 
-//   let charge-radius = 0.4
-//   draw_streamlines(
-//     p, q,
-//     step-size: 0.02,
-//     max-steps: 3000,
-//     color: black,
-//     direction: "forward",
-//     arrows: true,
-//     seeds: points-around((-1.5, 0), radius: charge-radius, count: 16),
-//     dead-zones: ((1.5, 0),),
-//   )
-//   draw_streamlines(
-//     p, q,
-//     step-size: 0.02,
-//     max-steps: 3000,
-//     color: black,
-//     direction: "backward",
-//     arrows: true,
-//     seeds: points-around((1.5, 0), radius: charge-radius, count: 7, start: -67.5deg, step: 22.5deg),
-//     dead-zones: ((-1.5, 0),),
-//   )
+  let charge-radius = 0.4
+  draw_streamlines(
+    p, q,
+    step-size: 0.02,
+    max-steps: 3000,
+    color: black,
+    direction: "forward",
+    arrows: true,
+    seeds: points-around((-1.5, 0), radius: charge-radius, count: 16),
+    dead-zones: ((1.5, 0),),
+  )
+  draw_streamlines(
+    p, q,
+    step-size: 0.02,
+    max-steps: 3000,
+    color: black,
+    direction: "backward",
+    arrows: true,
+    seeds: points-around((1.5, 0), radius: charge-radius, count: 7, start: -67.5deg, step: 22.5deg),
+    dead-zones: ((-1.5, 0),),
+  )
 
-//   circle((1.5, 0), name: "neg", radius: charge-radius, fill: blue)
-//   circle((-1.5, 0), name: "pos", radius: charge-radius, fill: red)
+  circle((1.5, 0), name: "neg", radius: charge-radius, fill: blue)
+  circle((-1.5, 0), name: "pos", radius: charge-radius, fill: red)
 
-//   content("neg", anchor: "center", text(fill: white)[$-q$])
-//   content("pos", anchor: "center", text(fill: white)[$+q$])
+  content("neg", anchor: "center", text(fill: white)[$-q$])
+  content("pos", anchor: "center", text(fill: white)[$+q$])
   
-//   // Frame
-//   rect((-4, -4), (4, 4), stroke: black)
-// })
+  // Frame
+  rect((-4, -4), (4, 4), stroke: black)
+})
 
-// #align(center, efield-1)
+#align(center, efield-1)
 
 #pagebreak()
 
@@ -651,9 +658,9 @@ If charge density is constant, the object is *uniformly charged*.
 - The symbol $Phi_E$ or $phi_E$ is used to refer to electric flux. It is a scalar quantity. \
   #subtext[(or just $Phi$ if no need to clarify which type of flux)]
 
-- The preferred unit for electric flux is the _volt-meter_, $"V" dot "m"$.
+- The units for electric flux are $("N" dot "m"^2)/"C"$ which is equivalent to the _volt-meter_, $"V" dot "m"$.
 
-  - The unit derived from the equation is _newton-meter squared per coulomb_, $unit("N m^2/C")$. 
+  - The latter unit is taken directly, _newton-meter squared per coulomb_, $unit("N m^2/C")$. 
   - A _volt_ ($"V"$) is a measure of _electrical potential energy per unit charge_ (which will be covered later), so volts have units of $"J/C" = unit("N m / C")$ (unit of energy divided by unit of charge).
   - Thus, a _volt-meter_ is equivalent to a _newton-meter squared per coulomb_.
 
@@ -670,10 +677,10 @@ If charge density is constant, the object is *uniformly charged*.
 
 #example("")[
   #grid(
-    columns: (3fr, 1.6fr),
+    columns: (3fr, 1.3fr),
     align: (horizon, center),
     [
-        A non-uniform electric field $arrow(E) = ang(2x y, z^2, 2x + 3y) "N/C"$ passes through a flat, rectangular surface $S$ as shown in the diagram. What is the electric flux passing through $S$? Assume $x,y,z$ are specified in meters.
+        A non-uniform electric field $arrow(E) = ang(alpha x y, beta z^2, gamma x + delta y)$ passes through a flat, rectangular surface $S$ as shown in the diagram. What is the electric flux passing through $S$? Assume $x,y,z$ are specified in meters and $alpha, beta, gamma, delta$ are constants with appropriate units.
         #lorange
     ],
     [
@@ -702,14 +709,14 @@ If charge density is constant, the object is *uniformly charged*.
     ]
   )
 
-  First, since we are only concerned about the component of the electric field that is perpendicular to $S$, we know that our effective electric field is $E = 2x + 3y$ (i.e. we only consider the $z$-component of the electric field).
+  First, since we are only concerned about the component of the electric field that is perpendicular to $S$, we know that our effective electric field is $E = gamma x + delta y$ (i.e. we only consider the $z$-component of the electric field).
 
   Now, this becomes a simple double integral: $
-    Phi_E &= integral.double_S (2x + 3y) dd(A) \
-    &= integral_(y=0)^4 integral_(x=0)^5 (2x + 3y) dd(x) dd(y) \
-    &= integral_0^4 evaluated(lr((x^2 + 3x y), size: #150%))_(x=0)^(x=5) dd(y) \
-    &= integral_0^4 (25 + 15y) dd(y) \
-    &= evaluated(lr((25y + 7.5y^2), size: #150%))_0^4 = cgreen(220 space "V" dot "m").
+    Phi_E &= integral.double_S (gamma x + delta y) dd(A) \
+    &= integral_(y=0)^#qty(4, "m") integral_(x=0)^#qty(5, "m") (gamma x + delta y) dd(x) dd(y) \
+    &= integral_0^#qty(4, "m") evaluated(lr((gamma/2 x^2 + delta y x), size: #150%))_(x=0)^(x=#qty(5, "m")) dd(y) \
+    &= integral_0^#qty(4, "m") (25 gamma/2 + 5 delta y) dd(y) \
+    &= evaluated(lr((25 gamma/2 y + 5 delta/2 y^2), size: #150%))_0^#qty(4, "m") = cgreen(50 gamma + 40 delta).
   $
 ]
 
@@ -1093,7 +1100,7 @@ $
 
 Solving the integral: $
   U_e &= - k_e q Q [-1/r]_(r_A)^(r_B) \
-  &= k_e q Q (1/r_B - 1/r_A).
+  &= k_e q Q (1/r_A - 1/r_B).
 $
 
 If we let final point be infinitely far away from point $A$ ($r_B -> oo$), then the electric potential energy at point $A$ is: $
@@ -1212,7 +1219,7 @@ Thus, we arrive at the general formula for electric potential energy between two
   $
   Since we know that the rod is _uniformly charged_, $lambda$ is constant, and we can now solve the integral and simplify: $
     U_e &= k_e q lambda integral_0^L 1/(d+x) dd(x) \
-    &= k_e q lambda evaluated(ln(d+x), size: #150%)_(x=0)^(x=L) \
+    &= k_e q lambda evaluated(ln(d+x), size: #200%)_(x=0)^(x=L) \
     &= k_e q lambda (ln(d+L) - ln(d)) \
     &= cgreen(k_e q lambda ln((d+L)/d)).
   $
@@ -1278,7 +1285,7 @@ Here, we see that $grad U_e = - arrow(F)_e$. This is the general definition of e
 #define("Electric Field from Electric Potential")[
   The electric field $arrow(E)$ at any point is equal to the negative gradient of the
   electric potential $V$ at that point: $
-    arrow(E) = - grad V.
+    arrow(E) = - grad V = ang(-pdv(V, x), -pdv(V, y), -pdv(V, z)).
   $
   In one dimension, this simplifies to: $
     E_x = - dv(V, x).
@@ -1287,6 +1294,8 @@ Here, we see that $grad U_e = - arrow(F)_e$. This is the general definition of e
 
 == Conservation of Electric Energy
 
+#pagebreak()
+
 = Conductors and Capacitors
 
 == Electrostatics with Conductors
@@ -1294,6 +1303,18 @@ Here, we see that $grad U_e = - arrow(F)_e$. This is the general definition of e
 == Redistribution of Charge Between Conductors
 
 == Capacitors
+
+- A *capacitor* is a device which "stores" electric charge, creating an electric field which 
+  results in a potential difference between its two conductors (plates).
+
+#define("Capacitance")[
+  A *capacitor* is a device that stores electric charge. The *capacitance* $C$ of a capacitor is defined as the ratio of the magnitude of charge $Q$ on each conductor to the potential difference $Delta V$ between them: $
+    C = Q / (Delta V).
+  $
+  The unit of capacitance is the _farad_ ($"F"$), where $1 "F" = 1 "C/V"$.
+]
+
+
 
 == Dielectrics
 
@@ -1434,9 +1455,6 @@ $ where $theta$ is the angle between $dd(arrow(ell))$ and $hat(r)$.
   Consider a small wire segment $dd(ell)$ at an angle $theta$ from the horizontal axis. The distance from this wire segment to point $P$ is $r / (cos theta)$. Thus, by the Biot-Savart Law: $
     dd(B) = (mu_0)/(4pi) (I dd(ell) sin theta)/(r/(cos theta))^2 = (mu_0 I)/(4pi r^2) dd(ell) sin theta cos^2 theta.
   $
-
-
-
 
 ]
 

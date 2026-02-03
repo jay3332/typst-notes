@@ -1,2 +1,2 @@
-# typst-notes
-math notes with typst
+# Typst Notes
+STEM notes with Typst
