@@ -253,6 +253,10 @@ $
 - The Existence Theorem is intuitive to understand. The only way to have the rightmost column be a pivot is to have
   a row in the form $(0, 0, ..., b)$ with $b != 0$. This corresponds to the equation $0 = b$, which is a contradiction and thus makes the system inconsistent.
 
+#define("Uniqueness Theorem")[
+  Let $A$ be the augmented matrix of a _consistent_ linear system. If every variable in the system is a basic variable (i.e., there are no free variables), then the linear system has a #underline[unique] solution.
+]
+
 === The Row Reduction Algorithm
 
 Let's consider the following matrix:
@@ -338,18 +342,18 @@ To convert the matrix into *reduced row echelon form* (RREF), we can follow thes
 + Starting from the _last_ pivot column, use row operations to create zeros _above_ the pivot position.
   Starting with the third column:
   $
-    R_2 -> R_2 - 1/2 R_3 #h(4em) mat(
+    R_2 -> R_2 + 1/2 R_3 #h(4em) mat(
       align: #right,
       1, 2, cblue(-1), -4;
-      0, -1, cblue(0), 16.5;
+      0, -1, cblue(0), 5.5;
       0, 0, cred(-10), -11
     )
   $
   $
-    R_1 -> R_1 + 1/10 R_3 #h(4em) mat(
+    R_1 -> R_1 - 1/10 R_3 #h(4em) mat(
       align: #right,
       1, 2, cblue(0), -2.9;
-      0, -1, cblue(0), 16.5;
+      0, -1, cblue(0), 5.5;
       0, 0, cred(-10), -11
     )
   $
@@ -359,7 +363,7 @@ To convert the matrix into *reduced row echelon form* (RREF), we can follow thes
     R_3 -> -1/10 R_3 #h(4em) mat(
       align: #right,
       1, 2, cblue(0), -2.9;
-      0, -1, cblue(0), 16.5;
+      0, -1, cblue(0), 5.5;
       0, 0, cred(1), 1.1
     )
   $
@@ -367,23 +371,28 @@ To convert the matrix into *reduced row echelon form* (RREF), we can follow thes
   $
     R_1 -> R_1 + 2 R_2 #h(4em) & mat(
       align: #right,
-      1, cblue(0), 0, 30.1;
-      0, cred(-1), 0, 16.5;
+      1, cblue(0), 0, 8.1;
+      0, cred(-1), 0, 5.5;
       0, cblue(0), 1, 1.1
     ) \
     R_2 -> -1 R_2 #h(4em) & mat(
       align: #right,
-      1, cblue(0), 0, 30.1;
-      0, cred(1), 0, -16.5;
+      1, cblue(0), 0, 8.1;
+      0, cred(1), 0, -5.5;
       0, cblue(0), 1, 1.1
     ) \
-    R_1 -> 1/30.1 R_1 #h(4em) & mat(
+    "left column is good" #h(4em) & mat(
       align: #right,
-      cred(1), 0, 0, 1;
-      cblue(0), 1, 0, -16.5;
+      cred(1), 0, 0, 8.1;
+      cblue(0), 1, 0, -5.5;
       cblue(0), 0, 1, 1.1
     )
   $
+
+This is now in reduced row echelon form (RREF), and we can read off the solution directly:
+$
+  (x_1, x_2, x_3) = (8.1, -5.5, 1.1).
+$
 
 #pagebreak()
 
