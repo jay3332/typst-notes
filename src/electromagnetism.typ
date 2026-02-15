@@ -649,8 +649,8 @@ If charge density is constant, the object is *uniformly charged*.
 
 - *Electric flux* measures how much electric field "passes through" a given surface.
 
-  - If $arrow(E)$ is parallel to $dd(arrow(A))$, the flux is maximized.
-  - If $arrow(E)$ is perpendicular to $dd(arrow(A))$, the flux is zero.
+  - If $arrow(E)$ is perpendicular to $dd(arrow(A))$, the flux is maximized.
+  - If $arrow(E)$ is parallel to $dd(arrow(A))$, the flux is zero.
   - The dot product ensures that only the component of the electric field perpendicular to the surface contributes to flux.
   - The surface here does not need to be an actual physical surface. It can be an imaginary surface which we use to 
     analyze flux with, called a *Gaussian surface*.
