@@ -1,6 +1,8 @@
 #import "../helpers/template.typ": *
 
 #show: template.with(title: "Linear Algebra", font: "times")
+#set math.mat(delim: "(")
+#set math.vec(delim: "(")
 
 = Linear Equations
 
@@ -69,12 +71,12 @@
   $
   #lorange
   
-  We can multiply the first equation by $-3$ and add it to the second equation:
+  We can multiply the first equation by $3$ and add it to the second equation:
   $
-    0x_1 + 0x_2 = k - 3h ==> 0 = k - 3h
+    0x_1 + 0x_2 = k + 3h ==> 0 = k + 3h
   $
-  For the system to be consistent, we need $k - 3h = 0 ==> cgreen(k = 3h)$.  \
-  #subtext[Otherwise, if $k - 3h != 0$, the system is inconsistent because there would be no solutions (i.e., a contradiction).]
+  For the system to be consistent, we need $k + 3h = 0 ==> cgreen(k = -3h)$.  \
+  #subtext[Otherwise, if $k + 3h != 0$, the system is inconsistent because there would be no solutions (i.e., a contradiction).]
 ]
 
 === Introduction to Matrices
@@ -396,7 +398,34 @@ $
 
 #pagebreak()
 
-== Vector Equations
+== Vector & Matrix Equations
+
+- A *column vector* is a matrix with a single column.
+  - The set of all $n$-dimensional column vectors with real entries is denoted by $RR^n$.
+
+- Vectors in $RR^2$ can be thought of as points or arrows in the Cartesian $x y$-plane, while vectors in $RR^3$ can be thought of as points or arrows in three-dimensional space.
+
+#resource([Algebraic Properties of Vector Spaces])[
+  + Commutative under addition: $arrow(v)_1 + arrow(v)_2 = arrow(v)_2 + arrow(v)_1$.
+  + Associative under addition: $(arrow(v)_1 + arrow(v)_2) + arrow(v)_3 = arrow(v)_1 + (arrow(v)_2 + arrow(v)_3)$.
+  + Additive identity: There exists a zero vector $arrow(0)$ such that $arrow(v) + arrow(0) = arrow(v)$ for all $arrow(v) in RR^n$.
+  + Additive inverses: For every $arrow(v) in RR^n$, there exists a vector $-arrow(v)$ such that $arrow(v) + (-arrow(v)) = arrow(0)$.
+  + Distributive properties: $c(arrow(v)_1 + arrow(v)_2) = c arrow(v)_1 + c arrow(v)_2$ and $(c_1 + c_2) arrow(v) = c_1 arrow(v) + c_2 arrow(v)$.
+  + Compatibility with scalar multiplication: $c_1 (c_2 arrow(v)) = (c_1 c_2) arrow(v)$.
+  + Multiplicative identity: $1 arrow(v) = arrow(v)$ for all $arrow(v) in RR^n$.
+]
+
+- A *vector space* is _any_ set of vectors that satisfies all the algebraic properties listed above. \ For example, $RR^n$ all subsets of $RR^n$ are vector spaces (for any $n$).
+  - A *subspace* is a vector space that is contained within another vector space \
+    #subtext[i.e., a vector space that is a subset of another vector space.]
+
+- A *linear combination* of vectors $arrow(v)_1, arrow(v)_2, ..., arrow(v)_n$ is an expression of the form:
+  $
+    c_1 arrow(v)_1 + c_2 arrow(v)_2 + ... + c_n arrow(v)_n
+  $
+  where $c_1, c_2, ..., c_n$ are scalars. These scalars are called the *weights* of the linear combination.
+
+- The *span* of a set of vectors is the set of all possible linear combinations of those vectors. The span of a set of vectors in $RR^n$ is always a subspace of $RR^n$.
 
 #define("Span of a Set of Vectors")[
   Let $V = {arrow(v)_1, arrow(v)_2, ..., arrow(v)_n} subset.eq RR^n$. The *span* of $V$, denoted $"span"(V)$ or $"span"{arrow(v_1), arrow(v)_2, ..., arrow(v)_n}$, is the set of all linear combinations of the vectors in $V$:
@@ -406,7 +435,52 @@ $
   It holds that $"span"(V)$ is a subspace of $RR^n$.
 ]
 
-== The Matrix Equation $A bf(x) = bf(b)$
+- A matrix can be written in terms of column vectors representing its columns as follows:
+  $
+    bf(A) = mat(align: #right, arrow(a)_1, arrow(a)_2, ..., arrow(a)_n)
+  $
+  where $arrow(a)_i$ is the $i$#th column of $bf(A)$ for $i = 1, 2, ..., n$.
+
+- A *vector equation* in the vectors $arrow(v)_1, arrow(v)_2, ..., arrow(v)_n$ is an equation of the form:
+  $
+    c_1 arrow(v)_1 + c_2 arrow(v)_2 + ... + c_n arrow(v)_n = arrow(b)
+  $
+  where $c_1, c_2, ..., c_n$ are scalars and $arrow(b)$ is a vector. It has the same solution set as the linear system whose augmented matrix is $mat(arrow(v)_1, arrow(v)_2, ..., arrow(v)_n, arrow(b))$.
+
+
+=== Matrix Equations
+
+Let $bf(A)$ be the $m times n$ matrix $display(mat(arrow(a)_1, arrow(a)_2, ..., arrow(a)_n))$, such that $arrow(a)_i$ is the $i$#th column of $bf(A)$. Let $arrow(x)$ be the vector $vec(x_1, x_2, dots.v, x_n)$.
+
+Then the *matrix product* $bf(A) arrow(x)$ is defined as the linear combination of the columns of $bf(A)$ with weights given by the entries of $arrow(x)$:
+$
+  bf(A) arrow(x) = x_1 arrow(a)_1 + x_2 arrow(a)_2 + ... + x_n arrow(a)_n.
+$
+
+Realize that $bf(A) arrow(x)$ is a vector in $RR^m$. We can constrain this vector to equal another vector $arrow(b)$ in $RR^m$ to get a *matrix equation*:
+$
+  bf(A) arrow(x) = arrow(b).
+$
+
+This matrix equation has the same solution set as the linear system whose augmented matrix is $display(mat(arrow(a)_1, arrow(a)_2, ..., arrow(a)_n, arrow(b)))$. In other words, a matrix equation is another way of representing a linear system.
+
+So, we have four ways to represent a linear system: as a system of a linear equations, as an augmented matrix, as a vector equation, and as a matrix equation.
+
+The coefficient matrix can tell us a few things:
+- if all columns are pivot columns, there are no free variables and if the system is consistent, then it has a unique solution.
+  - if there are free variables, then the system has infinitely many solutions (if it is consistent).
+
+- if all rows are pivot rows, then the system MUST be consistent (at least one solution)
+
+=== Transition Matrices
+
+A *transition matrix* describes the probabilities of each state transitioning to every other state in a system. They 
+have the following properties:
+- All entries are nonnegative: $bf(P)_(i j) >= 0$ for all $i, j$.
+- The entries in each column sum to $1$.
+- (In most cases), the entries in each row sum to $1$.
+
+#pagebreak()
 
 == Solution Sets of Linear Systems
 
@@ -422,46 +496,161 @@ $
 1. Let $bf(x) = bf(x)_h$ solve $A bf(x) = bf(0)$. Then, for any constant $c in RR$, $bf(x) = c bf(x)_h$ is also a solution to $A bf(x) = bf(0)$.
 2. If $bf(x) = bf(p)$ solves $A bf(x) = bf(b)$, then the solution set of $A bf(x) = bf(b)$ is given by:
    $
-     {bf(x) = bf(p) + bf(x)_h | A bf(x)_h = bf(0)}
+     {bf(x) = bf(p) + bf(x)_h | A bf(x)_h = bf(0)}.
    $
+   In other words, the solution set of a nonhomogeneous linear system with solution $bf(x) = bf(p)$ is a translation of the solution set of the corresponding homogeneous linear system by $bf(p)$.
 
-== Applications of Linear Systems
+#derivation("Proof: Translation Theorem")[
+  Say $bf(x) = bf(x)_h$ is a solution for $A bf(x) = bf(0)$ and $bf(x) = bf(p)$ is a solution for $A bf(x) = bf(b)$. Then $bf(x) = bf(p) + bf(x)_h$ is also a solution for $A bf(x) = bf(b)$ because:
+  $
+    A bf(x) = A (bf(p) + bf(x)_h) = A
+    bf(p) + A bf(x)_h = bf(b) + bf(0) = bf(b).
+  $
+]
+
+#define("Uniqueness of Solutions")[
+If the _only_ solution to $A bf(x) = bf(0)$ is the trivial solution $bf(x)_h = bf(0)$, then $A bf(x) = bf(b)$ has exactly one solution.
+]
+
+=== Summary
+
+- Homogeneous systems $A bf(x) = bf(0)$ are always consistent, they have at least one _trivial_ solution $bf(x) = bf(0)$.
+
+  - A homogeneous system has a _nontrivial_ solution if and only if it has at least one free variable, in which case it 
+    will have _infinitely many_ solutions.
+
+- Any system $A bf(x) = bf(b)$ with a known solution $bf(x) = bf(p)$ will _also_ have  the solution $bf(x) = bf(x)_h + bf(p)$ where $bf(x)_h$ is a solution to the corresponding homogeneous system $A bf(x) = bf(0)$.
+
+  - If the homogeneous system only has the trivial solution, then the nonhomogeneous system will have a unique solution.
+  -  Otherwise, if the homogeneous system has a nontrivial solution, then the nonhomogeneous system will have infinitely many solutions.
+
+#pagebreak()
 
 == Linear Independence
 
+- Two vectors $arrow(v)_1$ and $arrow(v)_2$ in $RR^n$ are *linearly independent* if the only solution to the equation:
+  $
+    c_1 arrow(v)_1 + c_2 arrow(v)_2 = arrow(0)
+  $
+  is the trivial solution $c_1 = 0$ and $c_2 = 0$.
+
+- A set of vectors ${arrow(v)_1, arrow(v)_2, ..., arrow(v)_n}$ in $RR^n$ is *linearly independent* if the only solution to the equation:
+  $
+    c_1 arrow(v)_1 + c_2 arrow(v)_2 + ... + c_n arrow(v)_n = arrow(0)
+  $
+  is the trivial solution $c_1 = c_2 = ... = c_n = 0$.
+
+  - In other words, a set of vectors ${arrow(v)_1, arrow(v)_2, ..., arrow(v)_n}$ is linearly independent if \ $"span"{arrow(v)_1, arrow(v)_2, ..., arrow(v)_n} = RR^n$.
+
+  - A set of one vector ${arrow(v)}$ is linearly independent if and only if $arrow(v) != arrow(0)$.
+
+  - Two vectors are linearly independent if and only if one is _any_ scalar multiple of the other.
+
+- Conversely, a set of vectors is *linearly dependent* if there exists a nontrivial solution to the equation $c_1 arrow(v)_1 + c_2 arrow(v)_2 + ... + c_n arrow(v)_n = arrow(0)$.
+
+  - If a set of vectors $V$ is linearly dependent, then at least one vector in $V$ is a linear combination of the others. Formally, $exists arrow(v) in V$ such that $arrow(v) in "span"(V without {arrow(v)})$.
+
+    In other words, if we can remove a vector from $V$ such that $"span"(V)$ remains the same, then (the original) $V$ is linearly dependent. 
+
+- The columns of a matrix $bf(A)$ are linearly independent iff the only solution to $bf(A) arrow(x) = arrow(0)$ is the trivial solution $arrow(x) = arrow(0)$.
+
+  - The only way a homogeneous system has a nontrivial solution is if it has infinite solutions, which only happens if there is at least one free variable. 
+  
+    Thus, the columns of $bf(A)$ are linearly independent iff there are no free variables (i.e., every column is a pivot column).
+
+- If a set of vectors contains the zero vector, then the set is linearly dependent. This is because we can have a nontrivial solution by setting the weight of the zero vector to be any nonzero scalar and setting the weights of all other vectors to be zero.
+
+- If a set of vectors contains more vectors than the number of entries in each vector, then the set is linearly dependent. This is because there must be at least one free variable.
+  - That is, if a vector space $V in RR^n$ contains more than $n$ vectors, then $V$ is linearly dependent.
+
+#pagebreak()
+
 == Linear Transformations
 
-== The Matrix of a Linear Transformation
+- A *transformation* is a function from one vector space to another. $T: RR^n -> RR^m$
+  - Here, $RR^n$ is called the *domain* of $T$, and $RR^m$ is called the *codomain* of $T$.
+  - The transformation of a vector $bf(v)$ by $T$ is denoted by $T(bf(v))$, and is called the *image* of $bf(v)$ under $T$.
+  - The set of all images of vectors in the domain of $T$ is called the *range* of $T$.
+
+- A transformation $T$ is *linear* if two properties are satisfied:
+  - $T(bf(u) + bf(v)) = T(bf(u)) + T(bf(v))$ for all vectors $bf(u)$ and $bf(v)$ in the domain of $T$.
+  - $T(c bf(v)) = c T(bf(v))$ for all vectors $bf(v)$ in the domain of $T$ and all scalars $c$.
+
+- A linear transformation $T$ thus have the following properties, all of which can be derived from the two properties above:
+  - Identity element: $T(bf(0)) = bf(0)$
+  - Superposition: $T(c_1 bf(u) + c_2 bf(v)) = c_1 T(bf(u)) + c_2 T(bf(v))$
+
+- Common linear transformations include:
+  - The *zero transformation* $T(bf(v)) = bf(0)$ for all $bf(v)$ in the domain of $T$.
+  - The *identity transformation* $T(bf(v)) = bf(v)$ for all $bf(v)$ in the domain of $T$.
+  - The *contraction* or *dilation* transformation $T(bf(v)) = c bf(v)$.
+
+- The transformation $T(bf(v)) = A bf(v)$ is called a *matrix transformation*, where $A$ is called the *standard matrix* of $T$.
+
+  - An $m times n$ standard matrix results in a linear transformation from $RR^n -> RR^m$.
+    - In fact, _any_ linear transformation from $RR^n -> RR^m$ can be represented as a matrix transformation with an $m times n$ standard matrix.
+
+  - The range of a matrix transformation $T(bf(v)) = A bf(v)$ is equal to the column space of $A$. \
+    #subtext[The column space of $A$ is the span of the columns of $A$.]
+
+=== Matrix Forms of Linear Transformations
+
+- A linear transformation from $RR^n -> RR^n$ is one-to-one _and_ onto (i.e., bijective). 
+  - In other words, a square matrix transformation and a linear transformation from $RR^n -> RR^n$ are equivalent objects.
+
+- Common standard matrices:
+  - *Shear*: $mat(1, k; 0, 1)$
+    - one axis is fixed, while the other axis is shifted by an amount proportional to the distance from the fixed axis.
+
+#pagebreak()
 
 = Matrix Algebra
 
 == Matrix Operations
 
 #define("Matrix Multiplication")[
-  Let $bf(A)$ be an $m times p$ matrix and $bf(B)$ be an $p times n$ matrix. The *product* $bf(A B)$ is the $m times n$ matrix where the entry in the $i$#super[th] row and $j$#super[th] column is given by:
+  Let $bf(A)$ be an $m times p$ matrix and $bf(B)$ be an $p times n$ matrix. The *product* $bf(A B)$ is the $m times n$ matrix where the entry in the $i$#th row and $j$#th column is given by:
   $
     (bf(A B))_(i j) = sum_(k=1)^p A_(i k) B_(k j).
   $
   $bf(A B)$ represents the transformation that results from first applying the transformation represented by $bf(B)$, followed by the transformation represented by $bf(A)$.
 ]
 
-- In other words, to compute the entry in the $i$#super[th] row and $j$#super[th] column of the product matrix $bf(A B)$, we take the dot product of the $i$#super[th] row of $bf(A)$ with the $j$#super[th] column of $bf(B)$:
+- In other words, to compute the entry in the $i$#th row and $j$#th column of the product matrix $bf(A B)$, we take the dot product of the $i$#th row of $bf(A)$ with the $j$#th column of $bf(B)$:
   $
     (bf(A B))_(i j) = arrow(A)_(i *) dot arrow(B)_(* j).
   $
 
+- Another way to think about matrix multiplication is that each column of the product matrix $bf(A B)$ is obtained by multiplying $bf(A)$ by the corresponding column of $bf(B)$:
+  $
+    bf(A B) = mat(bf(A) arrow(b)_1, bf(A) arrow(b)_2, ..., bf(A) arrow(b)_n)
+  $
+  where $arrow(b)_j$ is the $j$#th column of $bf(B)$ for $j = 1, 2, ..., n$.
+
 #define("Matrix Transpose")[
   The *transpose* of an $m times n$ matrix $bf(A)$, denoted $bf(A)^transpose$, is the $n times m$ matrix obtained by 
-  interchanging the rows and columns of $bf(A)$. In other words, the entry in the $i$#super[th] row and 
-  $j$#super[th] column of $bf(A)^transpose$ is equal to the entry in the $j$#super[th] row and $i$#super[th] 
+  interchanging the rows and columns of $bf(A)$. In other words, the entry in the $i$#th row and 
+  $j$#th column of $bf(A)^transpose$ is equal to the entry in the $j$#th row and $i$#th 
   column of $bf(A)$: $
     (bf(A)^transpose)_(i j) = bf(A)_(j i).
   $
 ]
 
+- Matrix multiplication does *not* commute. In other words, $bf(A B)$ is not necessarily equal to $bf(B A)$, and in some cases, $bf(B A)$ may not even be defined.
+
 == The Inverse of a Matrix
 
-== Invertible Matrices
+- An $n times n$ matrix $A$ is *invertible* (or *nonsingular*) if there exists an $n times n$ matrix $B$ such that:
+  $
+    A B = I_n "and" B A = I_n,
+  $
+  where $I_n$ is the $n times n$ identity matrix.
+  - The matrix $B$ is called the *inverse* of $A$, denoted $A^(-1)$.
+  - The inverse of a matrix is unique (if it exists).
+
+- If a matrix is not invertible, it is called *singular*.
+
+=== Invertible Matrices
 
 #define("Invertible Matrix Theorem")[
   Let $A$ be an $n times n$ matrix. The following statements are equivalent (i.e. all true or all false):
@@ -563,6 +752,11 @@ Computing determinants using cofactors is known as the method of *cofactor expan
   + Adding a multiple of one row to another row does not change the determinant.
 
 - $det A = det A^transpose$
+
+- $det (A B) = det(A) det(B)$
+
+- $det A^(-1) = 1 / (det A)$
+
 #pagebreak()
 
 == Cramer's Rule
@@ -572,7 +766,7 @@ Computing determinants using cofactors is known as the method of *cofactor expan
   $
     x_i = (det A_i)/(det A) "for" i = 1, 2, ..., n
   $
-  where $A_i$ is the matrix that results from replacing the $i$#super[th] column of $A$ with the column vector $bf(b)$, or in other words: 
+  where $A_i$ is the matrix that results from replacing the $i$#th column of $A$ with the column vector $bf(b)$, or in other words: 
   $
     (A_i)_(j k) = cases(
       b_j & "if" k = i,
@@ -583,8 +777,8 @@ Computing determinants using cofactors is known as the method of *cofactor expan
 
 - To put it simply, Cramer's Rule allows us to solve for a particular variable in a system of linear equations.
   + Take the determinant of the coefficient matrix $A$, this is the denominator ($det A$).
-  + Replace the $i$#super[th] column of $A$ with the constants from the right-hand side of the equations to form $A_i$, and take its determinant, this is the numerator ($det A_i$).
-  + The solution for the variable whose coefficients were in the $i$#super[th] column ($x_i$) is $x_i = (det A_i)/(det A)$.
+  + Replace the $i$#th column of $A$ with the constants from the right-hand side of the equations to form $A_i$, and take its determinant, this is the numerator ($det A_i$).
+  + The solution for the variable whose coefficients were in the $i$#th column ($x_i$) is $x_i = (det A_i)/(det A)$.
 
 - Realize that the coefficient matrix must be square, i.e. we must have the same number of equations as unknowns. 
   - Additionally, the coefficient matrix must be invertible (i.e., $det A != 0$) for Cramer's Rule to be applicable.
@@ -633,7 +827,7 @@ $
     bf(A) = bf(P) bf(D) bf(P)^(-1)
   $
 
-  where, given $lambda_i$ is the eigenvalue for the $i$#super[th] eigenvector $bf(v)_i$ of $bf(A)$: $
+  where, given $lambda_i$ is the eigenvalue for the $i$#th eigenvector $bf(v)_i$ of $bf(A)$: $
     bf(P) = mat(dots.v, dots.v, dots, dots.v; bf(v)_1, bf(v)_2, dots, bf(v)_n; dots.v, dots.v, dots, dots.v)
     #h(40pt)
     bf(D) = mat(align: #center, lambda_1; , lambda_2; , , dots.down; , , , lambda_n).

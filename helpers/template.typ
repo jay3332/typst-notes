@@ -33,6 +33,44 @@
 #let lorange = line(length: 100%, stroke: orange)
 #let lblue = line(length: 100%, stroke: blue)
 
+#let lthin = line(length: 100%, stroke: 0.5pt)
+#let lthick = line(length: 100%, stroke: 1.0pt)
+#let ldouble = stack(
+  line(length: 100%, stroke: 1.0pt),
+  line(length: 100%, stroke: 1.0pt),
+  spacing: 2pt,
+)
+
+#let th = super[th]
+
+#let nfmt(
+  number,
+  digits: 3,
+  decimal-sep: ".",
+  thousands-sep: ","
+) = {
+  let integer = calc.trunc(number)
+  let decimal = calc.fract(number)
+  let res = str(integer)
+    .clusters()
+    .rev()
+    .chunks(3)
+    .map(c => c.join(""))
+    .join(thousands-sep)
+    .rev()
+  if digits != 0 {
+    res += decimal-sep
+    decimal = calc.round(decimal, digits: digits)
+    let decimal_len = str(decimal).len() - 2
+    if digits > decimal_len {
+      decimal = str(decimal) + ("0" * (digits - decimal_len))
+    }
+    decimal = str(decimal).slice(2)
+    res += decimal
+  }
+  return res
+}
+
 #let small(x) = text(size: 0.8em, $#x$)
 
 #let boxed(content, stroke: black) = box(width: 100%, inset: 12pt, stroke: stroke, radius: 8pt)[#content]

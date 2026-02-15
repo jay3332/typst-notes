@@ -410,49 +410,49 @@ Thus, by the law of superposition:
 
 - Electric field lines will never cross, and by convention, lines drawn closer together indicate a greater magnitude of electric field.
 
-#import "../helpers/efield.typ": net-Efield, draw_streamlines, points-around
+// #import "../helpers/efield.typ": net-Efield, draw_streamlines, points-around
 
-#let efield-1 = cetz.canvas(length: 20pt, {
-  import cetz.draw: *
+// #let efield-1 = cetz.canvas(length: 20pt, {
+//   import cetz.draw: *
 
-  let (p, q) = net-Efield(
-    (1, (-1.5, 0)),
-    (-1, (1.5, 0)),
-  )
+//   let (p, q) = net-Efield(
+//     (1, (-1.5, 0)),
+//     (-1, (1.5, 0)),
+//   )
 
-  let charge-radius = 0.4
-  draw_streamlines(
-    p, q,
-    step-size: 0.02,
-    max-steps: 3000,
-    color: black,
-    direction: "forward",
-    arrows: true,
-    seeds: points-around((-1.5, 0), radius: charge-radius, count: 16),
-    dead-zones: ((1.5, 0),),
-  )
-  draw_streamlines(
-    p, q,
-    step-size: 0.02,
-    max-steps: 3000,
-    color: black,
-    direction: "backward",
-    arrows: true,
-    seeds: points-around((1.5, 0), radius: charge-radius, count: 7, start: -67.5deg, step: 22.5deg),
-    dead-zones: ((-1.5, 0),),
-  )
+//   let charge-radius = 0.4
+//   draw_streamlines(
+//     p, q,
+//     step-size: 0.02,
+//     max-steps: 3000,
+//     color: black,
+//     direction: "forward",
+//     arrows: true,
+//     seeds: points-around((-1.5, 0), radius: charge-radius, count: 16),
+//     dead-zones: ((1.5, 0),),
+//   )
+//   draw_streamlines(
+//     p, q,
+//     step-size: 0.02,
+//     max-steps: 3000,
+//     color: black,
+//     direction: "backward",
+//     arrows: true,
+//     seeds: points-around((1.5, 0), radius: charge-radius, count: 7, start: -67.5deg, step: 22.5deg),
+//     dead-zones: ((-1.5, 0),),
+//   )
 
-  circle((1.5, 0), name: "neg", radius: charge-radius, fill: blue)
-  circle((-1.5, 0), name: "pos", radius: charge-radius, fill: red)
+//   circle((1.5, 0), name: "neg", radius: charge-radius, fill: blue)
+//   circle((-1.5, 0), name: "pos", radius: charge-radius, fill: red)
 
-  content("neg", anchor: "center", text(fill: white)[$-q$])
-  content("pos", anchor: "center", text(fill: white)[$+q$])
+//   content("neg", anchor: "center", text(fill: white)[$-q$])
+//   content("pos", anchor: "center", text(fill: white)[$+q$])
   
-  // Frame
-  rect((-4, -4), (4, 4), stroke: black)
-})
+//   // Frame
+//   rect((-4, -4), (4, 4), stroke: black)
+// })
 
-#align(center, efield-1)
+// #align(center, efield-1)
 
 #pagebreak()
 
@@ -1041,6 +1041,25 @@ It turns out that _all closed surfaces_ which enclose a volume ("*Gaussian surfa
   $
 ]
 
+=== Conductors in Electrostatic Equilibrium
+
+/*
+Describe the electric field within a conductor at equilibrium
+Describe the electric field immediately outside the surface of a charged conductor at equilibrium
+Explain why if the field is not as described in the first two objectives, the conductor is not at equilibrium
+*/
+
+- Remember that in a conductor, electrons are free to move
+
+- If there is an electric field inside the conductor, electrons in the conductor will accelerate.
+  - For our conductor to be in *electrostatic equilibrium*, charges cannot be accelerating, or in other words there cannot be an electric field.
+  - Thus, _inside_ a conductor at electrostatic equilibrium, $arrow(E) = arrow(0)$.
+
+- By Gauss' Law extra charges in the conductor will be distributed to its surfaces.
+  - Choose the Gaussian surface to be any surface completely within the conductor. Since there is no net electric field, there is no electric flux and since $Phi_E prop Q_"enc"$, $Q_"enc" = 0$.
+  
+- External charges can induce polarization on the conducting object, causing one side of the surface to have an opposite charge than the other side.
+
 === Introduction to Maxwell's Equations
 
 Gauss' Law is typically the first equation introduced in the set of four equations fundamental to electromagnetism known as _Maxwell's Equations_:
@@ -1059,9 +1078,7 @@ Gauss' Law is typically the first equation introduced in the set of four equatio
 
 === Differential Form of Gauss' Law
 
-The *divergence theorem* tells us that if $V$ is the volume enclosed by a closed surface $S$, then the total flux through $S$ ("total outwards flow through the surface") is equal to the sum of all "small outward flows" (divergences) contained in $V$. 
-
-Mathematically: $
+Recall the Divergence Theorem: $
   integral.surf_S arrow(F) dot dd(arrow(A)) = integral.triple_V grad dot arrow(F) dd(V).
 $
 
@@ -1075,9 +1092,7 @@ $
   The divergence of the electric field, $grad dot arrow(E)$, at any point is: $
     grad dot arrow(E) = rho/epsilon_0
   $
-  where:
-  - $rho$ is volumetric charge density, charge per unit volume ($cblue(dd(q) = rho dd(V))$)
-  - $epsilon_0$ is the permittivity of free space.
+  where $rho$ is volumetric charge density, charge per unit volume ($cblue(dd(q) = rho dd(V))$).
 ]
 
 #pagebreak()
@@ -1278,6 +1293,9 @@ Here, we see that $grad U_e = - arrow(F)_e$. This is the general definition of e
 
 - Electric potential is often referred to as just "potential".
 
+- An *equipotential line* is a line along which the electric potential is constant. 
+  - Equipotential lines are always perpendicular to electric field lines (since $arrow(E) = - grad V$).
+
 - Since $-grad U_e = arrow(F)_e$, we can derive a relationship between electric potential and electric field: $
     arrow(F)_e = - grad (q V) = - q grad V ==> arrow(E) = arrow(F)_e / q = - grad V.
   $
@@ -1292,7 +1310,43 @@ Here, we see that $grad U_e = - arrow(F)_e$. This is the general definition of e
   $
 ]
 
-== Conservation of Electric Energy
+#pagebreak()
+
+== Potential Difference
+
+- The total energy in an isolated system  is conserved, just like all other forms of energy: 
+$ Delta E = Delta U + Delta K = 0 " " ==> " " Delta K = - Delta U. $
+
+- The *potential difference* $Delta V$ between two points is the change in electric potential between them: $
+    Delta V = V_B - V_A.
+  $
+  From this, we can also derive the following relationship: $
+    Delta U_e = q Delta V " " ==> " " Delta V = (Delta U_e) / q.
+  $
+  
+  _The potential difference between two points is the change in electric potential energy per unit charge between those two points._
+
+- The electric field points in the direction of decreasing potential (simply because $arrow(E) = - grad V$)
+
+Since $Delta U_e = - integral_C arrow(F)_e dot dd(arrow(ell))$ and $arrow(F)_e = q arrow(E)$, we can write:
+$
+  Delta U_e &= - integral_C q arrow(E) dot dd(arrow(ell)) = - q integral_C arrow(E) dot dd(arrow(ell)) \
+  Delta V = (Delta U_e) / q &= - integral_C arrow(E) dot dd(arrow(ell)).
+$
+
+#define("Potential Difference from Electric Field")[
+  The potential difference $Delta V$ between two points is equal to the negative line integral of the electric field $arrow(E)$ along any path $C$ between those two points: $
+    Delta V = - integral_C arrow(E) dot dd(arrow(ell)).
+  $
+]
+
+- Since $arrow(E) dot dd(arrow(ell)) = 0$ when $arrow(E)$ is perpendicular to the path, *equipotential lines are always perpendicular to the electric field*.
+
+  - Similarly, the magnitude potential difference is maximized along the direction of the electric field (positive if against, negative if along).
+
+=== Applying Conservation of Energy
+
+
 
 #pagebreak()
 
