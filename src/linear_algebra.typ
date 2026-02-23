@@ -468,18 +468,55 @@ This matrix equation has the same solution set as the linear system whose augmen
 So, we have four ways to represent a linear system: as a system of a linear equations, as an augmented matrix, as a vector equation, and as a matrix equation.
 
 The coefficient matrix can tell us a few things:
-- if all columns are pivot columns, there are no free variables and if the system is consistent, then it has a unique solution.
+- if all columns are pivot columns, there are no free variables. if the system is also consistent, then it has a unique solution. (i.e., if all columns are pivot columns, the system has at most one solution)
   - if there are free variables, then the system has infinitely many solutions (if it is consistent).
 
 - if all rows are pivot rows, then the system MUST be consistent (at least one solution)
 
 === Transition Matrices
 
-A *transition matrix* $P$ describes the probabilities of each state transitioning to every other state in a system. They 
+A *transition matrix*, *migration matrix*, or *Markov chain* $P$ describes the probabilities of each state transitioning to every other state in a system. They 
 have the following properties:
 - All entries are nonnegative: $P_(i j) >= 0$ for all $i, j$.
 - The entries in each column sum to $1$.
-- (In most cases), the entries in each row sum to $1$.
+
+Each column represents a probability distribution of one
+state in the system transitioning to other states. 
+For example, if $P_(i j) = p$, then there is a $p$ probability of transitioning from state $j$ to state $i$.
+
+When multiplied by a vector $bf(v)$ representing the distribution of states at a given time, we get the distribution of those states at the next time step. Thus, transition matrices can be used to model the evolution of systems over time:
+$
+  bf(v)_"next" &= P bf(v) \
+  bf(v)_("after" k "steps") &= P^k bf(v).
+$
+
+Some transition matrices have a special property that when multiplied by a vector representing the distribution of states, the distribution does not change. In other words, there may exist a vector $bf(v)$ such that $P bf(v) = bf(v)$. Such a vector is called a *steady state* or *equilibrium* of the system.
+
+We can find a potential steady-state for the system by solving the equation $P bf(v) = bf(v)$, which is equivalent to solving the homogeneous system $(P - I) bf(v) = bf(0)$, where $I$ is the identity matrix.
+
+// If $bf(v)_e$ is the steady-state of a system with transition matrix $P$, then for any starting distribution $bf(v)_0$:
+// $
+//   "If" P bf(v)_e = bf(v)_e,  lim_(k -> oo) P^k bf(v)_0 = bf(v)_e.
+// $
+
+
+#example("Applying a Transition Matrix")[
+  $18000$ students live on campus. Each day, each student either brings their lunch or goes to the cafeteria to buy lunch.
+  + On day 0, $9000$ brought lunch and $9000$ went to the cafeteria.
+  + About $80%$ of students who brought lunch the previous day bring lunch again the next day.
+  + About $60%$ of students who went to the cafeteria the previous day go to the cafeteria again the next day.
+
+  How many students will bring lunch and how many will go to the cafeteria on day 1? On day 2? On day $k$? After an infinite number of days?
+
+  #lorange
+
+  We can represent the distribution of students on day $k$ as a vector $bf(v)_k = vec(b_k, c_k)$. \
+  We are given $bf(v)_0 = vec(9000, 9000)$. \
+  #subtext[$b_k$ is the number of students who bring lunch on day $k$ and $c_k$ is the number of students who go to the cafeteria on day $k$.]
+
+  We can set up a grid to determine the transition probabilities:
+  $$
+]
 
 #pagebreak()
 
@@ -647,7 +684,7 @@ Let $T: RR^n -> RR^m$ be a linear transformation with standard matrix $A$, so $T
 _Recall that ALL linear transformations can be represented as matrix transformations._
 
 - The *identity transformation* $"Id"(bf(v)) = bf(v)$. This means $"Id"(bf(e)_1) = bf(e)_1$, $"Id"(bf(e)_2) = bf(e)_2$, ..., $"Id"(bf(e)_n) = bf(e)_n$.
-  - The standard matrix of the identity transformation is the identity matrix $I_n$. It is the $n times n$ square matrix with ones in the diagonal and zeros everywhere else.
+  - The standard matrix of the identity transformation is the *identity matrix* $I_n$. It is the $n times n$ square matrix with ones in the diagonal and zeros everywhere else.
   $
     "Id"(bf(v)) = I_n bf(v) "  where  " I_n = mat(align: #right,
       1, 0, ..., 0;
@@ -706,6 +743,28 @@ _Recall that ALL linear transformations can be represented as matrix transformat
     A B = mat(A bf(b)_1, A bf(b)_2, ..., A bf(b)_n)
   $
   where $bf(b)_j$ is the $j$#th column of $B$ for $j = 1, 2, ..., n$.
+
+- If $A$ and $B$ are matrices with appropriate dimensions, $A B$ is the standard matrix of the transformation $T(U(bf(v)))$ where $T(bf(v)) = A bf(v)$ and $U(bf(v)) = B bf(v)$.
+  - The transformation with standard matrix $A^n$ is the transformation that results from applying the transformation with standard matrix $A$ $n$ times in a row. This is only valid if $A$ is square.
+
+- Matrix multiplication does *not* commute. In other words, $A B$ is not necessarily equal to $B A$, and in some cases, $B A$ may not even be defined.
+
+- Matrix multiplication is associative, so $(A B) C = A (B C)$.
+
+- If $A B = A C$, $B = C$ *only if* $A$ is invertible. \ Otherwise, $A B = A C$ does not necessarily imply $B = C$.
+
+#resource("Algebraic Properties of Matrix Spaces")[
+  + Commutative under addition: $A + B = B + A$.
+  + Associative under addition: $(A + B) + C = A + (B + C)$.
+  + Additive identity: There exists a zero matrix $O$ such that $A + O = A$ for all matrices $A$.
+  + Additive inverses: For every matrix $A$, there exists a matrix $-A$ such that $A + (-A) = O$.
+  + Distributive under scalar multiplication: $c (A + B) = c A + c B$ and $(c_1 + c_2) A = c_1 A + c_2 A$.
+  + Distributive under matrix multiplication: $A (B + C) = A B + A C$ and $(A + B) C = A C + B C$.
+  + Compatibility with scalar multiplication: $c_1 (c_2 A) = (c_1 c_2) A$.
+]
+
+=== Properties of Matrix Transposes
+
 #define("Matrix Transpose")[
   The *transpose* of an $m times n$ matrix $A$, denoted $A^transpose$, is the $n times m$ matrix obtained by 
   interchanging the rows and columns of $A$. In other words, the entry in the $i$#th row and 
@@ -715,9 +774,15 @@ _Recall that ALL linear transformations can be represented as matrix transformat
   $
 ]
 
-- Matrix multiplication does *not* commute. In other words, $A B$ is not necessarily equal to $B A$, and in some cases, $B A$ may not even be defined.
+- The transpose of an $m times n$ matrix is an $n times m$ matrix.
 
-- Matrix multiplication is associative, so $(A B) C = A (B C)$.
+- It holds that $(A^transpose)^transpose = A$.
+
+- If $A$ and $B$ have the same size, $(A + B)^transpose = A^transpose + B^transpose$.
+
+- If $A$ is an $m times p$ matrix and $B$ is a $p times n$ matrix, then $(A B)^transpose = B^transpose A^transpose$ is an $n times m$ matrix.
+
+#pagebreak()
 
 == The Inverse of a Matrix
 
