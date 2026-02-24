@@ -1006,7 +1006,7 @@ It turns out that _all closed surfaces_ which enclose a volume ("*Gaussian surfa
 })
 
 #example("Using Gauss' Law to find Electric Field")[
-  An infinite sheet of charge has a uniform surface charge density $sigma$. Use Gauss' Law to derive an expression for the electric field a distance $d$ from the sheet.
+  An infinite sheet of charge has a uniform surface charge density $sigma$. Use Gauss' Law to derive an expression for the electric field a distance $d$ from the sheet. <ex-sheet-of-charge>
   #lorange
 
   #grid(
@@ -1136,6 +1136,8 @@ Thus, we arrive at the general formula for electric potential energy between two
 - If both charges have the same sign, then $U_e$ is positive, indicating that work wants to be done to separate the charges (they repel each other). 
 
 - If the charges have opposite signs, then $U_e$ is negative, indicating that work is released when the charges come together (they attract each other).
+
+- The reference point used for electric potential energy is that as $r -> oo, U_e -> 0$.
 
 #example("Electric Potential Energy of a Discrete System")[
   #grid(
@@ -1269,6 +1271,17 @@ Here, we see that $grad U_e = - arrow(F)_e$. This is the general definition of e
   $
 ]
 
+=== Things to Recall
+
+- $W = -Delta U$ ONLY if the work is done by a *conservative force*.
+
+- $"ME"_i + W_"nc" = "ME"_f$ in an isolated system
+
+  - The total energy in an isolated system  is conserved, just like all other forms of energy: 
+  $ Delta E = Delta U + Delta K = 0 " " ==> " " Delta K = - Delta U. $
+
+- $"ME"_i + W_"ext" = "ME"_f$ in a non-isolated system
+
 #pagebreak()
 
 == Electric Potential
@@ -1281,12 +1294,19 @@ Here, we see that $grad U_e = - arrow(F)_e$. This is the general definition of e
 ]
 - Electric potential is the electric potential energy per unit charge ($V = U_e slash q$).
   - This is similar to how electric field is defined as force per unit charge.
+  - Place a charge in a potential field. The potential "energizes" the charge.
 
 - The unit of electric potential is the _volt_ ($"V"$). 
   - A volt is defined as one joule per coulomb ($"V" = "J/C"$).
-  
+  - An _electron-volt_ ($"eV"$) is a unit of _energy_, which is the magnitude of potential energy of an electron in a $1 "V"$ potential: $1 "eV" = (#qty("1.6e-19", "C"))(#qty(1, "V")) = #qty("1.6e-19", "J")$.
+
 - The electric potential $V$ due to a point charge $Q$ at a distance $r$ is: $
     V = U_e / q = k_e Q / r.
+  $
+
+  This can be applied to the principle of superposition, where given a collection of point charges ${q_i}$,
+  $
+    V = k_e sum_i q_i / r_i.
   $
 
 - Electric potential is a _scalar quantity_.
@@ -1295,6 +1315,7 @@ Here, we see that $grad U_e = - arrow(F)_e$. This is the general definition of e
 
 - An *equipotential line* is a line along which the electric potential is constant. 
   - Equipotential lines are always perpendicular to electric field lines (since $arrow(E) = - grad V$).
+  - Electric field lines flow from high potential to low potential
 
 - Since $-grad U_e = arrow(F)_e$, we can derive a relationship between electric potential and electric field: $
     arrow(F)_e = - grad (q V) = - q grad V ==> arrow(E) = arrow(F)_e / q = - grad V.
@@ -1313,9 +1334,6 @@ Here, we see that $grad U_e = - arrow(F)_e$. This is the general definition of e
 #pagebreak()
 
 == Potential Difference
-
-- The total energy in an isolated system  is conserved, just like all other forms of energy: 
-$ Delta E = Delta U + Delta K = 0 " " ==> " " Delta K = - Delta U. $
 
 - The *potential difference* $Delta V$ between two points is the change in electric potential between them: $
     Delta V = V_B - V_A.
@@ -1356,25 +1374,117 @@ $
 
 == Redistribution of Charge Between Conductors
 
-== Capacitors
+#pagebreak()
 
-- A *capacitor* is a device which "stores" electric charge, creating an electric field which 
-  results in a potential difference between its two conductors (plates).
+== Capacitors and Capacitance
+
+#let capacitor-symbol = zap.circuit({
+  zap.capacitor("cap", (0, 0))
+  zap.wire((-0.5, 0), (0.5, 0))
+})
+
+- A *capacitor* $#scale(capacitor-symbol, 50%, reflow: true)$ is a device which "stores" electric charge, creating an electric field that 
+  results in a potential difference.
+  
+
+- A capacitor involves two separate conductors separated by an insulating material called a *dielectric*. Charges are allowed to move to the edges of each conductor, charging the ends, creating a potential difference.
+
+- The *capacitance* is the maximum charge each conductor can hold per unit potential difference:
 
 #define("Capacitance")[
-  A *capacitor* is a device that stores electric charge. The *capacitance* $C$ of a capacitor is defined as the ratio of the magnitude of charge $Q$ on each conductor to the potential difference $Delta V$ between them: $
+  The *capacitance* $C$ of a capacitor is defined as the ratio of the magnitude of charge $Q$ on each conductor to the potential difference $Delta V$ between them: $
     C = Q / (Delta V).
   $
-  The unit of capacitance is the _farad_ ($"F"$), where $1 "F" = 1 "C/V"$.
 ]
 
+- The unit of capacitance is the _farad_ ($"F"$), where $1 "F" = 1 "C/V"$.
 
+=== Parallel Plate Capacitors
+
+Two oppositely charged parallel plates a distance $d$ apart create an approximately uniform electric field $arrow(E)$ between them. Let the surface charge densities of the two plates be $+sigma$ and $-sigma$, and let each plate have an area $A$.
+
+#link(<ex-sheet-of-charge>)[Remember that the electric field from an infinite sheet of charge with surface charge density $sigma$ is $display(sigma/(2 epsilon_0))$.] With two oppositely charged sheets, the electric field is double that: $display(E = sigma/epsilon_0)$.
+
+The potential difference $Delta V$ between the two plates is:
+$
+  Delta V = - integral_C arrow(E) dot dd(arrow(ell)) = - E d = - (sigma d)/epsilon_0.
+$
+
+By the definition of capacitance:
+$
+  C = Q / (Delta V) = (sigma A) / ((sigma d)/epsilon_0) = cgreen(epsilon_0 A / d).
+$
+
+=== Cylindrical and Spherical Capacitors
+
+
+
+=== Conductors in Series & Parallel
+
+- Capacitor in series: $1/C_"eq" = 1/C_1 + 1/C_2 + ... + 1/C_n$.
+- Capacitor in parallel: $C_"eq" = C_1 + 
+C_2 + ... + C_n$.
+
+#pagebreak()
 
 == Dielectrics
+
+- A *dielectric* is an insulating material placed between the conducting plates of a capacitor to _increase_ its capacitance.
+
+- When a dielectric is placed in an electric field, it becomes polarized, meaning that the positive and negative charges within the dielectric are slightly separated. 
+  
+  This creates an induced electric field that _opposes_ the original electric field, effectively reducing the potential difference between the plates.
+  
+  Since potential difference is inversely proportional to capacitance, the capacitance increases. 
+  
+- Let a capacitor with capacitance $C_0$ be without a dielectric. When a dielectric is added, the new capacitance is $C$. The ratio $C slash C_0$ is called the *dielectric constant* of the material, denoted by $kappa$: $
+    kappa = C / C_0.
+  $
+  The dielectric constant represents the factor by which capacitance increases when the dielectric is added. For a parallel plate capacitor, the new capacitance with a dielectric is: $
+    C = kappa epsilon_0 A / d.
+  $
+
+- *Permittivity* is a measure of how easy it is for an electric field to polarize an insulating material. 
+  - The *permittivity of free space* or *vaccum permittivity* is $epsilon_0$.
+
+  - The term $kappa epsilon_0$ is referred to as the *absolute permittivity*, and is denoted with $epsilon$.
+    - Accordingly, the scaling factor $kappa$ is sometimes called *relative permittivity* and denoted $epsilon_r$ such that $epsilon = epsilon_r epsilon_0$.
+
+  - When talking about conductors, the unit _farad per meter_ ($"F/m"$) is often used to describe permittivity instead of $"N m"^2 slash "C"^2$. They are equivalent.
+
+#pagebreak()
 
 = Electric Current and Circuits
 
 == Electric Current
+
+#define("Average and Instantaneous Electric Current")[
+  Let $q$ be the amount of charge that passes through an arbitrary surface in a time interval $Delta t$. The *average electric current* $I_"avg"$ is: $
+    I_"avg" = q / (Delta t).
+  $
+  The *instantaneous electric current* $I$ is the time-derivative of flowing charge:
+  $
+    I = dv(q, t).
+  $
+]
+
+- Electric current can be thought of as the rate of flow of electric charge.
+
+- The SI unit of electric current is the _Ampere_ ($"A"$, "amp"), where $1 "A" = 1 "C/s"$.
+  - In fact, the Ampere is an SI _base unit_, and Coulombs are defined in terms of Amperes ($"C" = "A" dot "s"$).
+
+
+
+=== Current Density
+
+#define("Electric Current Density")[
+  Let $I$ be the electric current through a surface $S$. Then: $
+    I = integral.double_S arrow(J) dot dd(arrow(A))
+  $
+  where:
+  - $arrow(J)$ is the *current density* vector, which points in the direction of current flow and has magnitude equal to the current per unit area ($J = dv(I, A)$).
+  - $dd(arrow(A))$ is the area vector differential, which points perpendicular to the surface and has magnitude equal to the area of the differential element.
+]
 
 == Electric Circuits
 

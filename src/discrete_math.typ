@@ -323,7 +323,7 @@ Simple Circuit (Cycle): A path that starts and ends at the same vertex, with no 
 - A *conditional statement* is a logical statement that has the form "if $P$, then $Q$," where $P$ is the *hypothesis* and $Q$ is the *conclusion*. It is denoted by $P => Q$.
 
   - $P$ is a *sufficient condition* for $Q$ if $P => Q$ is true.
-  - $P$ is a *necessary condition* for $Q$ if $not P => not Q$ is true.
+  - $P$ is a *necessary condition* for $Q$ if $not P => not Q$ (i.e. $Q => P$) is true.
 
 - A conditional statement is always true if the hypothesis is false, regardless of the truth value of the conclusion. This is known as *true by default* or *vacuously true*.
 
@@ -333,7 +333,9 @@ Simple Circuit (Cycle): A path that starts and ends at the same vertex, with no 
 
 === Biconditionals
 
-- A *biconditional statement* is a logical statement that has the form "$P$ if and only if $Q$," denoted by $P <=> Q$. It is true only when both $P$ and $Q$ have the same truth value (both true or both false).
+- The statement "*only if* $P$, then $Q$" is logically equivalent to "$Q$ only if $P$" and is denoted by $Q => P$. It establishes a necessary condition for $Q$.
+
+- A *biconditional statement* is a logical statement that has the form "$P$ *if and only if* $Q$," denoted by $P <=> Q$. It is true only when both $P$ and $Q$ have the same truth value (both true or both false).
 
   - $P$ is a *necessary and sufficient condition* for $Q$ if $P <=> Q$ is true.
   - $P <=> Q$ is logically equivalent to $(P => Q) and (Q => P)$.
@@ -424,6 +426,7 @@ $
   - *closed walk* -> *circuit* (closed trail) -> *simple circuit* (closed path)
     - for circuits/simple circuits, must contain at least one edge
     - for simple circuits, only the start/end vertex is repeated
+    - a graph with $m$ edges and $n$ vertices has at least one circuit iff $m >= n$
 
   - The *trivial walk* from a vertex $v$ to itself is the walk that consists of just the vertex $v$ and no edges. It is considered a closed walk but not a circuit or simple circuit.
 
@@ -505,6 +508,11 @@ $
 
 - A *tree* is a graph that is both #underline[circuit-free and connected].
   - A tree with $n$ vertices has exactly $n - 1$ edges.
+
+- The *total degree* of a graph is the sum of the degrees of all its vertices.
+  - Each edge in a tree connects exactly two vertices, i.e. a tree with $E$ edges has a total degree of $2E$.
+    - Since a tree with $n$ vertices has $n - 1$ edges, the total degree of a tree is $2(n - 1)$.
+    - The fact that the total degree is an even number is called the *Handshaking Lemma*.
   
 - A vertex in a tree with degree 1 is called a *leaf* or *terminal vertex*.
   - All nontrivial trees have at one leaf.

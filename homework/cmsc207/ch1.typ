@@ -15,11 +15,15 @@ February 2, 2026
   spacing: 2pt,
 )
 
+#show math.equation.where(block: true): eq => {
+  block(width: 100%, inset: 0pt, align(center, eq))
+}
+
 + The functions $F$ and $G$ from $RR -> RR$ are defined by the following formulas:
-$
-  F(x) = (x + 1)(x-3) #h(4em) G(x) = (x - 2)^2 - 7
-$
-Prove that $F != G$.
+  $
+    F(x) = (x + 1)(x-3) #h(4em) G(x) = (x - 2)^2 - 7
+  $
+  Prove that $F != G$.
 
 #line(length: 100%, stroke: 0.5pt)
 
@@ -35,10 +39,10 @@ Since $F(1) = -4$ and $G(1) = -6$ and $-4 != -6$, we have $F(1) != G(1)$. Thus, 
 
 #set enum(start: 2)
 + The relation $R$ from $RR -> RR$ is defined as follows: 
-$
-  "for all" (x, y) in RR times RR, (x, y) in R "iff" x = y^2 + 1. 
-$
-Prove that $(17, -4) in R$.
+  $
+    "for all" (x, y) in RR times RR, (x, y) in R "iff" x = y^2 + 1. 
+  $
+  Prove that $(17, -4) in R$.
 
 #line(length: 100%, stroke: 0.5pt)
 
