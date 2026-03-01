@@ -358,8 +358,30 @@ Let $P$ and $Q$ be statements. The following related statements can be derived f
 
 == Valid & Invalid Arguments
 
-- Modus Ponens: If $P => Q$ is true and $P$ is true, then $Q$ must be true.
-- Modus Tollens: If $P => Q$ is true and $not Q$ is true, then $not P$ must be true.
+- An *argument* is a sequence of statements where the last statement is called the *conclusion* and the preceding statements are called *premises*.
+
+- An argument is *valid* if the conclusion logically follows from the premises, meaning that if the premises are true, then the conclusion must also be true.
+
+- In a truth table, an argument is valid if there are no rows where all the premises are true and the conclusion is false.
+  - Rows where all premises are true are called *critical rows*.
+
+#example("Using a Truth Table to Determine Validity")[
+  Consider the argument: 
+  $
+    & p -> q or not r \
+    & q -> p and r \
+    therefore & p -> r
+  $
+  We can construct a truth table to evaluate the validity of this argument. The critical rows are those where both premises are true. If in all critical rows the conclusion is also true, then the argument is valid.
+  #table(
+    columns: 6,
+    table.header[$p$][$q$][$r$][$p -> q or not r$][$q -> p and r$][$p -> r$],
+  )
+]
+
+- An argument with two premises and a conclusion is called a *syllogism*, where the first premise is called the *major premise* and the second premise is called the *minor premise*. There are two common syllogisms:
+  - *Modus Ponens*: If $P => Q$ is true and $P$ is true, then $Q$ must be true.
+  - *Modus Tollens*: If $P => Q$ is true and $not Q$ is true, then $not P$ must be true.
 
 #resource("Summary of Inferences")[
   #grid(
@@ -385,9 +407,65 @@ Let $P$ and $Q$ be statements. The following related statements can be derived f
   )
 ]
 
+=== Fallacies
+
+- A *fallacy* is an error in reasoning that leads to an invalid argument. Some common fallacies include:
+  - Using ambiguous premises
+  - Circular reasoning, assuming what is to be proved
+  - Jumping to a conclusion
+
+- The *converse error* is the fallacy of assuming that if $P => Q$ is true, then $Q => P$.
+  - ex: _if it snows, there is no school. There is no school. Therefore, it is snowing_
+
+- The *inverse error* is the fallacy of assuming that if $P => Q$ is true, then $not P => not Q$.
+  - ex: _if it snows, there is no school. It is not snowing. Therefore, there is school._
+
+- An argument is *sound* if it is valid and all of its premises are _actually true_. Otherwise, it is *unsound*.
+
+
+=== Contradictions
+
+- If an argument leads to a contradiction, it means that the premises cannot all be true at the same time. This is often used in *proof by contradiction*.
+  - That is, if $p -> bf(c)$, then it is valid to say $not p$.
+
+#pagebreak()
+
 == Digital Logic Circuits
 
+- A *black box* is a component in a digital circuit that has a specified behavior (input-output relationship) but whose internal workings are not visible.
+  - The behavior of a black box can be described using an *input/output table*, which is essentially truth table.
+
+- A variable that takes only one of two values is known as a *Boolean variable*. An expression composed of Boolean variables is called a *Boolean expression*.
+
+- A *recognizer* is a circuit that takes an input and outputs $1$ if the input satisfies a specific combination of inputs, and $0$ otherwise. In other words, there is only one $1$ in the output column of the input/output table.
+
+- Two logic circuits are *equivalent* if they have equivalent input/output tables.
+
+=== NAND and NOR gates
+
+There are two special shorthand gates:
+- The *NAND gate* acts like an AND gate followed by a NOT gate. It outputs $0$ only when all inputs are $1$, and outputs $1$ otherwise.
+
+  - The symbol for NAND is an up arrow ($p arrow.t q$), combining the bar for not and the wedge for and.
+  - In the textbook, a bar is used ($p bar q$), called the *Sheffer stroke*.
+
+- The *NOR gate* acts like an OR gate followed by a NOT gate. It outputs $1$ only when all inputs are $0$, and outputs $0$ otherwise.
+  - The symbol for NOR is a down arrow ($p arrow.b q$), combining the bar for not and the vee for or. This is called a *Peirce arrow*.
+
+Here are a few equivalencies:
+
+- $not (p and q) equiv p arrow.t q equiv not p or not q$
+- $not (p or q) equiv p arrow.b q equiv not p and not q$
+- $not p equiv p arrow.t p$
+
+
+
 == Number Systems & Addition Circuits
+
+- A way to represent a signed integer in binary is using *two's complement*
+  - To find the two's complement of a binary number, we can invert all the bits (complement) and add 1 to the result.
+
+  - We can also interpret it as saying the last digit has a negative weight. Instead of representing $2^n$, it represents $-2^n$.
 
 #pagebreak()
 

@@ -782,6 +782,36 @@ _Recall that ALL linear transformations can be represented as matrix transformat
 
 - If $A$ is an $m times p$ matrix and $B$ is a $p times n$ matrix, then $(A B)^transpose = B^transpose A^transpose$ is an $n times m$ matrix.
 
+=== Properties of Inner and Outer Products
+
+#define("Inner Product of Two Vectors")[
+  The *inner product* of two (column) vectors $bf(u)$ and $bf(v)$ in $RR^n$ is given by:
+  $
+    bf(u) dot bf(v) = bf(u)^transpose bf(v) = u_1 v_1 + u_2 v_2 + ... + u_n v_n.
+  $
+  In other words, the inner product is simply the dot product.
+]
+
+#define("Outer Product of Two Vectors")[
+  The *outer product* of two (column) vectors $bf(u)$ and $bf(v)$ in $RR^n$ is given by:
+  $
+    bf(u) times.o bf(v) = bf(u) bf(v)^transpose = mat(
+      u_1 v_1, u_1 v_2, ..., u_1 v_n; u_2 v_1, u_2 v_2, ..., u_2 v_n; 
+      dots.v, dots.v, dots.down, dots.v; 
+      u_n v_1, u_n v_2, ..., u_n v_n).
+  $
+]
+
+- Inner and outer products only exist for vectors with the same number of components.
+
+- Only inner products commute:
+  $bf(u) dot bf(v) = bf(v) dot bf(u)$.
+
+- Outer products don't commute, flipping the order gives you the transpose:
+  $bf(u) times.o bf(v) = (bf(v) times.o bf(u))^transpose$.
+
+
+
 #pagebreak()
 
 == The Inverse of a Matrix
@@ -796,12 +826,50 @@ _Recall that ALL linear transformations can be represented as matrix transformat
 
 - If a matrix is not invertible, it is called *singular*.
 
-=== Invertible Matrices
+- If $A$ is invertible, then the transformation $bf(x) |-> A bf(x)$ is both _one to one and onto_.
+  - In other words, $forall bf(b) in RR^n$, the equation $A bf(x) = bf(b)$ has _exactly one_ solution given by $bf(x) = A^(-1) bf(b)$.
 
-#define("Invertible Matrix Theorem")[
+#derivation([Proof: If $A$ is invertible, then $A bf(x) = bf(b)$ has exactly one solution for $bf(x) space forall bf(b)$])[
+  Let $A$ be an invertible matrix with inverse $A^(-1)$. Then, for any $bf(b)$ in $RR^n$, we can multiply both sides of the equation $A bf(x) = bf(b)$ by $A^(-1)$ to get:
+  $
+    A^(-1) A bf(x) & = A^(-1) bf(b) \
+    I_n bf(x) & = A^(-1) bf(b) \
+    bf(x) & = A^(-1) bf(b).
+  $
+  Thus, there is at least one solution to the equation. To show that there is at most one solution, say $bf(x)_1$ and $bf(x)_2$ are two solutions to the equation. Then:
+  $
+    A bf(x)_1 & = A bf(x)_2 \
+    A (bf(x)_1 - bf(x)_2) & = bf(0).
+  $
+  Since $A$ is invertible, the only solution to the equation $A bf(x) = bf(0)$ is the trivial solution $bf(x) = bf(0)$, so we must have $bf(x)_1 - bf(x)_2 = bf(0)$, which means $bf(x)_1 = bf(x)_2$. Thus, there is at most one solution to the equation.
+]
+
+- An $m times n$ matrix is *left invertible* if there exists an $n times m$ matrix $B$ such that $B A = I_n$. An $m times n$ matrix is *right invertible* if there exists an $n times m$ matrix $C$ such that $A C = I_m$. 
+
+  - While _only_ square matrices can be invertible, non-square matrices can be either left or right invertible, but not both.
+
+=== Properties of Inverses
+
+- Let $display(A = mat(a, b; c, d))$ be a $2 times 2$ matrix. $A$ is invertible iff $a d - b c != 0$, where its inverse is given by:
+  $
+    A^(-1) = 1 / (a d - b c) mat(align: #right, d, -b; -c, a).
+  $
+
+- If $A$ is invertible, then $A^(-1)$ is also invertible and its inverse is $A$: $(A^(-1))^(-1) = A$.
+
+- The inverse of a matrix transformation $T(bf(x)) = A bf(x)$ is $T^(-1)(bf(x)) = A^(-1) bf(x)$.
+  - By the definition of an inverse, $T(T^(-1)(bf(x))) = T^(-1)(T(bf(x))) = bf(x).$
+
+- $(A B)^(-1) = B^(-1) A^(-1)$ (the combined transformation happens in reverse order)
+
+- $(A^transpose)^(-1) = (A^(-1))^transpose$
+
+#pagebreak()
+
+#resource("Invertible Matrix Theorem")[
   Let $A$ be an $n times n$ matrix. The following statements are equivalent (i.e. all true or all false):
   + $A$ and/or $A^transpose$ is invertible.
-  + The set of rows in $A$ is equal to the set of rows in $I_n$.
+  + $A$ is row-reducible to $I_n$.
   + $A$ has $n$ pivot positions.
   + The equation $A bf(x) = bf(0)$ only has the solution $bf(x) = bf(0)$.
   + The columns of $A$ are linearly independent.
@@ -812,11 +880,77 @@ _Recall that ALL linear transformations can be represented as matrix transformat
   + There exists an $n times n$ matrix $D$ such that $A D = I_n$.
 ]
 
+=== Elementary Matrices & Finding Inverses By Hand
+
+- An *elementary matrix* that is at most one elementary row operation away from the associated identity matrix. All elementary matrices are invertible.
+
+- Let $E$ be the elementary matrix obtained by performing the elementary row operation $R$ on the identity matrix. Then for any matrix $A$, $E A$ is the matrix obtained by performing the elementary row operation $R$ on $A$.
+
+  - In other words, the elementary matrix is the standard matrix for the transformation that performs the row operation $R$. 
+
+  - Thus, it can be interpreted that an elementary matrix represents or corresponds with a certain elementay row operation.
+
+- If a matrix $A$ is invertible, then $A$ is *row equivalent* to the identity matrix $I$.
+  - In other words, there exists a sequence of elementary row operations that transforms $A$ into $I$. When the same sequence of elementary row operations is applied to $I$, we get $A^(-1)$.
+
+#derivation([Proof: A sequence of row operations $S$ s.t. $S(A) = I$ also satisfies $S(I) = A^(-1)$])[
+  Suppose $A$ is invertible, so there exists a sequence of elementary row operations $S$ such that $S(A) = I$. Let $E_1, E_2, ..., E_k$ be the elementary matrices corresponding to the row operations in $S$, so $S(A) = E_k ... E_2 E_1 A = I$. Then, we can multiply both sides of the equation by $A^(-1)$ to get:
+  $
+    E_k ... E_2 E_1 A A^(-1) & = I A^(-1) \
+    cgreen(E_k ... E_2 E_1 I & = A^(-1)).
+  $
+]
+
+- To find the inverse of a matrix $A$, perform and record a sequence of elementary row operations to bring $A$ into $I$. Then, apply the same sequence of elementary row operations to $I$ to get $A^(-1)$.
+
+  - To do these steps at the same time, we can invert matrix $A$ by *row reducing the augmented matrix $display(mat(A, I))$ to $display(mat(I, A^(-1)))$*.
+
+
 == Partitioned Matrices
 
 == Matrix Factorizations
 
 === LU Factorization
+
+- A matrix $A$ can be factored into the product of a lower triangular matrix $L$ and an upper triangular matrix $U$, such that $A = L U$. This is called the *LU factorization* of $A$.
+
+  - The LU factorization of a matrix $A$ can be used to solve the equation $A bf(x) = bf(b)$ by first solving $L bf(y) = bf(b)$ for $bf(y)$ using forward substitution, and then solving $U bf(x) = bf(y)$ for $bf(x)$ using back substitution. \
+    #subtext[If we let $A = L U$ and $bf(y) = U bf(x)$, then $A bf(x) = (L U) bf(x) = L (U bf(x)) = L bf(y)$. So, the equation $A bf(x) = bf(b)$ becomes $L bf(y) = bf(b)$.]
+
+#table(align: horizon + center, columns: (1fr, 1fr), 
+  stroke: none,
+  table.header[==== Lower Triangular Matrix $L$][==== Upper Triangular Matrix $U$],
+  subtext[Used for *forward* substitution, $L bf(y) = bf(b)$], 
+  subtext[Used for *back* substitution, $U bf(x) = bf(y)$],
+  $
+    mat(
+      cblue(*), cgray(0), cgray(0), cgray(dots.h), cgray(0);
+      *, cblue(*), cgray(0), cgray(dots.h), cgray(0);
+      *, *, cblue(*), cgray(dots.h), cgray(0);
+      dots.v, dots.v, dots.v, cblue(dots.down), cgray(dots.v);
+      *, *, *, dots.h, cblue(*)
+    )
+  $,
+  $
+    mat(
+      cblue(*), *, *, ..., *;
+      cgray(0), cblue(*), *, ..., *;
+      cgray(0), cgray(0), cblue(*), ..., *;
+      cgray(dots.v), cgray(dots.v), cgray(dots.v), cblue(dots.down), dots.v;
+      cgray(0), cgray(0), cgray(0), cgray(...), cblue(*)
+    )
+  $
+)
+
+
+The upper triangular matrix $U$ can be obtained by reducing matrix $A$ to row echelon form using *only row replacement operations* (operations of the type $R_i <- R_i + m R_j$ where $i > j$)
+
+Every time we finish reducing a column, record the elements at and below the pivot. These elements, scaled by $1 / "pivot"$, will be the entries in the corresponding column of $L$.
+
+#example([Finding the $L U$ factorization of a matrix])[
+  Find the $L U$ factorization of the matrix $display(mat(align: #right, 2, -1, 1; 3, 3, 9; 4, 2, 2))$.
+
+]
 
 == The Leontief Input-Output Model
 
@@ -901,7 +1035,7 @@ Computing determinants using cofactors is known as the method of *cofactor expan
 
 - $det (A B) = det(A) det(B)$
 
-- $det A^(-1) = 1 / (det A)$
+- $det(A^(-1)) = 1 / (det A)$
 
 #pagebreak()
 
