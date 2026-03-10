@@ -473,6 +473,16 @@ Here are a few equivalencies:
 
 == Predicates & Quantifiers
 
+- A *predicate* $P$ is a statement that contains one or more variables and becomes a proposition when specific values are substituted for those variables.
+  - The set of all possible values for the variables in a predicate is called the *domain* of the predicate.
+
+- The *truth set* of a predicate $P(x)$ is the set of all values of $x$ in the domain for which $P(x)$ is true:
+  $
+    {x in "domain of" P | P(x) "is true"}
+  $
+
+
+
 === Negations of Quantified Statements
 
 $
@@ -480,7 +490,37 @@ $
   not(exists x in S "s.t." P(x)) & equiv forall x in S, not P(x)
 $
 
+
+
 = Number Theory & Proofs
+
+#define("Even and Odd")[
+  An integer $n$ is *even* if there exists an integer $k$ such that $n = 2k$:
+  $
+    n "is even" <==> exists k in ZZ "s.t." n = 2k.
+  $
+
+  An integer $n$ is *odd* if there exists an integer $k$ such that $n = 2k + 1$:
+  $
+    n "is odd" <==> exists k in ZZ "s.t." n = 2k + 1.
+  $
+]
+
+
+#define("Divisibility")[
+  An integer $a$ is *divisible* by a nonzero integer $b$ if there exists an integer $k$ such that $a = b k$:
+  $
+    a "divisible by" b <==> exists k in ZZ "s.t." a = b k.
+  $
+  We can then say that $b$ *divides* $a$, or $b | a$ (note the reversed order):
+  $
+    a "divisible by" b <==> b | a.
+  $
+]
+
+- *Distributive Property*: If $k | a$ and $k | b$, then $k | (a + b)$ and $k | (a - b)$.
+
+- *Transitive Property*: If $a | b$ and $b | c$, then $a | c$.
 
 = Sequences, Induction, & Recursion
 

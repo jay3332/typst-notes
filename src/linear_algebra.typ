@@ -4,6 +4,10 @@
 #set math.mat(delim: "(")
 #set math.vec(delim: "(")
 
+#show math.equation.where(block: true): eq => {
+  block(width: 100%, inset: 0pt, align(center, eq))
+}
+
 = Linear Equations
 
 == Systems of Linear Equations
@@ -83,7 +87,7 @@
 
 - A *matrix* is a collection of numbers arranged into a rectangular array of rows and columns.
   - A matrix with $m$ rows and $n$ columns is called an $m times n$ matrix.
-  - If $bf(A)$ is a matrix, then $bf(A)_(i j)$ denotes the entry in the $i$-th row and $j$-th column of $bf(A)$.
+  - If $A$ is a matrix, then $a_(i j)$ denotes the entry in the $i$-th row and $j$-th column of $A$.
 
 - To distinguish between scalars, vectors, and matrices, multiple notations are used:
   - Scalars are lowercase and italicized, e.g., $a, b, c$.
@@ -728,7 +732,7 @@ _Recall that ALL linear transformations can be represented as matrix transformat
 #define("Matrix Multiplication")[
   Let $A$ be an $m times p$ matrix and $B$ be an $p times n$ matrix. The *matrix product* $A B$ is the $m times n$ matrix where the entry in the $i$#th row and $j$#th column is given by:
   $
-    (A B)_(i j) = sum_(k=1)^p A_(i k) B_(k j).
+    (A B)_(i j) = sum_(k=1)^p a_(i k) b_(k j).
   $
   $A B$ represents the transformation that results from first applying the transformation represented by $B$, followed by the transformation represented by $A$.
 ]
@@ -810,7 +814,7 @@ _Recall that ALL linear transformations can be represented as matrix transformat
 - Outer products don't commute, flipping the order gives you the transpose:
   $bf(u) times.o bf(v) = (bf(v) times.o bf(u))^transpose$.
 
-
+=== Partitioned Matrices
 
 #pagebreak()
 
@@ -905,14 +909,9 @@ _Recall that ALL linear transformations can be represented as matrix transformat
 
   - To do these steps at the same time, we can invert matrix $A$ by *row reducing the augmented matrix $display(mat(A, I))$ to $display(mat(I, A^(-1)))$*.
 
+== $L U$ Factorization
 
-== Partitioned Matrices
-
-== Matrix Factorizations
-
-=== LU Factorization
-
-- A matrix $A$ can be factored into the product of a lower triangular matrix $L$ and an upper triangular matrix $U$, such that $A = L U$. This is called the *LU factorization* of $A$.
+- A matrix $A$ can be factored into the product of a lower triangular matrix $L$ and an upper triangular matrix $U$, such that $A = L U$. This is called the *$L U$ factorization* of $A$.
 
   - The LU factorization of a matrix $A$ can be used to solve the equation $A bf(x) = bf(b)$ by first solving $L bf(y) = bf(b)$ for $bf(y)$ using forward substitution, and then solving $U bf(x) = bf(y)$ for $bf(x)$ using back substitution. \
     #subtext[If we let $A = L U$ and $bf(y) = U bf(x)$, then $A bf(x) = (L U) bf(x) = L (U bf(x)) = L bf(y)$. So, the equation $A bf(x) = bf(b)$ becomes $L bf(y) = bf(b)$.]
@@ -941,31 +940,121 @@ _Recall that ALL linear transformations can be represented as matrix transformat
     )
   $
 )
+The upper triangular matrix $U$ can be obtained by reducing matrix $A$ to row echelon form. 
+Let the $i$#th row operation used to achieve $U$ be represeted using the elementary matrix $E_i$. Then:
+$
+  U = E_k ... E_2 E_1 A.
+$
 
+If we let $A = L U$, then $U = E_k ... E_2 E_1 A = L^(-1) A$. 
 
-The upper triangular matrix $U$ can be obtained by reducing matrix $A$ to row echelon form using *only row replacement operations* (operations of the type $R_i <- R_i + m R_j$ where $i > j$)
+=== Finding the $L U$ Factorization of a Matrix
 
-Every time we finish reducing a column, record the elements at and below the pivot. These elements, scaled by $1 / "pivot"$, will be the entries in the corresponding column of $L$.
+Any invertible matrix $A$ can be factored into $L U$ by reducing $A$ to row echelon form to get $U$, and then using the row operations used to get $U$ to construct $L$.
 
-#example([Finding the $L U$ factorization of a matrix])[
-  Find the $L U$ factorization of the matrix $display(mat(align: #right, 2, -1, 1; 3, 3, 9; 4, 2, 2))$.
+Start with the identity matrix $I$ and the original matrix $A$. Reduce $A$ to row echelon form $U$ by performing *only row replacement operations*. Every time the operation $R_i <- R_i - k R_j$ is performed, record $k$ as the entry in the $i$#th row of $L$, in the same column we are reducing.
+
+A shortcut is to take the subcolumn of the column we are reducing, starting from the pivot and going down, and scale it by $1 / "pivot"$ to get the entries in the corresponding column of $L$. This should be done _before_ we begin reducing such column.
+
+//  using *only row replacement operations* (operations of the type $R_i <- R_i + m R_j$ where $i > j$)
+
+// Every time we finish reducing a column, record the elements at and below the pivot. These elements, scaled by $1 / "pivot"$, will be the entries in the corresponding column of $L$.
+
+#example([Finding and using the $L U$ factorization of a matrix])[
+  Find the $L U$ factorization of the matrix $A = display(mat(align: #right, 2, -1, 1; 3, 3, 9; 4, 2, 2))$, and use it to solve $display(A bf(x) = vec(2, 2, 2))$ for $bf(x)$.
+  #lorange
+  To find the $L U$ factorization of $A$, we first reduce $A$ to row echelon form to get $U$. 
+
+  To reduce the first column:
 
 ]
 
-== The Leontief Input-Output Model
+#pagebreak()
 
-== Subspaces of $RR^n$
+== Homogeneous Coordinates
 
-== Dimension and Rank
+- A transformation which shifts/translates points geometrically cannot be done with a matrix transformation. That is, a translation is not a linear transformation.
+  - This is easy to see: $T(bf(0)) = bf(0)$ if $T$ is linear. The origin cannot shift.
 
-#define("Dimension of a Subspace")[
-  The *dimension* of a subspace $bf(W)$ of $RR^n$ is the number of vectors in a basis for $bf(W)$. 
-  We denote the dimension of $bf(W)$ as $dim(bf(W))$.
-]
+- *Homogeneous coordinates* add an extra dimension to ordinary coordinates so that they can capture translations in linear transformations.
 
-#define("Rank of a Matrix")[
-  The *rank* of a matrix $A$, denoted $"rank"(A)$, is the dimension of the column space of $A$ (or equivalently, the row space of $A$). 
-]
+  - The coordinate $(x, y)$ in $RR^2$ is equivalent to the homogeneous coordinate $(x, y, 1)$ in $RR^3$
+
+  - The homogeneous coordinate $(x, y, z)$ is equivalent to the coordinate $display((x / z, y / z))$ in $RR^2$ ($z != 0$).
+
+  #define("Homogeneous Coordinates")[
+    The coordinate $(x_1, x_2, ..., x_n)$ in $RR^n$ is equivalent to the homogeneous coordinate in $RR^(n+1)$: $
+      (lambda x_1, lambda x_2, ..., lambda x_n, lambda) "for any nonzero" lambda.
+    $
+  ]
+
+  - Homogeneous coordinates work because they treat ordinary coordinates as a leveled "plane" in a higher dimension such that any translations in the plane can be reached from the origin. 
+
+- In homogeneous coordinates, we can represent translations as matrix transformations. For example, the translation that shifts points by $vec(h, k)$ can be represented by the matrix transformation with standard matrix:
+  $
+    mat(
+      align: #right,
+      1, 0, h; 0, 1, k; 0, 0, 1
+    ) 
+    mat(x; y; 1) = mat(x + h; y + k; 1).
+  $ 
+
+  #define("Standard Translation Matrix")[
+    The *standard translation matrix* that shifts points in $RR^n$ by $bf(h) = (h_1, h_2, ..., h_n)$ is given by the standard _homogeneous_ transformation matrix:
+    $
+      A = mat(
+        align: #right,
+        I_n, bf(h); bf(0), 1
+      ) "where" I_n "is the" n times n "identity matrix".
+    $
+    It holds that $display(A vec(bf(x), 1) = vec(bf(x) + bf(h), 1))$.
+  ]
+
+- For example, in $RR^3$, the translation that shifts points by $(h, k, l)$ can be represented by the matrix transformation with standard matrix:
+  $
+    mat(
+      align: #right,
+      1, 0, 0, h; 0, 1, 0, k; 0, 0, 1, l; 0, 0, 0, 1
+    ) 
+    mat(x; y; z; 1) = mat(x + h; y + k; z + l; 1).
+  $
+
+- Any standard transformation matrix $A$ has an equivalent matrix to transform homogeneous coordinates given by $display(mat( A, bf(0); bf(0), 1))$. For example, the standard rotation matrix $R_theta$ is equivalent to:
+  $
+    mat(
+      align: #right,
+      cos theta, -sin theta, 0;
+      sin theta, cos theta, 0;
+      0, 0, 1
+    )
+  $
+
+=== Affine Transformations
+
+
+
+=== Projective Transformations
+
+- A *projection* or a *projective transformation* is a transformatio that maps points from $RR^n$ to a lower dimension $RR^m$, where $m < n$. 
+
+- A *perspective projection* is a type of projective transformation that maps points from $RR^n$ to $RR^(n-1)$. In $RR^3$, a perspective projection maps points from $RR^3$ to $RR^2$---that is---onto a plane.
+
+  - A perspective projection in $RR^3$ maps a coordinate $(x, y, z)$ onto an image point $(x^*, y^*, 0)$ such that a chosen *center point*, is colinear with the original point and its image.
+
+    - In other words, if a projective projection of a point $(x, y, z)$ through a center point $(a, b, c)$ is $(x^*, y^*, 0)$, then we can draw line through ${(x, y, z), (a, b, c), (x^*, y^*, 0)}$.
+  
+  - This way, if the center point is $(a, b, c)$, then the projection of the center point is just $(a, b, 0)$.
+
+- Let a perspective projection in $RR^3$ have center point $(0, 0, d)$. Then, the perspective projection of a point $(x, y, z)$ is given by the homogeneous matrix:
+  $
+    mat(
+      align: #right,
+      1, 0, 0, 0;
+      0, 1, 0, 0;
+      0, 0, 0, 0;
+      0, 0, 1 slash d, 1
+    )
+  $
 
 #pagebreak()
 
@@ -977,12 +1066,14 @@ Every time we finish reducing a column, record the elements at and below the piv
 
 - If the determinant of a matrix is zero, the linear transformation compresses the area/volume to zero and we cannot reverse the transformation (i.e., the matrix is not invertible). 
 
+  - In fact, the determinant is nonzero *iff* the matrix is invertible.
+
 #define("Determinant of a Matrix")[
   The *determinant* ($det A$ or $abs(A)$) of an $n times n$ matrix $A$ ($n >= 2$) is: 
   $
-    det A = sum_(j=1)^n (-1)^(1+j) A_(1 j) det(M_(1 j))
+    det A = sum_(j=1)^n (-1)^(1+j) a_(1 j) det(M_(1 j))
   $ 
-  where $M_(1 j)$ is the minor of $A$ at row $1$, column $j$, which is the $(n-1) times (n-1)$ matrix that results from deleting row $1$ and column $j$ from $A$
+  where $M_(1 j)$ is the *minor* of $A$ at row $1$, column $j$, which is the $(n-1) times (n-1)$ matrix that results from deleting row $1$ and column $j$ from $A$.
 ]
 
 - The determinant of a $2 times 2$ matrix $mat(a, b; c, d)$ is $a d - b c$. (We can write $mat(delim: "|", a, b; c, d) = a d - b c$.)
@@ -991,8 +1082,8 @@ Every time we finish reducing a column, record the elements at and below the piv
 
 We can actually expand along any row or column, not just the first row: 
 $
-  det A = sum_(j=1)^n (-1)^(i+j) A_(i j) det(M_(i j)) & #h(3em) "expansion along" i#super("th") "row" \
-  det A = sum_(i=1)^n (-1)^(i+j) A_(i j) det(M_(i j)) & #h(3em) "expansion along" j#super("th") "column"
+  det A = sum_(j=1)^n (-1)^(i+j) a_(i j) det(M_(i j)) & #h(3em) "expansion along" i#super("th") "row" \
+  det A = sum_(i=1)^n (-1)^(i+j) a_(i j) det(M_(i j)) & #h(3em) "expansion along" j#super("th") "column"
 $
 
 All expansions will yield the same determinant. Notice the sign $(-1)^(i+j)$ follows a checkerboard pattern,
@@ -1001,9 +1092,13 @@ $
   mat(+, -, +, -; -, +, -, +; +, -, +, -; -, +, -, +) #h(3em)
 $ 
 
-The *cofactor* of an entry $A_(i j)$ is defined as $C_(i j) = (-1)^(i+j) det(M_(i j))$, capturing what we multiply by $A_(i j)$ in the determinant expansion. The *cofactor matrix* $C$ of an $n times n$ matrix $A$ is the matrix where each entry $C_(i j)$ is the cofactor of $A_(i j)$.
+The *cofactor* of an entry $a_(i j)$ is defined as $c_(i j) = (-1)^(i+j) det(M_(i j))$, capturing what we multiply by $a_(i j)$ in the determinant expansion. The *cofactor matrix* $C$ of an $n times n$ matrix $A$ is the matrix where each entry $c_(i j)$ is the cofactor of $a_(i j)$.
 
-Computing determinants using cofactors is known as the method of *cofactor expansion*.
+Computing determinants using cofactors is known as the method of *cofactor expansion*:
+$
+  det A = sum_(i=1)^n a_(i j) c_(i j) "for any" j 
+        = sum_(j=1)^n a_(i j) c_(i j) "for any" i.
+$
 
 #example("Using the Cofactor Expansion")[
   Show that the cofactor expansion along the first row of a $3 times 3$ matrix results in the same determinant as the expansion along the second column.
@@ -1024,18 +1119,114 @@ Computing determinants using cofactors is known as the method of *cofactor expan
   Thus, both expansions yield the same determinant.
 ]
 
+#note[
+  Cofactor expansion is an inefficient method, as it requires computing the determinant of many smaller matrices. It is an $cal(O)(n!)$ operation.
+]
+
+#pagebreak()
+
 == Properties of Determinants
+
+=== Determinant of a Triangular Matrix
+
+Let $L$ be a lower triangular matrix, and let $U$ be an upper triangular matrix:
+$
+  L = mat(
+    align: #right,
+    l_1, 0, 0, ..., 0;
+    *, l_2, 0, ..., 0;
+    *, *, l_3, ..., 0;
+    dots.v, dots.v, dots.v, dots.down, dots.v;
+    *, *, *, ..., l_n
+  ) #h(4em) U = mat(
+    align: #right,
+    u_1, *, *, ..., *;
+    0, u_2, *, ..., *;
+    0, 0, u_3, ..., *;
+    dots.v, dots.v, dots.v, dots.down, dots.v;
+    0, 0, 0, ..., u_n
+  )
+$
+
+Then: $
+  det L &= l_1 l_2 l_3 ... l_n. \
+  det U &= u_1 u_2 u_3 ... u_n.
+$ 
+
+That is, the determinant of a triangular matrix is the product of the entries on its main diagonal.
+
+#derivation([Proof: $det L$ is the product of the entries on the main diagonal of $L$])[
+  Let $L$ be a lower triangular matrix as defined above. We can compute $det L$ by expanding along the first row:
+  $
+    det L = l_1 det(M_(1 1)) + 0 + 0 + ... + 0 = l_1 det(M_(1 1)).
+  $
+  The minor $M_(1 1)$ is also a lower triangular matrix with main diagonal entries $l_2, l_3, ..., l_n$. Thus, we can apply the same reasoning to compute $det(M_(1 1))$ by expanding along its first row, and so on until we reach a $1 times 1$ matrix. This gives us:
+  $
+    det L = l_1 det(M_(1 1)) = l_1 l_2 det(M_(2 2)) = ... = l_1 l_2 ... l_n.
+  $
+]
+
+=== Effects of Row Operations on the Determinant
 
 - The three elementary row operations affect the determinant as follows:
   + Swapping two rows multiplies the determinant by $-1$.
   + Multiplying a row by a scalar $k$ multiplies the determinant by $k$.
   + Adding a multiple of one row to another row does not change the determinant.
 
-- $det A = det A^transpose$
+- Using these properties, the determinant of a matrix is nonzero *iff* the matrix is row-reducible to a triangular matrix with no zeros on the main diagonal.
 
-- $det (A B) = det(A) det(B)$
+- $det(k A) = k^n det(A)$ for an $n times n$ matrix $A$, as it is equivalent to multiplying each row of $A$ by $k$.
 
-- $det(A^(-1)) = 1 / (det A)$
+=== Determinant of Matrix Products
+
+Let $A$ and $B$ be $n times n$ matrices. Then: $
+  det(A B) = det A det B.
+$
+
+Using these properties, the determinant of a matrix $A$ can be computed by factorizing the matrix into $A = L U$, and then using $det A = det L det U$ to compute the determinant of $A$ in $cal(O)(n^3)$ time, which is more efficient than the $cal(O)(n!)$ time required by cofactor expansion.
+
+=== Determinant of Matrix Transposes
+
+- Transposing a matrix does not change its determinant: $
+    det A = det A^transpose
+  $
+
+=== Determinant of Matrix Inverses
+
+If $A$ is invertible, then:
+$
+  det(A^(-1)) = 1 / (det A)
+$
+Thus, if $det A = 0$, then $det(A^(-1))$ is undefined and $A^(-1)$ cannot exist. In fact, the determinant of a matrix is nonzero *iff* the matrix is invertible.
+
+#derivation([Proof: $det(A^(-1)) = 1 / (det A)$])[
+  Assume $A$ is an invertible matrix. Then, we can write $A$ as a product of elementary matrices acting on the identity $I_n$: $
+    A = E_k ... E_2 E_1 cgray(I_n) #h(4em) A^(-1) = E_1^(-1) E_2^(-1) ... E_k^(-1) cgray(I_n)
+  $
+  where $E_i$ are elementary matrices. Then:
+  $
+    det(A^(-1)) & = det(E_1^(-1) E_2^(-1) ... E_k^(-1)) \
+                & = det(E_1^(-1)) det(E_2^(-1)) ... det(E_k^(-1)).
+  $
+  Each elementary matrix is invertible, and the determinant of an elementary matrix is either $-1$, $k$, or $1$ depending on the type of row operation it corresponds to. Thus, the determinant of the inverse of an elementary matrix is either $-1$, $1/k$, or $1$. Therefore, we have:
+  $
+    det(A^(-1)) & = det(E_1^(-1)) det(E_2^(-1)) ... det(E_k^(-1)) \
+                & = (det E_1)^(-1) (det E_2)^(-1) ... (det E_k)^(-1) \
+                & = 1 / (det E_1 det E_2 ... det E_k) \
+                & = 1 / (det A).
+  $
+]
+
+=== Linearity of (a) Determinant Function
+
+Let $A$ be an $n times n$ matrix, and let $f$ be a function of each of the $n$ column vectors of $A$, such that the domain of $f$ is $RR^n$. Then, if we define $f$ to be the following:
+$
+  f(bf(x)) = det mat(bf(a)_1, bf(a)_2, ..., bf(a)_(i - 1), bf(x), bf(a)_(i + 1), ..., bf(a)_n)
+$
+
+Then $f: RR^n -> RR$ is a linear transformation. That is, we take the _determinant_ of the matrix formed by replacing a particular chosen column, say the $i$#th column, of $A$ with the input vector $bf(x)$. 
+
+In other words, we can treat the determinant as a linear function *iff* all but one columns are fixed in the matrices we provide as inputs, in which case it is linear with respect to the unfixed column.
 
 #pagebreak()
 
@@ -1050,7 +1241,7 @@ Computing determinants using cofactors is known as the method of *cofactor expan
   $
     (A_i)_(j k) = cases(
       b_j & "if" k = i,
-      A_(j k) & "otherwise"
+      a_(j k) & "otherwise"
     )
   $
 ]
@@ -1067,7 +1258,102 @@ Computing determinants using cofactors is known as the method of *cofactor expan
 - Cramer's Rule is most efficient for solving one variable in large systems, but may not be the best method for
   solving for all variables (since it involves calculating $n + 1$ determinants).
 
-= Vector Subspaces
+=== The Adjugate Matrix
+
+#let adj = $"adj" thin$
+
+Recall that if $A$ is invertible, then the vector $bf(x)_j$ whcih satisfies $A bf(x)_j = bf(e)_j$ is the $j$#th column of $A^(-1)$. This is because if $B = A^(-1)$, then $A B = I$ and $display(mat(A bf(b)_1, A bf(b)_2, ..., A bf(b)_n) = mat(bf(e)_1, bf(e)_2, ..., bf(e)_n))$.
+
+By Cramer's Rule, the $j$#th column of $A^(-1)$ is given by:
+$
+  (A^(-1))_(i j) = (det A_i)/(det A) "for" i = 1, 2, ..., n
+$
+
+The $j$#th column of $A_i$ is just $bf(e)_j$, so a cofactor expansion down that column is:
+$
+  det A_i = 0 + 0 + ... + (-1)^(j + i) (1) det(M_(j i))  + ... + 0 = (-1)^(j + i) det(M_(j i)) = c_(j i) = "cofactor of" a_(j i).
+$
+
+Note that it is the $j$#th row of $bf(e)_j$ that is 1, and it is the $i$#th column that is replaced. Thus, if we transpose the cofactor matrix $C$, we get thee *adjugate* of a matrix $A$, denoted $adj A$. The entries of $adj A$ are:
+$
+  (adj A)_(j i) = c_(i j) = (-1)^(i+j) det(M_(i j)) "for" i, j = 1, 2, ..., n.
+$
+
+Finally, by dividing each cofactor in the adjugate by $det A$, we get the entries of $A^(-1)$:
+
+#define("Inverse of a Matrix via Adjugates")[
+  If $A$ is an invertible $n times n$ matrix and $adj A$ is its *adjugate*, then:
+  $
+    A^(-1) = (adj A) / (det A).
+  $
+]
+
+#pagebreak()
+
+= Vector Spaces
+
+== Introduction to Subspaces 
+
+- A *vector space* $V$ is a nonempty set of objects called _vectors_  defined under the following axioms:
+
+  #resource("Axioms of Vector Spaces")[
+    _Define two closed operations on $V$: *vector addition* and *scalar multiplication*._
+    
+    + $forall bf(u), bf(v) in V, bf(u) + bf(v) in V$ #h(1fr) (closed under addition)
+    + $forall bf(u), bf(v) in V, bf(u) + bf(v) = bf(v) + bf(u)$ #h(1fr) (vector addition is commutative)
+    + $forall bf(u), bf(v), bf(w) in V, (bf(u) + bf(v)) + bf(w) = bf(u) + (bf(v) + bf(w))$ #h(1fr) (vector addition is associative)
+    + $exists bf(0) in V "s.t." forall bf(v) in V, bf(v) + bf(0) = bf(0) + bf(v) = bf(v)$ #h(1fr) (existence of additive identity)
+    + $forall bf(v) in V, exists (bf(-v)) in V "s.t." bf(v) + (bf(-v)) = (bf(-v)) + bf(v) = bf(0)$ #h(1fr) (existence of additive inverses)
+    + $forall k in RR, forall bf(v) in V, k bf(v) in V$ #h(1fr) (closed under scalar multiplication)
+    + $forall k in RR, forall bf(u), bf(v) in V, k(bf(u) + bf(v)) = k bf(u) + k bf(v)$ #h(1fr) (distributive property 1)
+    + $forall m, n in RR, forall bf(v) in V, (m + n) bf(v) = m bf(v) + n bf(v)$ #h(1fr) (distributive property 2)
+    + $forall m, n in RR, forall bf(v) in V, (m n) bf(v) = m (n bf(v))$ #h(1fr) (scalar multiplication is associative)
+    + $forall bf(v) in V, 1 bf(v) = bf(v)$ #h(1fr) (scalar multiplicative identity)
+  ]
+
+- A *subspace* $H$ of a vector space $V$ is a subset of $V$ that is itself a vector space.
+
+  - $H$ must satisfy the ten axioms of vector spaces under the _same_ vector addition and scalar multiplication defined on $V$:
+    - Vector addition and scalar multiplication must _also_ be closed on $H$. 
+    - The zero vector must be _also_ an element of $H$. 
+
+#define("Subspace")[
+  A *subspace* $H$ of a vector space $V$ is a subset of $V$ such that $H$ is itself a vector space under the same vector addition and scalar multiplication defined on $V$. 
+  
+  If $H subset.eq V$, then $H$ is a subspace of $V$ *iff* $H$ follows three conditions:
+  + The zero vector of $V$ is in $H$.
+  + $H$ is closed under vector addition: $forall bf(u), bf(v) in H, bf(u) + bf(v) in H$.
+  + $H$ is closed under scalar multiplication: $forall k in RR, forall bf(v) in H, k bf(v) in H$.
+]
+
+#let Nul = "Nul"
+#let rank = "rank"
+#let span = "span"
+
+#define("Null Space")[
+  The *null space* of an $m times n$ matrix $A$ is the set of all solutions to the homogeneous equation $A bf(x) = bf(0)$. 
+  We denote the null space of $A$ as $Nul(A)$. It holds that $Nul(A) subset.eq RR^n$.
+]
+
+== Basis Vectors, Rank, and Dimension
+
+#define("Basis")[
+  A *basis* $varcal(B)$ of a vector space $V$ is a subset of $V$ such that $varcal(B)$ spans $V$:
+  $
+    span(varcal(B)) = V "where" varcal(B) subset.eq V.
+  $
+]
+
+#define("Dimension of a Subspace")[
+  The *dimension* of a subspace $H$ of $RR^n$ is the number of vectors in a basis for $H$. That is, it is the minimum number of vectors needed to span $H$.
+  We denote the dimension of $H$ as $dim(H)$.
+]
+
+#define("Rank of a Matrix")[
+  The *rank* of a matrix $A$, denoted $rank(A)$, is the dimension of the column space of $A$ (or equivalently, the row space of $A$). It is the number of pivot positions in $A$.
+]
+
+== Change of Basis
 
 = Eigeneverything
 

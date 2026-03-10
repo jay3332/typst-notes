@@ -11,6 +11,7 @@
   let inner = args.pos().join([$,$])
   $lr(chevron.l #inner chevron.r)$
 }
+#let varcal(it) = text(font: "New Computer Modern Math", math.cal(it))
 #let grad = $arrow(nabla "")$
 #let transpose = $sans(upright(T))$
 #let evaluated(expr, size: 100%) = $lr(#expr|, size: #size)$
@@ -276,6 +277,7 @@
   // 4. Document layout
   #set math.equation(numbering: none)
   #set math.mat(delim: "(")
+  #set page("us-letter")
   #v(1fr)
   #[
     #set text(size: 24pt)
