@@ -504,23 +504,101 @@ $
   $
     n "is odd" <==> exists k in ZZ "s.t." n = 2k + 1.
   $
+
+  *Parity Property:* an integer is either even or odd.
 ]
 
 
 #define("Divisibility")[
-  An integer $a$ is *divisible* by a nonzero integer $b$ if there exists an integer $k$ such that $a = b k$:
+  An integer $a$ is *divisible* by a nonzero integer $b$ if there exists an integer $k$ such that $a = k b$:
   $
-    a "divisible by" b <==> exists k in ZZ "s.t." a = b k.
+    a "divisible by" b <==> exists k in ZZ "s.t." a = k b <==> a "is an integer multiple of" b. 
   $
   We can then say that $b$ *divides* $a$, or $b | a$ (note the reversed order):
   $
-    a "divisible by" b <==> b | a.
+    a "divisible by" b <==> a "is an integer multiple of" b <==> b | a.
+  $
+  - *Distributive Property*: If $k | a$ and $k | b$, then $k | (a + b)$ and $k | (a - b)$.
+  - *Transitive Property*: If $a | b$ and $b | c$, then $a | c$.
+]
+
+#define("Prime and Composite")[
+  An integer $n > 1$ is *prime* iff its only positive divisors are $1$ and itself:
+  $
+    n "is prime" <==> ( forall r in ZZ^+, s in ZZ^+, n = r s ==> (r, s) = (1, n) "or" (r, s) = (n, 1) ).
+  $
+
+  That is, the only two integers which multiply to $n$ are $1$ and $n$ itself.
+
+  An integer $n > 1$ is *composite* iff it is not prime. That is, $n = r s$ for some integers $r, s$ such that $1 < r < n$ and $1 < s < n$.
+]
+
+- *Unique Factorization of Integers Theorem:* any positive integer has a _unique_ prime factorization.
+
+#define("Quotient Remainder Theorem")[
+  For any integer $n$ and any positive integer $d$, there exist *unique* integers $q$ and $r$ such that:
+  $
+    n = q d + r "where" 0 <= r < d.
+  $
+  The integer $q$ is called the *quotient* and the integer $r$ is called the *remainder*.
+
+  In such case, we say that:
+  $
+    n "is congruent to" r "modulo" d, "denoted by" n equiv r thin (mod d).
+  $
+
+  We also define the operators:
+  $
+    q = n "div" d #h(2em) "and" #h(2em) r = n "mod" d.
   $
 ]
 
-- *Distributive Property*: If $k | a$ and $k | b$, then $k | (a + b)$ and $k | (a - b)$.
+#define("Triangle Inequality")[
+  For any integers $a$ and $b$, the following inequality holds:
+  $
+    abs(a + b) <= abs(a) + abs(b).
+  $
+]
 
-- *Transitive Property*: If $a | b$ and $b | c$, then $a | c$.
+#pagebreak()
+
+#define("Floor and Ceiling")[
+  The *floor* of a real number $x$, denoted by $floor(x)$, is the greatest integer less than or equal to $x$:
+  $
+    floor(x) = max{n in ZZ | n <= x}.
+  $
+
+  The *ceiling* of a real number $x$, denoted by $ceil(x)$, is the least integer greater than or equal to $x$:
+  $
+    ceil(x) = min{n in ZZ | n >= x}.
+  $
+
+  The following inequalities follow:
+  $
+    floor(x) &<= x && < floor(x) + 1 \
+    ceil(x) - 1 & < x && <= ceil(x).
+  $
+]
+- For any real number $x$ and integer $m$, the following properties hold:
+  $
+    floor(x + m) & = floor(x) + m \
+    ceil(x + m) & = ceil(x) + m.
+  $
+
+- The following inequalities also hold:
+  $
+    floor(x) + floor(y) & <= floor(x + y) \
+    ceil(x) + ceil(y) & >= ceil(x + y).
+  $
+
+- Also, for any *odd* integer $n$, $floor(n/2) = (n-1)/2$.
+
+- The $"div"$ and $mod$ operators can be written as follows:
+  $
+    n &"div" &d &= floor(n / d) \
+    n &"mod" &d &= n - d floor(n / d).
+  $
+
 
 = Sequences, Induction, & Recursion
 
@@ -571,7 +649,7 @@ $
 
 === Euler and Hamiltonian Circuits
 
-- An *Euler trail* is a trail that passes through every edge and vertex of a graph at least once.
+- An *Euler trail* is a trail that passes through every vertex of a graph at least once and every edge _exactly_ once.
 
 - An *Euler circuit* is an Euler trail that starts and ends at the same vertex.
   - A graph has an Euler circuit iff it is connected and every vertex has an #underline[even degree].
@@ -633,7 +711,7 @@ $
     - The fact that the total degree is an even number is called the *Handshaking Lemma*.
   
 - A vertex in a tree with degree 1 is called a *leaf* or *terminal vertex*.
-  - All nontrivial trees have at one leaf.
+  - All nontrivial trees have at least two leaves.
   - If a vertex in a tree is not a leaf, it is called a *branch vertex* or *internal vertex*.
 
 
@@ -665,6 +743,10 @@ $
   
 - A *full binary tree* is a binary tree in which every vertex has either 0 or 2 children.
   - A full binary tree with $n$ leaves has exactly $2n - 1$ vertices.
+
+- A full binary tree with $n$ _internal vertices_:
+  - has $n + 1$ leaves.
+  - has $2n + 1$ vertices.
 
 === Spanning Trees
 

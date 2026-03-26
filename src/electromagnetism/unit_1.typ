@@ -1094,3 +1094,39 @@ $
   $
   where $rho$ is volumetric charge density, charge per unit volume ($cblue(dd(q) = rho dd(V))$).
 ]
+
+#pagebreak()
+
+== Electric Dipoles
+
+- An _electric dipole_ consists of two equal and opposite charges of magnitude $q$ separated by a distance $d$.
+
+- The *dipole moment* $arrow(p)$ is a vector that points from the negative charge to the positive charge, with magnitude $p = q d$.
+
+  - Thus, the quantity $d$ is often expressed as $arrow(d)$, with its direction pointing from the negative charge to the positive charge. This way, we can express the dipole moment as: $
+    arrow(p) = q arrow(d).
+  $
+
+#define("Electric Dipole Moment")[
+  Let two charges $+q$ and $-q$ be separated by a distance $d$. Then the *dipole moment* of the system is:
+  $
+    arrow(p) = q arrow(d)
+  $
+  Such that $arrow(d)$ has magnitude $d$ and points from $-q$ to $+q$.
+]
+
+- An electric dipole is *permanent* if the two charges are fixed in place #footnote[That is, they will always remain a fixed distance $d$ apart], and *induced* (or _temporary_) if the two charges are free to move and are induced by an external electric field.
+
+- A permanent electric dipole can then be treated as a rigid "rod" which experiences a torque when placed in an external electric field $arrow(E)$. Specifically, the torque $arrow(tau)$ is given by: $
+  arrow(tau) = arrow(p) times arrow(E) = q arrow(d) times arrow(E).
+$
+
+  - Notice that the dipole experiences rotational equilibrium $tau = 0$ when $arrow(p)$ is parallel, or _aligned with_, the electric field. 
+
+  - The potential energy $U$ of a dipole in an electric field is given by: $
+      U = -arrow(p) dot arrow(E) = -q arrow(d) dot arrow(E).
+    $
+    It represents the work available to rotate the dipole from its current orientation to a state of zero potential energy (alignment).
+
+
+#pagebreak()

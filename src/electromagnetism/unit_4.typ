@@ -393,7 +393,8 @@ A *junction* is a point in a circuit where charges have to possibility of taking
   When we close the circuit, the battery will start pushing charge through the circuit, and the capacitor will start charging up. We call this *charging the capacitor*.
 ])
 
-As the capacitor charges, it creates a voltage drop across itself, which reduces the current flowing through the circuit. Eventually, the capacitor will become fully charged and the current will stop flowing.
+As the capacitor charges, it creates a voltage drop across itself, which reduces the current flowing through the circuit. *Eventually, the capacitor will become fully charged and the current will stop flowing.*
+That is, the capacitor will act as an open wire once it has reached capacity!
 
 By Kirchhoff's Loop Rule, we can write an equation for the circuit: $
   varcal(E) - Delta V_R - Delta V_C = 0 space ==> space varcal(E) = Delta V_R + Delta V_C.
