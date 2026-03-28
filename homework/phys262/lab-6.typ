@@ -128,7 +128,7 @@
 #let RC-calculated = R-eff-Mohm * 1e6 * C-measured-uF * 1e-6
 
 // ===== CSV Data =====
-#let raw-csv = csv("data.csv")
+#let raw-csv = csv("lab-6-data.csv")
 // skip header row; columns: frame, V, ln V
 #let csv-data = raw-csv.slice(1).map(row => {
   let frame = float(row.at(0))

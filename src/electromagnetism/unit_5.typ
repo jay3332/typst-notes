@@ -24,6 +24,8 @@
 
 - The Earth itself is a magnet. Technically, the Earth's North pole is a magnetic south pole, for the north end of a compass needle is attracted to it.
 
+#pagebreak()
+
 == Magnetic Fields and Magnetic Force
 
 - Magnetic fields are produced by moving charges (currents). They exert forces on moving charges.
@@ -50,21 +52,9 @@
 
 - The magnetic force does no work on the charge, since it is always perpendicular to the velocity of the charge.
 
-- If the charge is moving in a straight line (e.g. a straight wire), then the velocity is constant and we can write the magnetic force as: $
-   arrow(F)_b = (q arrow(L))/t times arrow(B) = I arrow(L) times arrow(B).
-$
-  - Here, $arrow(L)$ is the length of a wire segment, and if it takes the charge $q$ a time $t$ to pass through the wire segment, then the current $I = q slash t$.
-
-  - The magnetic force on a charge moving through a wire segment is proportional to the length of that segment, the current through that segment, and the magnetic field strength.
-
-  - For a wire that isn't straight, we can divide the wire into tiny segments of length $dd(arrow(s))$ to get:
-    $
-      dd(arrow(F)_b) = I dd(arrow(s)) times arrow(B) #h(1em) -> #h(1em) arrow(F)_b = integral_C I dd(arrow(s)) times arrow(B).
-    $
-
 - We can also calculate the magnetic force using current density $arrow(J)$: $
-  dd(arrow(F)_b) = (arrow(J) times arrow(B)) dd(V) #h(1em) -> #h(1em) arrow(F)_b = integral.triple_E (arrow(J) times arrow(B)) dd(V).
-$
+    dd(arrow(F)_b) = (arrow(J) times arrow(B)) dd(V) #h(1em) -> #h(1em) arrow(F)_b = integral.triple_E (arrow(J) times arrow(B)) dd(V).
+  $
 
 #define("Lorentz Force Law")[
   The *Lorentz force* $arrow(F)$ on a charge $q$ moving with velocity $arrow(v)$ in both electric and magnetic fields $arrow(E)$ and $arrow(B)$ is: $
@@ -77,6 +67,22 @@ The Lorentz force describes how charged particles behave in electromagnetic fiel
 #pagebreak()
 
 == Magnetic Fields of Current-Carrying Wires
+
+- If charge is moving in a straight line (e.g. a straight wire), then the velocity is constant and we can write the magnetic force as: $
+   arrow(F)_b = (q arrow(L))/t times arrow(B) = I arrow(L) times arrow(B).
+$
+  - Here, $arrow(L)$ is the length of a wire segment, and if it takes the charge $q$ a time $t$ to pass through the wire segment, then the current $I = q slash t$.
+
+  - The magnetic force on a charge moving through a wire segment is proportional to the length of that segment, the current through that segment, and the magnetic field strength.
+
+  - For a wire that isn't straight, we can divide the wire into tiny segments of length $dd(arrow(s))$ to get:
+    $
+      dd(arrow(F)_b) = I dd(arrow(s)) times arrow(B) #h(1em) -> #h(1em) arrow(F)_b = integral_C I dd(arrow(s)) times arrow(B).
+    $
+
+- A *coil* has no net magnetic force on it, since the magnetic forces on opposite sides of the coil cancel each other out ($display(integral.cont I dd(arrow(s)) times arrow(B)) = 0$). However, a coil can still _produce_ a magnetic field.
+
+- A *solenoid* is a long coil of wire (a wire formed from multiple coils). The magnetic field inside a solenoid is approximately uniform and parallel to the axis of the solenoid, while the magnetic field outside a solenoid is weak and non-uniform.
 
 #define("Biot-Savart Law")[
   Let $I$ be the current through a small wire segment $dd(arrow(s))$. The magnetic field $dd(arrow(B))$ at a point $P$ due to this wire segment is: $
@@ -138,7 +144,46 @@ $ where $theta$ is the angle between $dd(arrow(s))$ and $hat(r)$.
   
   - The magnetic field of a magnetic dipole decreases with distance by the cube ($B prop 1 slash r^3$), while the electric field of an electric dipole decreases with distance by the square ($B prop 1 slash r^2$).
 
-- The *magnetic dipole moment* $arrow(mu)$ of a magnetic dipole is a vector that points from the south pole to the north pole. 
+- The *magnetic dipole moment* $arrow(mu)$ of a magnetic dipole is a vector that points from the south pole to the north pole.
+
+  In a region enclosed by a current-carrying coil with area $A$, the magnetic dipole moment is:
+  $
+    arrow(mu) = I A hat(n) = I underbrace(arrow(A), A hat(n)).
+  $
+  where:
+  - $I$ is the current through the coil
+  - $A$ is the area of the coil
+  - $hat(n)$ is the unit vector perpendicular to the plane of the coil, pointing in the direction given by the right-hand rule (curl your hands in the direction of current, and your thumb will point in $hat(n)$)
+
+  For a solenoid with $N$ loops, the magnetic dipole moment is: $
+    arrow(mu) = N I arrow(A).
+  $
+
+- A magnetic field exerts a torque $arrow(tau)$ on a magnetic dipole: $
+    arrow(tau) = arrow(mu) times arrow(B).
+  $
+  The magnetic dipole will experience a torque that tends to align it with the magnetic field. 
+  
+  This means that there is the potential for work to be done to align a magnetic dipole with a magnetic field, given by the potential energy $U_mu$ of the dipole:
+  $
+    U_mu = -arrow(mu) dot arrow(B).
+  $
+
+=== Magnetic Flux and Gauss's Law for Magnetism
+
+#define("Magnetic Flux")[
+  The *magnetic flux* $Phi_B$ through a surface $S$ is defined as: $
+    Phi_B = integral.double_S arrow(B) dot dd(arrow(A)).
+  $
+]
+
+- The magnetic flux through a surface is a measure of the amount of magnetic field passing through that surface.
+
+- The units of magnetic flux are Webers (Wb), where $1 "Wb" = 1 "T" "m"^2$.
+
+- The magnetic flux through a closed surface is always zero, since magnetic field lines form closed loops. This is known as *Gauss's Law for Magnetism*: $
+    integral.surf_S arrow(B) dot dd(arrow(A)) = 0 #h(1em) -> #h(1em) grad dot arrow(B) = 0 "by the Divergence Theorem".
+  $
 
 == Ampere's Law
 
@@ -147,3 +192,4 @@ $ where $theta$ is the angle between $dd(arrow(s))$ and $hat(r)$.
     integral.cont_C arrow(B) dot dd(arrow(ell)) = mu_0 I_"enclosed"
   $
 ]
+

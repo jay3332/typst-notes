@@ -870,7 +870,7 @@ _Recall that ALL linear transformations can be represented as matrix transformat
 
 #pagebreak()
 
-#resource("Invertible Matrix Theorem")[
+#resource([Invertible Matrix Theorem <imt>])[
   Let $A$ be an $n times n$ matrix. The following statements are equivalent (i.e. all true or all false):
   + $A$ and/or $A^transpose$ is invertible.
   + $A$ is row-reducible to $I_n$.
@@ -1361,7 +1361,7 @@ Finally, by dividing each cofactor in the adjugate by $det A$, we get the entrie
 
 #pagebreak()
 
-== Basis Vectors, Rank, and Dimension
+== Basis Vectors, Rank, & Dimension
 
 #define("Basis")[
   A *basis* $varcal(B)$ of a vector space $V$ is a linearly independent subset of $V$ such that $varcal(B)$ spans $V$:
@@ -1373,30 +1373,62 @@ Finally, by dividing each cofactor in the adjugate by $det A$, we get the entrie
 
 - A basis for the column space of a matrix $A$ can be found by taking the columns of $A$ that correspond to the pivot columns in the row echelon form of $A$. That is, _a basis for $col(A)$ are the pivot columns of $A$_.
 
+  _*Note:* the basis is formed from the columns in the original $A$, not the reduced form of $A$!_
+
 #define("Dimension of a Vector Space")[
-  The *dimension* of a vector space $H$ is the number of vectors in a basis for $H$. That is, it is the minimum number of vectors needed to span $H$.
-  We denote the dimension of $H$ as $dim(H)$.
+  The *dimension* of a vector space $V$ is the number of vectors in a basis for $V$. That is, it is the minimum number of vectors needed to span $V$.
+  We denote the dimension of $V$ as $dim(V)$.
+
+  If $dim(V) = n$, we call the vector space $V$ _$n$-dimensional_.
 ]
 
-- It holds that although a vector space may have many different bases, all bases for a vector space have the same number of vectors. In other words, _all bases for a vector space have the same dimension_.
+- It holds that although a vector space may have many different bases, *all bases for a vector space have the same number of vectors*. In other words, _a vector space has a well-defined dimension_. \
+  This is referred to as the *Unique Size Theorem*.
 
   - If we can find _any_ linearly independent set of $n$ vectors $S$ in a vector space $V$ with dimension $n$, then $S$ is a basis for $V$ (i.e. we imply that $S$ spans $V$) 
 
   - If we can find _any_ spanning set of $n$ vectors $S$ in a vector space $V$ with dimension $n$, then $S$ is a basis for $V$ (i.e. we imply linear independence of $S$)
 
+    Collectively, the above two properties are known as the *Basis Theorem*.
+
+- For any subspace $H$ of $V$: 
+  - It holds that $dim(H) <= dim(V)$.
+    - The smallest subspace is ${bf(0)}$, which has dimension $0$ because its basis is the empty set $emptyset$.
+
+  - For any basis for $H$, say $varcal(B)_H$, there exists a basis for $V$, say $varcal(B)_V$, which is a superset of $varcal(B)_H$. \
+    In other words, we can always find a basis for $V$ by "extending" any basis for $H$:  
+    $
+      varcal(B)_H subset.eq varcal(B)_V "where" varcal(B)_H "is a basis for" H "and" varcal(B)_V "is a basis for" V.
+    $
+
 - The dimension of $RR^n$ is simply $n$, as the standard unit vectors $bf(e)_1, bf(e)_2, ..., bf(e)_n$ form a basis for $RR^n$.
+
+#let row = "row"
 
 #define("Rank and Nullity of a Matrix")[
   The *rank* of a matrix $A$, denoted $rank(A)$, is the dimension of the column space of $A$ (or equivalently, the row space of $A$). It is the number of pivot positions in $A$:
   $
-    rank(A) = dim(col(A)) = "number of pivot positions in" A.
+    rank(A) = dim(col(A)) = dim(row(A)) = "number of pivot positions in" A.
   $
 
-  The *nullity* of a matrix $A$, denoted $"nullity"(A)$, is the dimension of the null space of $A$. It is the number of free variables in the homogeneous equation $A bf(x) = bf(0)$:
+  The *nullity* of a matrix $A$, denoted $"nullity"(A)$, is the dimension of the null space of $A$. It is the number of non-pivot columns in $A$ (which correspond to the number of free variables in the homogeneous equation $A bf(x) = bf(0)$):
   $
-    "nullity"(A) = dim(nul(A)) = "number of free variables in" A.
+    "nullity"(A) = dim(nul(A)) = "number of non-pivot columns in" A.
   $
 ]
+
+If $A$ is an $m times n$ matrix, then:
+- $rank(A) = rank(A^transpose)$.
+- $rank(A) <= min(m, n)$.
+- $rank(A B) <= min(rank(A), rank(B))$ for some $n times p$ matrix $B$.
+- $rank(A) = n$ means:
+  - the equation $A bf(x) = bf(0)$ has only the trivial solution $bf(x) = bf(0)$, so
+    $nul(A) = {bf(0)}$
+  - the transformation $bf(x) |-> A bf(x)$ is one-to-one.
+- $rank(A) = m$ means: 
+  - the equation $A bf(x) = bf(b)$ has a solution for every $bf(b) in RR^m$.
+  - the transformation $bf(x) |-> A bf(x)$ is onto.
+
 
 #define("Rank-Nullity Theorem")[
   Let $A$ be an $m times n$ matrix. Then:
@@ -1407,11 +1439,25 @@ Finally, by dividing each cofactor in the adjugate by $det A$, we get the entrie
   This is simply saying that "_\# pivot columns in $A$ + \# non-pivot columns in $A$ = \# columns in $A$_."
 ]
 
+#resource([Invertible Matrix Theorem _(continued)_])[
+  Let $A$ be an $n times n$ matrix. Then the following statements are equivalent:
+  + Everything from the #link(<imt>)[The first part of the Invertible Matrix Theorem].
+  + The columns of $A$ form a basis for $RR^n$.
+  + The rows of $A$ form a basis for $RR^n$.
+  + $col(A) = row(A) = RR^n$.
+  + $rank(A) = n.$
+  + $nul(A) = {bf(0)}.$
+  + $"nullity"(A) = 0.$
+]
+
 #pagebreak()
 
-== Change of Basis
+== Basis Coordinates & Change of Basis
 
-- The *standard basis vectors* for $RR^n$ are the vectors $bf(e)_1, bf(e)_2, ..., bf(e)_n$.
+=== Basis Coordinates
+
+- The *standard basis* for $RR^n$ is $varcal(E) = {bf(e)_1, bf(e)_2, ..., bf(e)_n}$.
+  - We call $bf(e)_1, bf(e)_2, ..., bf(e)_n$ the *standard basis vectors* for $RR^n$.
 
 - Given a basis $varcal(B) = {b_1, b_2, ..., b_n}$ for a vector space $V$, _any_ vector in the vector space can be written as a *unique* linear combination of the basis vectors. This the *Unique Representation Theorem*.
 
@@ -1421,14 +1467,42 @@ Finally, by dividing each cofactor in the adjugate by $det A$, we get the entrie
     $
     In which case we can call the scalars $c_1, c_2, ..., c_n$ the *coordinates* of $bf(v)$ relative to the basis $varcal(B)$. The *coordinate vector* of $bf(v)$ relative to $varcal(B)$ is denoted $[bf(v)]_varcal(B)$ and is given by:
     $
-      [bf(v)]_varcal(B) = mat(c_1; c_2; ; c_n).
+      [bf(v)]_varcal(B) = vec(c_1, c_2, dots.v, c_n).
     $
 
   - The linear transformation $bf(v) |-> [bf(v)]_varcal(B)$ is the *change of basis transformation* from the standard basis to the basis $varcal(B)$. It holds that this transformation is *one-to-one and onto* (bijective). We could also say that the change of basis transformation is an *isomorphism* between $V$ and $RR^n$.
 
     - This fact allows us to treat any vector space as if it were $RR^n$ by using the change of basis transformation to convert vectors in the vector space to their coordinate vectors in $RR^n$.
 
+=== Changing Between Bases
 
+- Given two bases $varcal(B) = {b_1, b_2, ..., b_n}$ and $varcal(C) = {c_1, c_2, ..., c_n}$ for a vector space $V$, the *change of basis matrix* from $varcal(B)$ to $varcal(C)$, usually denoted $P$, is the matrix whose columns are the coordinate vectors of the basis vectors of $varcal(B)$ relative to the basis $varcal(C)$:
+  $
+    P_(varcal(B) -> varcal(C)) = mat([b_1]_varcal(C), [b_2]_varcal(C), ..., [b_n]_varcal(C))
+  $
+
+  For example, the change of basis matrix from $varcal(B)$ to the standard basis $varcal(E)$ is just the columns of $varcal(B)$:
+  $
+    P_(varcal(B) -> varcal(E)) = mat(b_1, b_2, ..., b_n).
+  $
+
+- Given a $varcal(B)$-coordinate $[bf(v)]_varcal(B)$, we can find the $varcal(C)$-coordinate $[bf(v)]_varcal(C)$ by multiplying the change of basis matrix from $varcal(B)$ to $varcal(C)$ by the $varcal(B)$-coordinate:
+  $
+    [bf(v)]_varcal(C) = P_(varcal(B) -> varcal(C)) [bf(v)]_varcal(B).
+  $
+
+  *Change of basis matrices are always invertible*, and the inverse of the change of basis matrix from $varcal(B)$ to $varcal(C)$ is the change of basis matrix from $varcal(C)$ to $varcal(B)$:
+  $
+    P_(varcal(C) -> varcal(B)) = (P_(varcal(B) -> varcal(C)))^(-1).
+  $
+
+== Difference Equations
+
+=== Application to Discrete Signal Processing
+
+A *signal* can be represented as a sequence of numbers (they can represent the weights of wave frequencies, for example).
+
+Given a set of $n$ signals, 
 
 #pagebreak()
 

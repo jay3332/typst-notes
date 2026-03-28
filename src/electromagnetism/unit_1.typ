@@ -1101,14 +1101,14 @@ $
 
 - An _electric dipole_ consists of two equal and opposite charges of magnitude $q$ separated by a distance $d$.
 
-- The *dipole moment* $arrow(p)$ is a vector that points from the negative charge to the positive charge, with magnitude $p = q d$.
+- The *electric dipole moment* $arrow(p)$ is a vector that points from the negative charge to the positive charge, with magnitude $p = q d$.
 
   - Thus, the quantity $d$ is often expressed as $arrow(d)$, with its direction pointing from the negative charge to the positive charge. This way, we can express the dipole moment as: $
     arrow(p) = q arrow(d).
   $
 
 #define("Electric Dipole Moment")[
-  Let two charges $+q$ and $-q$ be separated by a distance $d$. Then the *dipole moment* of the system is:
+  Let two charges $+q$ and $-q$ be separated by a distance $d$. Then the *electric dipole moment* of the system is:
   $
     arrow(p) = q arrow(d)
   $
@@ -1123,8 +1123,8 @@ $
 
   - Notice that the dipole experiences rotational equilibrium $tau = 0$ when $arrow(p)$ is parallel, or _aligned with_, the electric field. 
 
-  - The potential energy $U$ of a dipole in an electric field is given by: $
-      U = -arrow(p) dot arrow(E) = -q arrow(d) dot arrow(E).
+  - The potential energy $U_p$ of a dipole in an electric field is given by: $
+      U_p = -arrow(p) dot arrow(E) = -q arrow(d) dot arrow(E).
     $
     It represents the work available to rotate the dipole from its current orientation to a state of zero potential energy (alignment).
 
