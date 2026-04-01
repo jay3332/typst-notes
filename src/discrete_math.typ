@@ -599,8 +599,49 @@ $
     n &"mod" &d &= n - d floor(n / d).
   $
 
-
 = Sequences, Induction, & Recursion
+
+Sum of the first $n$ positive integers:
+$
+  sum_(i = 1)^n i = n(n + 1) / 2.
+$
+
+Sum of the integers from $m$ to $n$:
+$
+  sum_(i = m)^n i = n(n + 1)/2 - m(m + 1)/2 = ((n - m + 1)(m + n)) / 2.
+$
+
+Sum of geometric sequence starting at $k = 0$:
+$
+  sum_(k = 0)^n r^k = (r^(n + 1) - 1) / (r - 1), "for" r != 1.
+$
+
+Sum of geometric sequence from $k = m$ to $k = n$:
+$
+  sum_(k = m)^n r^k = (r^(n + 1) - r^m) / (r - 1), "for" r != 1.
+$
+
+Combination formula, "n choose r" (number of subsets of size $r$ from a set of size $n$):
+$
+  ""^n C_r = mat(n; r) = n! / (r! (n - r)!) = (n (n - 1) ... (n - r + 1)) / r!.
+$
+
+Permutation formula, "n permute r" (number of ordered arrangements of size $r$ from a set of size $n$):
+$
+  ""^n P_r = ""^n C_r r! = n! / (n - r)! = n (n - 1) ... (n - r + 1).
+$
+
+
+$
+  
+  f_(k+1) = 7f_k - 10f_(k-1) &= 7(3 dot 2^k + 2 dot 5^k) - 10 (3 dot 2^(k-1) + 2 dot 5^(k-1)) \
+  &= 21 dot 2^k + 14 dot 5^k - 30 dot 2^(k-1) - 20 dot 5^(k-1) \
+  &= 21 dot 2^k + 14 dot 5^k - 30 dot 2^k dot 1/2 - 20 dot 5^k dot 1/5 \
+  &= 21 dot 2^k + 14 dot 5^k - 15 dot 2^k - 4 dot 5^k \
+  &= 6 dot 2^k + 10 dot 5^k \
+  &= 3 dot 2 dot 2^k + 2 dot 5 dot 5^k \
+  &= 3 dot 2^(k+1) + 2 dot 5^(k+1).
+$
 
 = Set Theory
 

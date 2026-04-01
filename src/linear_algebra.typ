@@ -1456,10 +1456,14 @@ If $A$ is an $m times n$ matrix, then:
 
 === Basis Coordinates
 
-- The *standard basis* for $RR^n$ is $varcal(E) = {bf(e)_1, bf(e)_2, ..., bf(e)_n}$.
+- The *standard basis* for $RR^n$ is an ordered basis $varcal(E) = (bf(e)_1, bf(e)_2, ..., bf(e)_n)$.
   - We call $bf(e)_1, bf(e)_2, ..., bf(e)_n$ the *standard basis vectors* for $RR^n$.
 
-- Given a basis $varcal(B) = {b_1, b_2, ..., b_n}$ for a vector space $V$, _any_ vector in the vector space can be written as a *unique* linear combination of the basis vectors. This the *Unique Representation Theorem*.
+#note[
+  An *ordered basis* is a basis represented as an ordered tuple rather than a set, such that the order of coordinates relative to that basis is well-defined.
+]
+
+- Given an ordered basis $varcal(B) = (b_1, b_2, ..., b_n)$ for a vector space $V$, _any_ vector in the vector space can be written as a *unique* linear combination of the basis vectors. This the *Unique Representation Theorem*.
 
   - If $bf(v) in V$, then there exist _unique_ scalars $c_1, c_2, ..., c_n$ such that:
     $
@@ -1470,41 +1474,120 @@ If $A$ is an $m times n$ matrix, then:
       [bf(v)]_varcal(B) = vec(c_1, c_2, dots.v, c_n).
     $
 
-  - The linear transformation $bf(v) |-> [bf(v)]_varcal(B)$ is the *change of basis transformation* from the standard basis to the basis $varcal(B)$. It holds that this transformation is *one-to-one and onto* (bijective). We could also say that the change of basis transformation is an *isomorphism* between $V$ and $RR^n$.
+  - The linear transformation $bf(v) |-> [bf(v)]_varcal(B)$ is the *change of basis transformation* from the standard basis $varcal(E)$ to the basis $varcal(B)$. It holds that this transformation is *one-to-one and onto* (bijective). We could also say that the change of basis transformation is an *isomorphism* between $V$ and $RR^n$.
 
     - This fact allows us to treat any vector space as if it were $RR^n$ by using the change of basis transformation to convert vectors in the vector space to their coordinate vectors in $RR^n$.
 
+#example("Finding Coordinates Relative to a Basis")[
+  What is the coordinate vector of $bf(v) = vec(3, 2)$ relative to the basis $varcal(B) = (vec(1, 0), vec(1, 1))$?
+  #lorange
+  We can write $bf(v)$ as a linear combination of the basis vectors:
+  $
+    bf(v) = c_1 vec(1, 0) + c_2 vec(1, 1) = vec(c_1 + c_2, c_2) = vec(3, 2).
+  $
+  Solving this system gives us $c_1 = 1$ and $c_2 = 2$. Thus:
+  $
+    [bf(v)]_varcal(B) = cgreen(vec(1, 2)).
+  $
+]
+
 === Changing Between Bases
 
-- Given two bases $varcal(B) = {b_1, b_2, ..., b_n}$ and $varcal(C) = {c_1, c_2, ..., c_n}$ for a vector space $V$, the *change of basis matrix* from $varcal(B)$ to $varcal(C)$, usually denoted $P$, is the matrix whose columns are the coordinate vectors of the basis vectors of $varcal(B)$ relative to the basis $varcal(C)$:
+- Given two ordered bases $varcal(B) = (b_1, b_2, ..., b_n)$ and $varcal(C) = (c_1, c_2, ..., c_n)$ for a vector space $V$, the *change-of-basis matrix* from $varcal(B)$ to $varcal(C)$, usually denoted $P$, is the matrix whose columns are the coordinate vectors of the basis vectors of $varcal(B)$ relative to the basis $varcal(C)$:
   $
     P_(varcal(B) -> varcal(C)) = mat([b_1]_varcal(C), [b_2]_varcal(C), ..., [b_n]_varcal(C))
   $
 
-  For example, the change of basis matrix from $varcal(B)$ to the standard basis $varcal(E)$ is just the columns of $varcal(B)$:
+  For example, the change-of-basis matrix from $varcal(B)$ to the standard basis $varcal(E)$ is just the columns of $varcal(B)$:
   $
     P_(varcal(B) -> varcal(E)) = mat(b_1, b_2, ..., b_n).
   $
 
-- Given a $varcal(B)$-coordinate $[bf(v)]_varcal(B)$, we can find the $varcal(C)$-coordinate $[bf(v)]_varcal(C)$ by multiplying the change of basis matrix from $varcal(B)$ to $varcal(C)$ by the $varcal(B)$-coordinate:
+- Given a $varcal(B)$-coordinate $[bf(v)]_varcal(B)$, we can find the $varcal(C)$-coordinate $[bf(v)]_varcal(C)$ by multiplying the change-of-basis matrix from $varcal(B)$ to $varcal(C)$ by the $varcal(B)$-coordinate:
   $
     [bf(v)]_varcal(C) = P_(varcal(B) -> varcal(C)) [bf(v)]_varcal(B).
   $
 
-  *Change of basis matrices are always invertible*, and the inverse of the change of basis matrix from $varcal(B)$ to $varcal(C)$ is the change of basis matrix from $varcal(C)$ to $varcal(B)$:
+  *Change-of-basis matrices are always invertible*, and the inverse of the change-of-basis matrix from $varcal(B)$ to $varcal(C)$ is the change-of-basis matrix from $varcal(C)$ to $varcal(B)$:
   $
     P_(varcal(C) -> varcal(B)) = (P_(varcal(B) -> varcal(C)))^(-1).
   $
 
-== Difference Equations
+#example("Changing Coordinates Between Bases")[
+  Let $varcal(B) = (vec(1, 0), vec(1, 1))$ and $varcal(C) = (vec(2, 1), vec(0, k))$ be two bases for $RR^2$, for some $k in RR$.
+  
+  #set enum(numbering: "a.")
 
-=== Application to Discrete Signal Processing
+  + What is the change-of-basis matrix from $varcal(B)$ to $varcal(C)$?
+  + What is the change-of-basis matrix from $varcal(C)$ to $varcal(B)$?
+  + If the $varcal(B)$-coordinate of a vector is $vec(1, 2)$, what is its $varcal(C)$-coordinate?
 
-A *signal* can be represented as a sequence of numbers (they can represent the weights of wave frequencies, for example).
+  #lorange
 
-Given a set of $n$ signals, 
+  + #[
+
+  ]
+]
 
 #pagebreak()
+
+== Difference Equations
+
+#boxed[
+  _Recall:_
+
+    - The set of solutions to $A bf(x) = bf(0)$ form a vector space. \ The set of solutions to $A bf(x) = bf(b)$, where $bf(b) != bf(0)$, can _never_ be vector space.
+
+    - If $bf(x) = bf(x)_1$ and $bf(x) = bf(x)_2$ are solutions to $A bf(x) = bf(b)$, then $bf(x)_1 - bf(x)_2$ is _also_ a solution to $A bf(x) = bf(0)$. \ That is, $bf(x)_1 - bf(x)_2 in nul(A)$.
+
+    - The set of all solutions to a non-homogeneous equation $A bf(x) = bf(b)$ can be found by finding one solution $bf(x) = bf(p)$ and then adding any solution to $A bf(x)_0 = bf(0)$:
+    $
+      {bf(x) | A bf(x) = bf(b)} = {bf(p) + bf(x)_0 | A bf(x)_0 = bf(0)}.
+    $
+]
+
+
+A *linear recurrence* is a sequence where each term is a linear combination of the previous terms. 
+For example, the sequence $(2, 4, 8, 16, ...)$ is a linear recurrence.
+
+Take the linear recurrence given by the *difference equation*: $
+  y_(k + 1) = 2 y_k #h(1em) "or" #h(1em) y_(k + 1) - 2 y_k = 0.
+$
+
+Let $SS$ be the set of linear recurrences of the form $y_(k + 1) = 2y_k$. Define the transformation $T: SS -> SS$ by $y_k |-> y_(k + 1) - 2 y_k$, such that $ker(T) = {bf(y) in SS | y_(k + 1) = 2 y_k}$. That is, the kernel of our transformation is the set of solutions to the difference equation.
+
+Specifically, the kernel is the set of all linear recurrences where each term is exactly double the previous term, i.e. recurrences of the form $bf(y) = {y_k = a 2^k}$ (for $a$ is some constant/"initial value").
+
+In fact, we can say that the kernel is _spanned by_ the basis ${2^k}$, and that $ker(T)$ is a $1$-dimensional subspace of $SS$.
+
+The set of solutions to an $n$#th order homogeneous linear recurrence form an $n$-dimensional vector space. 
+
+#define("Solutions to a Homogeneous Linear Recurrence")[
+  To find the set of solutions to an $n$#th order linear recurrence of the form:
+  $
+    y_(k + n) + a_(n - 1) y_(k + n - 1) + a_(n - 2) y_(k + n - 2) + ... + a_0 y_k = 0,
+  $
+  Find the roots ${lambda_1, lambda_2, ..., lambda_n}$ of the *characteristic polynomial*:
+  $
+    lambda^n + a_(n - 1) lambda^(n - 1) + a_(n - 2) lambda^(n - 2) + ... + a_0.
+  $
+  Then, a basis for the set of solutions to the linear recurrence is:
+  $
+    varcal(B) = {lambda_1^k, lambda_2^k, ..., lambda_n^k}.
+  $
+  That is, if $bf(y)$ is a solution to the linear recurrence, then $bf(y) in span(varcal(B))$.
+]
+
+- in general: find the set of solutions to homogeneous case, then find a constant solution for nonhomoengeous, then add together.
+
+A set of linear recurrences is *linearly independent* if each set of corresponding elements in each recurrence is a linearly independent set. That is, we 
+
+The *Casorati matrix* is a matrix used to determine the linear independence of a set of linear recurrences. Given linear recurrences $bf(a), bf(b), bf(c)$, the Casorati matrix starting at index $k$ is defined as:
+  $
+    C_k = mat(a_k, b_k, c_k; a_(k + 1), b_(k + 1), c_(k + 1); a_(k + 2), b_(k + 2), c_(k + 2)).
+  $
+
+
 
 = Eigeneverything
 

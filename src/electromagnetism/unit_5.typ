@@ -29,6 +29,7 @@
 == Magnetic Fields and Magnetic Force
 
 - Magnetic fields are produced by moving charges (currents). They exert forces on moving charges.
+  - _Moving charges create magnetic fields. Magnetic fields exert forces on moving charges. This is the fundamental principle of electromagnetism._
 
 - The magnetic field is represented by the vector $arrow(B)$, measured in _Teslas_ (T).
   - A 1 Tesla magnetic field exerts a force of 1 Newton on a 1 Coulomb point charge moving at $1 "m/s"$ *perpendicular* to the field. \
@@ -66,7 +67,7 @@ The Lorentz force describes how charged particles behave in electromagnetic fiel
 
 #pagebreak()
 
-== Magnetic Fields of Current-Carrying Wires
+=== Magnetic Force on Current-Carrying Wires
 
 - If charge is moving in a straight line (e.g. a straight wire), then the velocity is constant and we can write the magnetic force as: $
    arrow(F)_b = (q arrow(L))/t times arrow(B) = I arrow(L) times arrow(B).
@@ -84,51 +85,21 @@ $
 
 - A *solenoid* is a long coil of wire (a wire formed from multiple coils). The magnetic field inside a solenoid is approximately uniform and parallel to the axis of the solenoid, while the magnetic field outside a solenoid is weak and non-uniform.
 
-#define("Biot-Savart Law")[
-  Let $I$ be the current through a small wire segment $dd(arrow(s))$. The magnetic field $dd(arrow(B))$ at a point $P$ due to this wire segment is: $
-    dd(arrow(B)) = (mu_0)/(4pi) (I dd(arrow(s)) times hat(r))/r^2
-  $
-  where:
-  - $mu_0$ is the *permeability of free space*
-  - $hat(r)$ is the unit vector from the wire segment to point $P$
-  - $r$ is the distance from the wire segment to point $P$
+=== Magnetic Flux and Gauss's Law for Magnetism
 
-  If a wire is curved in a path $C$, then the total magnetic field at point $P$ is: $
-    arrow(B) = (mu_0)/(4pi) integral_C (I dd(arrow(s)) times hat(r))/r^2.
+#define("Magnetic Flux")[
+  The *magnetic flux* $Phi_B$ through a surface $S$ is defined as: $
+    Phi_B = integral.double_S arrow(B) dot dd(arrow(A)).
   $
 ]
 
-By the definition of the cross product, the magnitude of the magnetic field contribution from the wire segment is: $
-  abs(dd(arrow(B))) = dd(B) = (mu_0)/(4pi) (I dd(arrow(s)) sin theta)/r^2
-$ where $theta$ is the angle between $dd(arrow(s))$ and $hat(r)$.
+- The magnetic flux through a surface is a measure of the amount of magnetic field passing through that surface.
 
-#example("Magnetic Field from a Straight Current-Carrying Wire")[
-  A long, straight wire carries a current $I$. What is the magnetic field $arrow(B)$ at a point $P$ a distance $r$ away from the wire?
+- The units of magnetic flux are Webers (Wb), where $1 "Wb" = 1 "T" "m"^2$.
 
-  #lorange
-
-  #grid(
-    columns: (3fr, 1.6fr),
-    align: (horizon, center),
-    [
-      #align(center)[
-        #cetz.canvas({
-          import cetz.draw: *
-
-
-        })
-      ]
-    ],
-    [
-      A long, straight wire carries a current $I$. What is the magnetic field $arrow(B)$ at a point $P$ a distance $r$ away from the wire?
-    ]
-  )
-
-  Consider a small wire segment $dd(ell)$ at an angle $theta$ from the horizontal axis. The distance from this wire segment to point $P$ is $r / (cos theta)$. Thus, by the Biot-Savart Law: $
-    dd(B) = (mu_0)/(4pi) (I dd(ell) sin theta)/(r/(cos theta))^2 = (mu_0 I)/(4pi r^2) dd(ell) sin theta cos^2 theta.
+- The magnetic flux through a closed surface is always zero, since magnetic field lines form closed loops. This is known as *Gauss's Law for Magnetism*: $
+    integral.surf_S arrow(B) dot dd(arrow(A)) = 0 #h(1em) -> #h(1em) grad dot arrow(B) = 0 "by the Divergence Theorem".
   $
-
-]
 
 #pagebreak()
 
@@ -169,27 +140,98 @@ $ where $theta$ is the angle between $dd(arrow(s))$ and $hat(r)$.
     U_mu = -arrow(mu) dot arrow(B).
   $
 
-=== Magnetic Flux and Gauss's Law for Magnetism
+In summary,
+- if we place a current-carrying coil in a magnetic field, it will experience a torque that tends to align it with the field.
+- the potential energy associated with this dipole is the work required to align the dipole with the field.
 
-#define("Magnetic Flux")[
-  The *magnetic flux* $Phi_B$ through a surface $S$ is defined as: $
-    Phi_B = integral.double_S arrow(B) dot dd(arrow(A)).
+#pagebreak()
+
+== Biot-Savart Law
+
+Whereas the formulas above allow us to find the magnetic force on a moving charge in an _existing_ magnetic field (the first part of electromagnetism), moving charges also create their _own_ magnetic fields (the second part of electromagnetism). 
+
+The *Biot-Savart Law* allows us to calculate the magnetic field _created_ by a moving charge or current.
+
+#define("Biot-Savart Law")[
+  Let $I$ be the current through a small wire segment $dd(arrow(s))$. The magnetic field $dd(arrow(B))$ at a point $P$ due to this wire segment is: $
+    dd(arrow(B)) = (mu_0)/(4pi) (I dd(arrow(s)) times hat(r))/r^2
+  $
+  where:
+  - $mu_0$ is the *permeability of free space*
+  - $hat(r)$ is the unit vector from the wire segment to point $P$
+  - $r$ is the distance from the wire segment to point $P$
+
+  If a wire is curved in a path $C$, then the total magnetic field at point $P$ is: $
+    arrow(B) = (mu_0)/(4pi) integral_C (I dd(arrow(s)) times hat(r))/r^2.
+  $
+
+  For point charge $q$ with velocity $arrow(v)$, the Biot-Savart Law can be simplified as: $
+    arrow(B) = (mu_0)/(4pi) (q arrow(v) times hat(r))/r^2.
   $
 ]
 
-- The magnetic flux through a surface is a measure of the amount of magnetic field passing through that surface.
+By the definition of the cross product, the magnitude of the magnetic field contribution from the wire segment is: $
+  abs(dd(arrow(B))) = dd(B) = (mu_0)/(4pi) (I dd(s) sin theta)/r^2
+$ where $theta$ is the angle between $dd(arrow(s))$ and $hat(r)$.
 
-- The units of magnetic flux are Webers (Wb), where $1 "Wb" = 1 "T" "m"^2$.
+#example("Magnetic Field from a Straight Current-Carrying Wire")[
+  A long, straight wire carries a current $I$. What is the magnetic field $arrow(B)$ at a point $P$ a distance $r$ away from the wire?
 
-- The magnetic flux through a closed surface is always zero, since magnetic field lines form closed loops. This is known as *Gauss's Law for Magnetism*: $
-    integral.surf_S arrow(B) dot dd(arrow(A)) = 0 #h(1em) -> #h(1em) grad dot arrow(B) = 0 "by the Divergence Theorem".
+  #lorange
+
+  #grid(
+    columns: (3fr, 1.6fr),
+    align: (horizon, center),
+    [
+      #align(center)[
+        #cetz.canvas({
+          import cetz.draw: *
+
+
+        })
+      ]
+    ],
+    [
+      A long, straight wire carries a current $I$. What is the magnetic field $arrow(B)$ at a point $P$ a distance $r$ away from the wire?
+    ]
+  )
+
+  Consider a small wire segment $dd(ell)$ at an angle $theta$ from the horizontal axis. The distance from this wire segment to point $P$ is $r / (cos theta)$. Thus, by the Biot-Savart Law: $
+    dd(B) = (mu_0)/(4pi) (I dd(ell) sin theta)/(r/(cos theta))^2 = (mu_0 I)/(4pi r^2) dd(ell) sin theta cos^2 theta.
   $
+
+]
+
+#pagebreak()
 
 == Ampere's Law
 
+The Biot-Savart Law allows us to calculate the magnetic field created by a current, but it can be difficult to apply in practice.
+
+*Ampere's Law* provides an alternative way to calculate magnetic fields, especially for cases with high symmetry.
+
 #define("Ampere's Law")[
   $
-    integral.cont_C arrow(B) dot dd(arrow(ell)) = mu_0 I_"enclosed"
+    integral.cont_C arrow(B) dot dd(arrow(s)) = mu_0 I_"enclosed"
   $
+  where:
+  - $C$ is a closed, often imaginary loop (called an *Amperian loop*)
+  - $I_"enclosed"$ is the current passing through the area enclosed by loop $C$
+]
+
+#example("Magnetic field produced by a straight current-carrying wire")[
+  A long, straight wire carries a current $I$. What is the magnetic field $arrow(B)$ at a point $P$ a distance $r$ away from the wire?
+
+  #lorange
+
+  Create a circular Amperian loop of radius $r$ centered on the wire. By symmetry, the magnetic field $arrow(B)$ has the same magnitude at every point on the loop and is tangent to the loop, so $B$ is constant.
+  
+  Thus, by Ampere's Law: $
+    integral.cont_C arrow(B) dot dd(arrow(s)) = B integral.cont_C dd(s) = B (2pi r) = mu_0 I.
+  $
+  Solving for $B$ gives: $
+    cgreen(B = (mu_0 I)/(2pi r)).
+  $
+  This is the same result we would get from the Biot-Savart Law, but Ampere's Law is much easier to apply in this case due to the symmetry of the problem. $qed$
 ]
 

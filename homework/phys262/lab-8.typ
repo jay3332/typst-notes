@@ -139,3 +139,94 @@
   
       The time constant is independent of voltage, so the time constant will not change: $ tau' = tau. $
   ]
+
+#pagebreak()
+
+= Procedure
+#lthin
+
+#let R1-ohms = 5600
+#let C1-uF = 0.1
+#let C1-F = C1-uF * 1e-6
+
+#let percent-error(observed, calculated) = nfmt(calc.abs(observed - calculated) / calc.abs(calculated) * 100, digits: 2)
+
+#let percent-difference(a, b) = nfmt(calc.abs(a - b) / ((calc.abs(a) + calc.abs(b)) / 2) * 100, digits: 2)
+
+#let half-life1-observed-ms = 0.4
+#let half-life1-calculated-ms = calc.ln(2) * R1-ohms * C1-F * 1000
+
+
+#set enum(start: 1)
+
++ An $R C$ circuit was constructed with a $#unit-Ohm(R1-ohms)$ resistor and a $#unit-uF(C1-uF)$ capacitor. 
+
+  *Observed half-life:* $ t_(1 slash 2, "observed") = 1 "ms"/"division" dot 0.4 "divisions" = #cgreen(unit-ms(half-life1-observed-ms)). $
+
+  *Calculated half-life:* $ t_(1 slash 2, "calculated") = R C ln 2 = #unit-Ohm(R1-ohms) dot #unit-uF(C1-uF) dot ln 2 = #cgreen(qty(half-life1-calculated-ms, 3, unit-ms)). $
+
+  *Percent error:* #percent-error(
+    half-life1-observed-ms,
+    half-life1-calculated-ms
+  )%
+
+#let R2-ohms = 10000
+#let half-life2-observed-ms = 0.6
+#let half-life2-calculated-ms = calc.ln(2) * R2-ohms * C1-F * 1000
+
++ Switching resistance and capacitance:
+
+  #set enum(numbering: "a.")
+
+  + The old resistor is swapped with a #unit-Ohm(R2-ohms) resistor, and the same #unit-uF(C1-uF) capacitor is used.
+
+    *Observed half-life:* $ t_(1 slash 2, "observed") = 1 "ms"/"division" dot 0.6 "divisions" = #cgreen(unit-ms(half-life2-observed-ms)). $
+
+    *Calculated half-life:* $ t_(1 slash 2, "calculated") = R C ln 2 = #unit-Ohm(R2-ohms) dot #unit-uF(C1-uF) dot ln 2 = #cgreen(qty(half-life2-calculated-ms, 3, unit-ms)). $
+
+    *Percent error:* #percent-error(
+      half-life2-observed-ms,
+      half-life2-calculated-ms
+    )%
+
+  #let C2-uF = 0.05
+  #let C2-F = C2-uF * 1e-6
+
+  #let half-life3-observed-ms = 0.36
+  #let half-life3-calculated-ms = calc.ln(2) * R2-ohms * C2-F * 1000
+
+  + The old capacitor is swapped with a #unit-uF(C2-uF) capacitor #footnote[Since there was no #unit-uF(0.05) capacitor, we connected two #unit-uF(0.1) capacitors in series to get an equivalent capacitance of #unit-uF(0.05).], and the #unit-Ohm(R2-ohms) resistor from part (a) is used. We chose a capacitance that was half of the previous capacitance to "reverse" the effect of (approximately) doubling the resistance in part (a).
+
+    *Observed half-life:* $ t_(1 slash 2, "observed") = 1 "ms"/"division" dot 0.36 "divisions" = #cgreen(unit-ms(half-life3-observed-ms)). $
+
+    *Calculated half-life:* $ t_(1 slash 2, "calculated") = R C ln 2 = #unit-Ohm(R2-ohms) dot #unit-uF(C2-uF) dot ln 2 = #cgreen(qty(half-life3-calculated-ms, 3, unit-ms)). $
+
+    *Percent error:* #percent-error(
+      half-life3-observed-ms,
+      half-life3-calculated-ms
+    )%
+
+#let half-life4-observed-ms = 0.10
+#let R-partial-calculated = half-life4-observed-ms / 1000 / (calc.ln(2) * C2-F)
+#let R-partial-measured = 3360
+
++ The resistor is replaced with a potentiometer with maximum resistance of #unit-Ohm(10000). At an arbitrary position of the potentiometer, the observed half-life is:
+  $
+    t_(1 slash 2) approx 0.5 "ms"/"division" dot 0.2 "divisions" = #cgreen(unit-ms(half-life4-observed-ms)).
+  $
+
+  From this observed half-life, we can calculate the resistance of the potentiometer at this position:
+  $
+    t_(1 slash 2) = R C ln 2 #h(1em) -> #h(1em) R = t_(1 slash 2) / (C ln 2) = #unit-ms(half-life4-observed-ms)/(#unit-uF(C2-uF) dot ln 2) = #cgreen(qty(R-partial-calculated, 4, unit-Ohm)).
+  $
+  *Measured Resistance with DMM:* #cgreen(unit-Ohm(R-partial-measured)) (#percent-difference(R-partial-measured, R-partial-calculated)% difference)
+
+= Conclusion
+
+#lthin
+
+_Examine the shapes of the exponential voltage signals across the resistor. Give a
+qualitative explanation for this shape in a manner similar to that presented above (in
+the METHOD section) for the RC circuit. Do these two voltages in fact add up to a
+square wave as demanded by Kirchoff's rule? Explain your answer!_
+
