@@ -1587,19 +1587,23 @@ The *Casorati matrix* is a matrix used to determine the linear independence of a
     C_k = mat(a_k, b_k, c_k; a_(k + 1), b_(k + 1), c_(k + 1); a_(k + 2), b_(k + 2), c_(k + 2)).
   $
 
-
+#pagebreak()
 
 = Eigeneverything
 
 == Eigenvectors and Eigenvalues
 
 #define("Eigenvector and Eigenvalue")[
-  Let $A$ be an $n times n$ matrix. A nonzero vector $bf(v) in RR^n$ is an *eigenvector* of $A$ if there exists a scalar $lambda$ such that:
+  Let $A$ be an $n times n$ matrix. A #underline[nonzero] vector $bf(v) in RR^n$ is an *eigenvector* of $A$ if there exists a scalar $lambda$ such that:
   $
     A bf(v) = lambda bf(v).
   $
   The scalar $lambda$ is called the *eigenvalue* corresponding to the eigenvector $bf(v)$. $A$ may have multiple pairs of eigenvectors and eigenvalues.
 ]
+
+- The eigenvalue equation is a homogeneous matrix equation with respect to $A - lambda I$. It _must_ have free variables such that we don't get trivial solutions (which wouldn't count as eigenvectors).
+
+- An eigenvalue will have infinitely many associated eigenvectors. The set of all eigenvectors corresponding to a particular eigenvalue $lambda$, together with the zero vector, form a subspace called the *eigenspace* of $A$ corresponding to $lambda$.
 
 == The Characteristic Equation
 
@@ -1610,8 +1614,7 @@ The *Casorati matrix* is a matrix used to determine the linear independence of a
   + It can be shown that for a column vector $bf(v)$ and scalar $k$, $k bf(v) = k I bf(v)$, \
     where $I = I_n$ is the $n times n$ identity matrix.
   + Thus, $A bf(v) - lambda I bf(v) = bf(0)$, and by the distributive property, we have $(A - lambda I) bf(v) = bf(0).$
-  + Since $bf(v)$ is nonzero, by the Invertible Matrix Theorem, $A - lambda I$ must be invertible \ 
-    and $cgreen(det(A - lambda I) = 0)$.
+  + Since $bf(v)$ is nonzero, our homogeneous equation has a nontrivial solution, and by the Invertible Matrix Theorem, $A - lambda I$ must be invertible. Thus, $cgreen(det(A - lambda I) = 0)$.
 ]
 
 

@@ -210,12 +210,12 @@
 #let R-partial-calculated = half-life4-observed-ms / 1000 / (calc.ln(2) * C2-F)
 #let R-partial-measured = 3360
 
-+ The resistor is replaced with a potentiometer with maximum resistance of #unit-Ohm(10000). At an arbitrary position of the potentiometer, the observed half-life is:
++ The resistor is replaced with a potentiometer with maximum resistance of #unit-Ohm(10000). At an arbitrary position of the potentiometer, the *observed half-life* is:
   $
     t_(1 slash 2) approx 0.5 "ms"/"division" dot 0.2 "divisions" = #cgreen(unit-ms(half-life4-observed-ms)).
   $
 
-  From this observed half-life, we can calculate the resistance of the potentiometer at this position:
+  From this observed half-life, we can *calculate the resistance* of the potentiometer at this position:
   $
     t_(1 slash 2) = R C ln 2 #h(1em) -> #h(1em) R = t_(1 slash 2) / (C ln 2) = #unit-ms(half-life4-observed-ms)/(#unit-uF(C2-uF) dot ln 2) = #cgreen(qty(R-partial-calculated, 4, unit-Ohm)).
   $
@@ -230,3 +230,11 @@ qualitative explanation for this shape in a manner similar to that presented abo
 the METHOD section) for the RC circuit. Do these two voltages in fact add up to a
 square wave as demanded by Kirchoff's rule? Explain your answer!_
 
+The voltage signals on the oscilloscope model exponential growth/decay, depending on if the square 
+wave signal is high or low. 
+
+When the square wave is high, the capacitor is charged, so the voltage across the capacitor increases expontentially (more and more
+net charge builds up on the plates of the capacitor.) By Kirchhof's loop rule, the voltage across
+the resistor + voltage across capacitor _must_ sum to a constant voltage (until the square wave is low), so the voltage across the _resistor_ will decay exponential such that the sum is constant.
+
+An opposite effect is observed when the square wave is low: the capacitor discharges, so the voltage across the capacitor decreases exponentially, and thus the voltage across the resistor increases exponentially such that the sum is constant. Thus, the two voltages do add up to a square wave as demanded by Kirchhoff's rule.
