@@ -1126,7 +1126,7 @@ $
   - The potential energy $U_p$ of a dipole in an electric field is given by: $
       U_p = -arrow(p) dot arrow(E) = -q arrow(d) dot arrow(E).
     $
-    It represents the work available to rotate the dipole from its current orientation to a state of zero potential energy (alignment).
+    It represents the work available to rotate the dipole from its current orientation to a state of zero torque (alignment). Consequently, $U_p$ is lowest when $arrow(p)$ is aligned with $arrow(E)$.
 
 
 #pagebreak()
