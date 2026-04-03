@@ -157,7 +157,7 @@ The *Biot-Savart Law* allows us to calculate the magnetic field _created_ by a m
     dd(arrow(B)) = (mu_0)/(4pi) (I dd(arrow(s)) times hat(r))/r^2
   $
   where:
-  - $mu_0$ is the *permeability of free space*
+  - $mu_0 = 4pi dot 10^(-7) #unit("N/A^2")$ is the *permeability of free space*
   - $hat(r)$ is the unit vector from the wire segment to point $P$
   - $r$ is the distance from the wire segment to point $P$
 
@@ -174,32 +174,38 @@ By the definition of the cross product, the magnitude of the magnetic field cont
   abs(dd(arrow(B))) = dd(B) = (mu_0)/(4pi) (I dd(s) sin theta)/r^2
 $ where $theta$ is the angle between $dd(arrow(s))$ and $hat(r)$.
 
-#example("Magnetic Field from a Straight Current-Carrying Wire")[
-  A long, straight wire carries a current $I$. What is the magnetic field $arrow(B)$ at a point $P$ a distance $r$ away from the wire?
-
+#example("Magnetic field from a straight current-carrying wire")[
+  An infinitely long, straight wire carries a current $I$. What is the magnetic field $arrow(B)$ at a point $P$ a distance $h$ away from the wire?
   #lorange
 
-  #grid(
-    columns: (3fr, 1.6fr),
-    align: (horizon, center),
-    [
-      #align(center)[
-        #cetz.canvas({
-          import cetz.draw: *
-
-
-        })
-      ]
-    ],
-    [
-      A long, straight wire carries a current $I$. What is the magnetic field $arrow(B)$ at a point $P$ a distance $r$ away from the wire?
-    ]
-  )
-
-  Consider a small wire segment $dd(ell)$ at an angle $theta$ from the horizontal axis. The distance from this wire segment to point $P$ is $r / (cos theta)$. Thus, by the Biot-Savart Law: $
-    dd(B) = (mu_0)/(4pi) (I dd(ell) sin theta)/(r/(cos theta))^2 = (mu_0 I)/(4pi r^2) dd(ell) sin theta cos^2 theta.
+  By the Biot-Savart Law, the magnetic field at point $P$ is: $
+    arrow(B) = (mu_0)/(4pi) integral_"wire" (I dd(arrow(s)) times hat(r))/r^2.
   $
 
+  Say that the wire lies along the $x$-axis, and point $P$ is at coordinates $(0, h)$. 
+  Along the wire, $I$ is constant, so:
+  $
+    arrow(B) = (mu_0 I)/(4pi) integral_"wire" (dd(arrow(s)) times hat(r))/r^2.
+  $
+
+  Evaluate $dd(arrow(s)) times hat(r)$ using the definition of the cross product:
+  $
+    dd(arrow(s)) times hat(r) = dd(s) sin theta thin hat(n).
+  $
+
+  Notice that $hat(n)$ is perpendicular to the plane formed by $dd(arrow(s))$ and $hat(r)$, so it is constant. However, $sin theta$ is _not_ constant. Together, we get:
+  $
+    arrow(B) = (mu_0 I hat(n))/(4pi) integral_(-oo)^(+oo) (dd(x) sin theta)/r^2.
+  $
+
+  Using trigonometry, $cpurple(sin theta = h slash r)$ and $cblue(r^2 = x^2 + h^2)$. Thus, $
+    arrow(B) &= (mu_0 I hat(n))/(4pi) integral_(-oo)^(+oo) (dd(x) thin cpurple(h))/(cpurple(sqrt(x^2 + h^2)) cblue((x^2 + h^2))) \
+    & = (mu_0 I h hat(n))/(4pi) integral_(-oo)^(+oo) dd(x)/(x^2 + h^2)^(3 slash 2).
+  $
+
+  Evaluating the integral gives: $
+    arrow(B) = (mu_0 I h hat(n))/(4pi) (2 / h^2) = cgreen((mu_0 I)/(2pi h) hat(n)).
+  $
 ]
 
 #pagebreak()
@@ -211,15 +217,16 @@ The Biot-Savart Law allows us to calculate the magnetic field created by a curre
 *Ampere's Law* provides an alternative way to calculate magnetic fields, especially for cases with high symmetry.
 
 #define("Ampere's Law")[
+  Let $C$ be a closed, often imaginary loop, called an *Amperian loop*. Let $I_"enclosed"$ be the net current passing through the area enclosed by $C$. *Ampere's Law* states that:
   $
-    integral.cont_C arrow(B) dot dd(arrow(s)) = mu_0 I_"enclosed"
+    integral.cont_C arrow(B) dot dd(arrow(s)) = mu_0 I_"enclosed".
   $
-  where:
-  - $C$ is a closed, often imaginary loop (called an *Amperian loop*)
-  - $I_"enclosed"$ is the current passing through the area enclosed by loop $C$
+
+  We often call the quantity $display(integral.cont_C arrow(B) dot dd(arrow(s)))$ the *magnetic circulation*
+  over $C$. Thus, Ampere's Law states that the magnetic circulation around a closed loop is proportional to the net current passing through the area enclosed by that loop.
 ]
 
-#example("Magnetic field produced by a straight current-carrying wire")[
+#example("Magnetic field from a straight current-carrying wire, revisited")[
   A long, straight wire with radius $R$ carries a current $I$. What is the magnetic field $arrow(B)$ at a point $P$ a distance $r$ away from the center of the wire?
 
   #lorange
@@ -266,3 +273,18 @@ The Biot-Savart Law allows us to calculate the magnetic field created by a curre
   This allows us to rewrite the formula for the magnetic field inside a solenoid as: $
     cgreen(B = mu_0 n I).
   $
+
+=== Differential Form of Ampere's Law
+
+Using Stokes' Theorem and the integral definition of current density, we can rewrite Ampere's Law in differential form: $
+  integral.cont_C arrow(B) dot dd(arrow(s)) &= mu_0 I_"enclosed" \
+  integral.double_S (grad times arrow(B)) dot dd(arrow(A)) &= mu_0 integral.double_S arrow(J) dot dd(arrow(A)) \
+  cgreen(grad times arrow(B) &= mu_0 arrow(J)).
+$
+
+#define("Ampere's Law (Differential Form)")[
+  Let a current density $arrow(J)$ produce a magnetic field $arrow(B)$. *Ampere's Law* in differential form states that: $
+    grad times arrow(B) = mu_0 arrow(J).
+  $
+  That is, the _curl_ of the magnetic field is proportional to the current density that produces it. 
+]
