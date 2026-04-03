@@ -220,18 +220,49 @@ The Biot-Savart Law allows us to calculate the magnetic field created by a curre
 ]
 
 #example("Magnetic field produced by a straight current-carrying wire")[
-  A long, straight wire carries a current $I$. What is the magnetic field $arrow(B)$ at a point $P$ a distance $r$ away from the wire?
+  A long, straight wire with radius $R$ carries a current $I$. What is the magnetic field $arrow(B)$ at a point $P$ a distance $r$ away from the center of the wire?
 
   #lorange
 
-  Create a circular Amperian loop of radius $r$ centered on the wire. By symmetry, the magnetic field $arrow(B)$ has the same magnitude at every point on the loop and is tangent to the loop, so $B$ is constant.
+  Create a circular Amperian loop of radius $r > R$ centered on the wire. By symmetry, the magnetic field $arrow(B)$ has the same magnitude at every point on the loop and is tangent to the loop, so $B$ is constant.
   
   Thus, by Ampere's Law: $
     integral.cont_C arrow(B) dot dd(arrow(s)) = B integral.cont_C dd(s) = B (2pi r) = mu_0 I.
   $
   Solving for $B$ gives: $
-    cgreen(B = (mu_0 I)/(2pi r)).
+    cgreen(B = (mu_0 I)/(2pi r)) "for" r > R.
   $
-  This is the same result we would get from the Biot-Savart Law, but Ampere's Law is much easier to apply in this case due to the symmetry of the problem. $qed$
+  This is the same result we would get from the Biot-Savart Law, but Ampere's Law is much easier to apply in this case due to the symmetry of the problem. 
+
+  Ampere's Law also allows us to find the magnetic field inside the wire (where $r < R$), which is: $
+    cgreen(B = (mu_0 I r)/(2pi R^2)) "for" r < R.
+  $
 ]
 
+#pagebreak()
+
+=== Magnetic Fields of Solenoids
+
+- A solenoid is a wire formed from multiple coils, called *turns*. 
+  - The magnetic field inside a solenoid is approximately uniform and parallel to the axis of the solenoid
+  - The magnetic field outside a solenoid is weak and non-uniform.
+
+- The magnetic field _inside_ a solenoid with current $I$ can be calculated using Ampere's Law: 
+  - Consider a rectangular Amperian loop that extends inside and outside the solenoid.
+
+  - The magnetic field outside the solenoid is negligible, so the contribution to the line integral from the outside part of the loop is approximately zero.
+
+  - The magnetic field inside the solenoid is approximately uniform, so the contribution to the line integral from the inside part of the loop is approximately $B L$, where $L$ is the length of the section of the Amperian loop that is inside the solenoid.
+
+  - Along the sides, the magnetic field is perpendicular to the path of integration, so the contribution to the line integral from the sides is zero.
+
+  - If our loop encloses $N$ turns of the solenoid, then the total current enclosed by the loop is $N I$.
+
+  Thus, by Ampere's Law: $
+    integral.cont_C arrow(B) dot dd(arrow(s)) = B L = mu_0 N I #h(1em) -> #h(1em) cgreen(B = (mu_0 N I)/L).
+  $ 
+
+- We call $n = N/L$ the number of turns per unit length of the solenoid, called the *turn density*. \
+  This allows us to rewrite the formula for the magnetic field inside a solenoid as: $
+    cgreen(B = mu_0 n I).
+  $

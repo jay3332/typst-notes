@@ -643,6 +643,26 @@ $
   &= 3 dot 2^(k+1) + 2 dot 5^(k+1).
 $
 
+
+#define("Loop Invariant Theorem")[
+  Let a loop with guard $G$ have pre- and post-conditions $P$ and $Q$, respectively. Also let $I(n)$ be a predicate called the *loop invariant* such that:
+
+  + *Basis property:* The pre-condition implies the loop invariant before the first iteration: $
+    P => I(0).
+  $
+  + *Inductive property:* For every $k >= 0$, if the guard and invariant $I(k)$ are both true before the $k$#th iteration, then the invariant $I(k + 1)$ is true after the $k$#th iteration: $
+    forall k >= 0, (G and I(k)) => I(k + 1).
+  $
+  + *Termination property:* After a finite number of iterations, the guard becomes false: $
+    exists n >= 0 "s.t." not G "after" n "iterations".
+  $
+    Then, if the loop terminates, the post-condition is satisfied: $P => Q$.
+  + *Correctness property:* If the loop invariant implies the post-condition when the guard is false, then the loop is correct: $
+    forall n >= 0, (not G and I(n)) => Q.
+  $
+    _In other words, say that $N$ is the least number of iterations after which $not G and I(N)$. \ If $not G and I(N) => Q$, then the loop is correct._
+]
+
 = Set Theory
 
 = Properties of Functions
