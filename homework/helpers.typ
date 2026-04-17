@@ -16,9 +16,9 @@
   #body
 ]
 
-#let qty(n, sigfigs, unit, ..args) = unit(
+#let qty(n, sigfigs, unit, mode: "figures", ..args) = unit(
   n,
-  round: (mode: "figures", precision: sigfigs),
+  round: (mode: mode, precision: sigfigs),
   group: (threshold: calc.inf),
   product: sym.dot,
   ..args 

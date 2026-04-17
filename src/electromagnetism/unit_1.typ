@@ -456,19 +456,16 @@ Thus, by the law of superposition:
 
 #pagebreak()
 
-== Electric Fields of Charge Distributions
+=== Electric Fields of Charge Distributions
 
 We can apply the law of superposition for electrostatic force to electric fields.
 
-=== Discrete Charge Distributions
 
 For discrete charge distributions (a finite set of point charges): $
   arrow(E) = arrow(F)_e/Q = (sum_i arrow(F)_e_(i,q))/(sum_i q_i) = sum_i arrow(E)_i.
 $
 
 In other words, the net electric field at a given position is the sum of the electric fields induced by all individual point charges.
-
-=== Continuous Charge Distributions
 
 Often times, we will deal with objects with non-negligible sizes where we must consider the *distribution of charge* throughout the object. 
 

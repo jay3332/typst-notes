@@ -1,91 +1,16 @@
 #import "../../helpers/template.typ": *
-#import "helpers.typ": *
+#import "helpers.typ": inline-circuit
 #import "@preview/unify:0.7.1": unit, qty
 #import "@preview/zap:0.5.0"
 #import "@preview/cetz:0.4.2"
 
 #show: set_unit_number.with(5)
 
-= Magnetic Fields and Electromagnetism
+= Electromagnetic Induction
 
-== Introduction to Magnetism
+== Magnetic Flux and Faraday's Law
 
-- Magnetism is a fundamental force of nature that arises from the motion of electric charges. 
-
-- Magnetic fields are produced by moving charges (currents) and exert forces on other moving charges.
-
-- There are two types of magnetic materials: 
-  - *ferromagnetic* materials (e.g. iron) can be permanently magnetized
-  - *paramagnetic* (or _diamagnetic_) materials are only weakly attracted or repelled by magnetic fields.
-
-- A *magnet* is an object that produces a magnetic field. All magnets (that we know of) have two poles: a *north pole* and a *south pole*. 
-  - Like poles repel each other, while opposite poles attract each other.
-  - The magnetic field lines of a magnet form *closed loops* from the north pole to the south pole.
-
-- The Earth itself is a magnet. Technically, the Earth's North pole is a magnetic south pole, for the north end of a compass needle is attracted to it.
-
-#pagebreak()
-
-== Magnetic Fields and Magnetic Force
-
-- Magnetic fields are produced by moving charges (currents). They exert forces on moving charges.
-  - _Moving charges create magnetic fields. Magnetic fields exert forces on moving charges. This is the fundamental principle of electromagnetism._
-
-- The magnetic field is represented by the vector $arrow(B)$, measured in _Teslas_ (T).
-  - A 1 Tesla magnetic field exerts a force of 1 Newton on a 1 Coulomb point charge moving at $1 "m/s"$ *perpendicular* to the field. \
-    #subtext[$unit("T") = unit("N s / C / m") = unit("kg / s^2 / A")$ in SI base units.]
-
-- The direction of the magnetic field is the direction in which the north pole of a compass needle would point if placed in the field. 
-
-- *Magnetic field lines* are a visual representation of the magnetic field.
-  - The direction of the magnetic field at any point is tangent to the magnetic field line at that point
-  - Stronger magnetic fields have more closely spaced field lines.
-  - _Unlike_ electric field lines, magnetic field lines form _closed loops_!
-    - _Outside_ of a bar magnet, magnetic field lines point from the north pole to the south pole.
-    - _Inside_ of a bar magnet, magnetic field lines point from the south pole to the north pole.
-
-#define("Magnetic Force")[
-  Let $q$ be a charge moving with velocity $arrow(v)$ in a magnetic field $arrow(B)$. \ The *magnetic force* $arrow(F)_b$ on the charge is: $
-    arrow(F)_b = q arrow(v) times arrow(B).
-  $
-]
-- The magnetic force is always perpendicular to both the velocity of the charge and the magnetic field.
-
-- The magnetic force does no work on the charge, since it is always perpendicular to the velocity of the charge.
-
-- We can also calculate the magnetic force using current density $arrow(J)$: $
-    dd(arrow(F)_b) = (arrow(J) times arrow(B)) dd(V) #h(1em) -> #h(1em) arrow(F)_b = integral.triple_E (arrow(J) times arrow(B)) dd(V).
-  $
-
-#define("Lorentz Force Law")[
-  The *Lorentz force* $arrow(F)$ on a charge $q$ moving with velocity $arrow(v)$ in both electric and magnetic fields $arrow(E)$ and $arrow(B)$ is: $
-    arrow(F) = arrow(F)_e + arrow(F)_b = q arrow(E) + q arrow(v) times arrow(B) = q (arrow(E) + arrow(v) times arrow(B)).
-  $
-]
-
-The Lorentz force describes how charged particles behave in electromagnetic fields.
-
-#pagebreak()
-
-=== Magnetic Force on Current-Carrying Wires
-
-- If charge is moving in a straight line (e.g. a straight wire), then the velocity is constant and we can write the magnetic force as: $
-   arrow(F)_b = (q arrow(L))/t times arrow(B) = I arrow(L) times arrow(B).
-$
-  - Here, $arrow(L)$ is the length of a wire segment, and if it takes the charge $q$ a time $t$ to pass through the wire segment, then the current $I = q slash t$.
-
-  - The magnetic force on a charge moving through a wire segment is proportional to the length of that segment, the current through that segment, and the magnetic field strength.
-
-  - For a wire that isn't straight, we can divide the wire into tiny segments of length $dd(arrow(s))$ to get:
-    $
-      dd(arrow(F)_b) = I dd(arrow(s)) times arrow(B) #h(1em) -> #h(1em) arrow(F)_b = integral_C I dd(arrow(s)) times arrow(B).
-    $
-
-- A *coil* has no net magnetic force on it, since the magnetic forces on opposite sides of the coil cancel each other out ($display(integral.cont I dd(arrow(s)) times arrow(B)) = 0$). However, a coil can still _produce_ a magnetic field.
-
-- A *solenoid* is a long coil of wire (a wire formed from multiple coils). The magnetic field inside a solenoid is approximately uniform and parallel to the axis of the solenoid, while the magnetic field outside a solenoid is weak and non-uniform.
-
-=== Magnetic Flux and Gauss's Law for Magnetism
+=== Magnetic Flux
 
 #define("Magnetic Flux")[
   The *magnetic flux* $Phi_B$ through a surface $S$ is defined as: $
@@ -97,194 +22,302 @@ $
 
 - The units of magnetic flux are Webers (Wb), where $1 "Wb" = 1 "T" "m"^2$.
 
-- The magnetic flux through a closed surface is always zero, since magnetic field lines form closed loops. This is known as *Gauss's Law for Magnetism*: $
-    integral.surf_S arrow(B) dot dd(arrow(A)) = 0 #h(1em) -> #h(1em) grad dot arrow(B) = 0 "by the Divergence Theorem".
+#import "@preview/ouset:0.2.0": underset
+
+#define("Gauss' Law for Magnetism")[
+  The magnetic flux through a closed surface is always zero, since magnetic field lines form closed loops. This is known as *Gauss's Law for Magnetism*: 
+  $
+    underset(Phi_B, "closed" \ "surface") = integral.surf_S arrow(B) dot dd(arrow(A)) = 0 #h(1em) -> #h(1em) grad dot arrow(B) = 0 "by the Divergence Theorem".
   $
 
-#pagebreak()
-
-== Magnetic Dipoles
-
-- _Recall:_ an electric dipole consists of two equal and opposite charges separated by a small distance.
-
-- Unlike charges which can exist independently, magnetic poles always come in pairs #footnote[Although we aren't able to _disprove_ magnetic monopoles, none have been discovered.] (north and south). Thus, all magnets are *magnetic dipoles*.
-
-- The magnetic field of a magnetic dipole is similar to the electric field of an electric dipole, but with some differences:
-
-  - The magnetic field lines of a magnetic dipole form closed loops, while the electric field lines of an electric dipole start at the positive charge and end at the negative charge.
-  
-  - The magnetic field of a magnetic dipole decreases with distance by the cube ($B prop 1 slash r^3$), while the electric field of an electric dipole decreases with distance by the square ($B prop 1 slash r^2$).
-
-- The *magnetic dipole moment* $arrow(mu)$ of a magnetic dipole is a vector that points from the south pole to the north pole.
-
-  In a region enclosed by a current-carrying coil with area $A$, the magnetic dipole moment is:
-  $
-    arrow(mu) = I A hat(n) = I underbrace(arrow(A), A hat(n)).
-  $
-  where:
-  - $I$ is the current through the coil
-  - $A$ is the area of the coil
-  - $hat(n)$ is the unit vector perpendicular to the plane of the coil, pointing in the direction given by the right-hand rule (curl your hands in the direction of current, and your thumb will point in $hat(n)$)
-
-  For a solenoid with $N$ loops, the magnetic dipole moment is: $
-    arrow(mu) = N I arrow(A).
-  $
-
-- A magnetic field exerts a torque $arrow(tau)$ on a magnetic dipole: $
-    arrow(tau) = arrow(mu) times arrow(B).
-  $
-  The magnetic dipole will experience a torque that tends to align it with the magnetic field. 
-  
-  This means that there is the potential for work to be done to align a magnetic dipole with a magnetic field, given by the potential energy $U_mu$ of the dipole:
-  $
-    U_mu = -arrow(mu) dot arrow(B).
-  $
-
-In summary,
-- if we place a current-carrying coil in a magnetic field, it will experience a torque that tends to align it with the field.
-- the potential energy associated with this dipole is the work required to align the dipole with the field.
-
-#pagebreak()
-
-== Biot-Savart Law
-
-Whereas the formulas above allow us to find the magnetic force on a moving charge in an _existing_ magnetic field (the first part of electromagnetism), moving charges also create their _own_ magnetic fields (the second part of electromagnetism). 
-
-The *Biot-Savart Law* allows us to calculate the magnetic field _created_ by a moving charge or current.
-
-#define("Biot-Savart Law")[
-  Let $I$ be the current through a small wire segment $dd(arrow(s))$. The magnetic field $dd(arrow(B))$ at a point $P$ due to this wire segment is: $
-    dd(arrow(B)) = (mu_0)/(4pi) (I dd(arrow(s)) times hat(r))/r^2
-  $
-  where:
-  - $mu_0 = 4pi dot 10^(-7) #unit("N/A^2")$ is the *permeability of free space*
-  - $hat(r)$ is the unit vector from the wire segment to point $P$
-  - $r$ is the distance from the wire segment to point $P$
-
-  If a wire is curved in a path $C$, then the total magnetic field at point $P$ is: $
-    arrow(B) = (mu_0)/(4pi) integral_C (I dd(arrow(s)) times hat(r))/r^2.
-  $
-
-  For point charge $q$ with velocity $arrow(v)$, the Biot-Savart Law can be simplified as: $
-    arrow(B) = (mu_0)/(4pi) (q arrow(v) times hat(r))/r^2.
-  $
+  This is one of Maxwell's Equations.
 ]
 
-By the definition of the cross product, the magnitude of the magnetic field contribution from the wire segment is: $
-  abs(dd(arrow(B))) = dd(B) = (mu_0)/(4pi) (I dd(s) sin theta)/r^2
-$ where $theta$ is the angle between $dd(arrow(s))$ and $hat(r)$.
+=== Faraday's Law of Induction
 
-#example("Magnetic field from a straight current-carrying wire")[
-  An infinitely long, straight wire carries a current $I$. What is the magnetic field $arrow(B)$ at a point $P$ a distance $h$ away from the wire?
-  #lorange
+- When the magnetic flux through a loop of current changes, current begins flowing in the loop.
+  This phenomenon is called *electromagnetic induction*, and the current that flows is *induced current*.
 
-  By the Biot-Savart Law, the magnetic field at point $P$ is: $
-    arrow(B) = (mu_0)/(4pi) integral_"wire" (I dd(arrow(s)) times hat(r))/r^2.
-  $
+- The effective electromotive force $varcal(E)$ that would have caused the induced current is called the
+  *induced electromotive force* (or just _induced emf_). 
+  - That is, if the induced current is $I$ and the resistance of the loop is $R$, then $varcal(E) = I R$.
+  - If the loop has $N$ turns, then the total induced emf is the sum of the emf from each turn: $varcal(E) = N I R$.
 
-  Say that the wire lies along the $x$-axis, and point $P$ is at coordinates $(0, h)$. 
-  Along the wire, $I$ is constant, so:
-  $
-    arrow(B) = (mu_0 I)/(4pi) integral_"wire" (dd(arrow(s)) times hat(r))/r^2.
-  $
+- Michael Faraday that this induced emf is proportional to the rate of change of magnetic flux through the loop. This is known as *Faraday's Law of Induction*:
+  $ abs(varcal(E)) = abs(dv(Phi_B, t)). $
 
-  Evaluate $dd(arrow(s)) times hat(r)$ using the definition of the cross product:
-  $
-    dd(arrow(s)) times hat(r) = dd(s) sin theta thin hat(n).
-  $
+  If our loop has $N$ turns, then we must consider each of the turns: $ abs(varcal(E)) = N abs(dv(Phi_B, t)). $
 
-  Notice that $hat(n)$ is perpendicular to the plane formed by $dd(arrow(s))$ and $hat(r)$, so it is constant. However, $sin theta$ is _not_ constant. Together, we get:
-  $
-    arrow(B) = (mu_0 I hat(n))/(4pi) integral_(-oo)^(+oo) (dd(x) sin theta)/r^2.
-  $
+- The induced current always flows in a direction that opposes the change in magnetic flux. That is, the induced current will create its own magnetic field to oppose the change. This is known as *Lenz's Law*.
 
-  Using trigonometry, $cpurple(sin theta = h slash r)$ and $cblue(r^2 = x^2 + h^2)$. Thus, $
-    arrow(B) &= (mu_0 I hat(n))/(4pi) integral_(-oo)^(+oo) (dd(x) thin cpurple(h))/(cpurple(sqrt(x^2 + h^2)) cblue((x^2 + h^2))) \
-    & = (mu_0 I h hat(n))/(4pi) integral_(-oo)^(+oo) dd(x)/(x^2 + h^2)^(3 slash 2).
-  $
+  - For example, if the magnetic flux through a loop is increasing, then the induced current will create a magnetic field that would decrease the flux.
 
-  Evaluating the integral gives: $
-    arrow(B) = (mu_0 I h hat(n))/(4pi) (2 / h^2) = cgreen((mu_0 I)/(2pi h) hat(n)).
+  - If the magnetic flux through a loop is decreasing, then the induced current will create a magnetic field that would increase the flux.
+
+  - A negative sign is used in Faraday's Law of Induction to indicate this opposition: $ varcal(E) = -N dv(Phi_B, t). $
+
+#define("Faraday's Law of Induction")[
+  Let a coil with $N$ turns be placed in a magnetic field such that its flux through the coil is $Phi_B (t)$.
+  Then the _induced emf_ $varcal(E)$ in the coil is given by *Faraday's Law of Induction*:
   $
+    varcal(E) = -N dv(Phi_B, t).
+  $
+  The negative sign is described by *Lenz's Law*. 
 ]
 
-#pagebreak()
+=== Induced Electric Fields
 
-== Ampere's Law
+If an emf is induced in a circuit, then there is work being done on charges in the circuit. Since magnetic forces do no work on charges, the work must be done by an electric field. Thus, there must be an *induced electric field*  in the circuit that causes the induced current to flow.
 
-The Biot-Savart Law allows us to calculate the magnetic field created by a current, but it can be difficult to apply in practice.
+The work done by the induced electric field to move a unit charge $q$ around the coil is: $ W = integral.cont_"coil" q arrow(E) dot dd(arrow(s)). $
 
-*Ampere's Law* provides an alternative way to calculate magnetic fields, especially for cases with high symmetry.
+By the definition of emf:
+ $ varcal(E) = W/q = integral.cont_"coil" arrow(E) dot dd(arrow(s)). $ 
 
-#define("Ampere's Law")[
-  Let $C$ be a closed, often imaginary loop, called an *Amperian loop*. Let $I_"enclosed"$ be the net current passing through the area enclosed by $C$. *Ampere's Law* states that:
-  $
-    integral.cont_C arrow(B) dot dd(arrow(s)) = mu_0 I_"enclosed".
-  $
 
-  We often call the quantity $display(integral.cont_C arrow(B) dot dd(arrow(s)))$ the *magnetic circulation*
-  over $C$. Thus, Ampere's Law states that the magnetic circulation around a closed loop is proportional to the net current passing through the area enclosed by that loop.
-]
-
-#example("Magnetic field from a straight current-carrying wire, revisited")[
-  A long, straight wire with radius $R$ carries a current $I$. What is the magnetic field $arrow(B)$ at a point $P$ a distance $r$ away from the center of the wire?
-
-  #lorange
-
-  Create a circular Amperian loop of radius $r > R$ centered on the wire. By symmetry, the magnetic field $arrow(B)$ has the same magnitude at every point on the loop and is tangent to the loop, so $B$ is constant.
-  
-  Thus, by Ampere's Law: $
-    integral.cont_C arrow(B) dot dd(arrow(s)) = B integral.cont_C dd(s) = B (2pi r) = mu_0 I.
-  $
-  Solving for $B$ gives: $
-    cgreen(B = (mu_0 I)/(2pi r)) "for" r > R.
-  $
-  This is the same result we would get from the Biot-Savart Law, but Ampere's Law is much easier to apply in this case due to the symmetry of the problem. 
-
-  Ampere's Law also allows us to find the magnetic field inside the wire (where $r < R$), which is: $
-    cgreen(B = (mu_0 I r)/(2pi R^2)) "for" r < R.
-  $
-]
-
-#pagebreak()
-
-=== Magnetic Fields of Solenoids
-
-- A solenoid is a wire formed from multiple coils, called *turns*. 
-  - The magnetic field inside a solenoid is approximately uniform and parallel to the axis of the solenoid
-  - The magnetic field outside a solenoid is weak and non-uniform.
-
-- The magnetic field _inside_ a solenoid with current $I$ can be calculated using Ampere's Law: 
-  - Consider a rectangular Amperian loop that extends inside and outside the solenoid.
-
-  - The magnetic field outside the solenoid is negligible, so the contribution to the line integral from the outside part of the loop is approximately zero.
-
-  - The magnetic field inside the solenoid is approximately uniform, so the contribution to the line integral from the inside part of the loop is approximately $B L$, where $L$ is the length of the section of the Amperian loop that is inside the solenoid.
-
-  - Along the sides, the magnetic field is perpendicular to the path of integration, so the contribution to the line integral from the sides is zero.
-
-  - If our loop encloses $N$ turns of the solenoid, then the total current enclosed by the loop is $N I$.
-
-  Thus, by Ampere's Law: $
-    integral.cont_C arrow(B) dot dd(arrow(s)) = B L = mu_0 N I #h(1em) -> #h(1em) cgreen(B = (mu_0 N I)/L).
-  $ 
-
-- We call $n = N/L$ the number of turns per unit length of the solenoid, called the *turn density*. \
-  This allows us to rewrite the formula for the magnetic field inside a solenoid as: $
-    cgreen(B = mu_0 n I).
-  $
-
-=== Differential Form of Ampere's Law
-
-Using Stokes' Theorem and the integral definition of current density, we can rewrite Ampere's Law in differential form: $
-  integral.cont_C arrow(B) dot dd(arrow(s)) &= mu_0 I_"enclosed" \
-  integral.double_S (grad times arrow(B)) dot dd(arrow(A)) &= mu_0 integral.double_S arrow(J) dot dd(arrow(A)) \
-  cgreen(grad times arrow(B) &= mu_0 arrow(J)).
+This allows us to rewrite Faraday's Law as:
+$
+  integral.cont_"coil" arrow(E) dot dd(arrow(s)) = -N dv(Phi_B, t).
 $
 
-#define("Ampere's Law (Differential Form)")[
-  Let a current density $arrow(J)$ produce a magnetic field $arrow(B)$. *Ampere's Law* in differential form states that: $
-    grad times arrow(B) = mu_0 arrow(J).
+For a coil with $N=1$ turn, we can expand the magnetic flux as follows:
+$
+  integral.cont_"coil" arrow(E) dot dd(arrow(s)) = -dv(, t) integral.double_S arrow(B) dot dd(arrow(A)).
+$
+#rsubtext[where $S$ is the surface enclosed by the coil.]
+
+In a general sense, $arrow(B)$ and consequently $Phi_B$ 
+can vary not only with time but also with position, so
+it is more accurate to use a partial time derivative instead:
+$
+  integral.cont_"coil" arrow(E) dot dd(arrow(s)) = -pdv(, t) integral.double_S arrow(B) dot dd(arrow(A)).
+$
+
+This is the *integral form* of Faraday's Law of Induction, which is one of Maxwell's Equations. We can also write it in *differential form* using Stokes' Theorem:
+$
+  grad times arrow(E) = -pdv(arrow(B), t).
+$
+
+#define("Faraday's Law of Induction (Integral and Differential Forms)")[
+  Let $C$ be a closed curve representing a loop of current, 
+  and let $S$ be a surface enclosed by $C$. Then Faraday's Law of Induction can be expressed in two equivalent forms:
   $
-  That is, the _curl_ of the magnetic field is proportional to the current density that produces it. 
+    integral.cont_C arrow(E) dot dd(arrow(s)) &= -integral.double_S pdv(arrow(B), t) dot dd(arrow(A)). & #h(2em) bf("(integral form)") \
+
+    grad times arrow(E) &= - pdv(arrow(B), t). & #h(2em) bf("(differential form)") \
+  $
 ]
+
+=== Eddy Currents
+
+So far we have considered conductors shaped like wires, where induced currents are confined to a one-dimensional path. But if a _bulk_ (extended) conductor moves through a non-uniform magnetic field -- or sits in a time-varying one -- the induced emfs drive closed loops of current _within the body of the conductor itself_. These are called *eddy currents*.
+
+By Lenz's Law, eddy currents flow in whichever direction opposes the change in flux that produced them. 
+
+In other words, _a changing magnetic flux through a bulk conductor induces eddy currents, which are small, isolated loops of current that create magnetic fields to oppose the change in flux._
+
+#pagebreak()
+
+== Motional Electromotive Force
+
+When a conductor moves through a magnetic field #footnote[or, the magnetic field can be moving relative to the conductor.], the magnetic flux through the conductor can change, which induces an emf in the conductor. This is known as *motional emf*.
+
+In this way, a potential difference is created across the conductor, allowing us to treat the conductor as a circuit element with an emf. _By moving a conductor through a magnetic field, we convert mechanical energy into electrical energy!_
+
+#define("Motional Emf")[
+  When a conductor of length $L$ moves with velocity $arrow(v)$ perpendicularly through a uniform magnetic field $arrow(B)$, the induced emf across the conductor is given by: $
+    varcal(E) = -arrow(v) dot (arrow(B) times arrow(L)).
+  $
+]
+
+=== Deriving Motional Emf using Faraday's Law
+
+Let a conductor of length $L$ move with velocity $arrow(v) = v hat(i)$ perpendicularly through a uniform magnetic field $arrow(B) = B hat(k)$. Its ends form a closed loop with a stationary conductor, forming a circuit whose
+area is increasing as the conductor moves.
+
+Let the moving conductor be a distance $x$ from the left
+side of the loop. Then the area of the loop is $A = L x$,
+and the magnetic flux through the loop is $Phi_B = B A = B L x$. The rate of change of magnetic flux is: $
+  dv(Phi_B, t) = dv(, t) (B A) = B dv(A, t) = B L dv(x, t) = B L v.
+$ Thus, by Faraday's Law, the induced emf is: $
+  varcal(E) = -B L v.
+$
+
+We call this the *motional emf* since it is caused by the _motion_ of the conductor through a magnetic field.
+
+Realize that as the conductor moves, it feels a magnetic force $arrow(F) = q arrow(v) times arrow(B)$ that pushes charges in the conductor along the direction of $hat(j)$. This is the induced current that creates the motional emf.
+
+#example("Square Coil Falling into a Magnetic Field")[
+  A square coil with mass $m$, side length $s$, and resistance $R$ falls in a gravitational field $-g hat(j)$ into a region with a uniform magnetic field $B hat(k)$. As the square coil is entering the magnetic field, what is its terminal speed $v$?
+
+  #lorange
+
+  As the coil falls, the magnetic flux through 
+]
+
+=== Deriving Motional Emf using Newton's Second Law
+
+We can arrive at the same result without ever invoking Faraday's Law, by looking directly at the forces on the charges inside the moving rod.
+
+Consider a free charge $q$ inside the rod. Because the rod moves with velocity $arrow(v) = v hat(i)$ through $arrow(B) = B hat(k)$, the charge feels a magnetic force $
+  arrow(F)_b = q arrow(v) times arrow(B),
+$ of magnitude $q v B$, directed along the length of the rod. This force drives positive charges toward one end and negative charges toward the other.
+
+As charge accumulates at the ends, an electric field $arrow(E)$ builds up along the rod, pointing opposite to $arrow(F)_b$. Charges stop accumulating once the electric force balances the magnetic force: $
+  q E = q v B #h(1em) -> #h(1em) E = v B.
+$ 
+
+The potential difference across the rod is then just $E$ integrated along its length: $
+  varcal(E) = integral_0^L E thin d ell = B L v,
+$ matching the result from Faraday's Law. The sign simply depends on which end we call positive.
+
+This derivation makes clear where the emf physically comes from: it is the magnetic force on the charge carriers, reinterpreted as an effective electric field along the rod.
+
+=== Power Dissipated by Motional Emf
+
+To maintain a constant velocity $v$ of the conductor, an external force must be applied to counteract the magnetic force on the charges in the conductor. 
+
+As current flows along the $hat(j)$ direction in the conductor, the magnetic force on the wire is $arrow(F) = I L hat(j) times B hat(k) = I L B thin hat(i)$. We must apply an external force $arrow(F)_a = -I L B thin hat(i)$ to maintain a constant velocity. The power dissipated by the motional emf is: $
+  P = arrow(F) dot arrow(v) = -I L B thin hat(i) dot v thin hat(i) = I L B v.
+$
+
+// === Electric Motors and Back Emf
+
+// An electric motor is, at its core, a current-carrying coil placed in a magnetic field. The field exerts a torque on the coil, causing it to rotate — electrical energy is converted into mechanical energy.
+
+// But as the coil rotates, the magnetic flux through it _changes_, and Faraday's Law tells us an emf must be induced. By Lenz's Law, this induced emf _opposes_ the applied voltage driving the motor. This is called the *back emf*, $varcal(E)_"back"$.
+
+// Applying Kirchhoff's voltage law around the motor circuit: $
+//   V - varcal(E)_"back" = I R ==> I = (V - varcal(E)_"back") / R.
+// $
+
+// Consequences:
+// - _At startup_, the coil is stationary, so $varcal(E)_"back" = 0$ and the current is at its maximum value $V\/R$. This is why motors draw large _inrush currents_ when first turned on.
+// - _At steady state_, $varcal(E)_"back"$ grows until it nearly balances $V$, and the current settles to whatever value is needed to supply the mechanical load.
+// - _Under sudden heavy load_ (or a stall), the rotation slows, $varcal(E)_"back"$ drops, and the current spikes.
+
+#pagebreak()
+
+== Inductors and Inductance
+
+#let inductor-diagram = zap.circuit({
+  zap.inductor("l1", (-1, 0), (1, 0), variant: "ieee")
+})
+
+- An *inductor* #inline-circuit(inductor-diagram) is a circuit element that resists changes in current. A common example of an inductor is a solenoid, which stores energy in its magnetic field.
+
+- *Inductance* is a property of a circuit element that quantifies how much it resists changes in current. The higher the inductance, the more it resists changes in current.
+
+  - The unit of inductance is the *Henry* ("H"), where $1 "H" = 1 "Wb/A"$.
+
+
+=== Self Inductance
+
+- When a current $I$ flows through a coil, a magnetic field is produced around the wires of the coil. This creates a magnetic flux $Phi_B$ through the coil itself.
+
+ If $I$ changes, so does $Phi_B$. By Faraday's Law, an emf is induced in the coil that opposes the change in current. This is called *self induction*. 
+ _The current in the coil creates a magnetic field that opposes changes in the current itself._
+
+- The magnetic flux through the coil itself that is generated by a current $I$ flowing through the coil depends on how the coil is shaped. 
+
+  The magnetic flux $Phi_B$ created by running a current $I$ through the coil is proportional to that current:
+  $
+    Phi_B = L I.
+  $
+
+  The constant of proportionality $L$ is called the *self-inductance* of the coil. It is one form of _inductance_. It depends only on the geometry of the coil and the permeability of any material inside it. 
+
+  _How well does the magnetic field generated by the current cause magnetic
+  flux through the same coil?_
+
+- For a coil with $N$ turns, we want to look at the current _per turn_, so use:
+  $
+    Phi_B = L I / N.
+  $
+  Solving for the self-inductance gives:
+
+  #define("Self-Inductance")[
+    If running a current $I$ through a coil of $N$ turns creates a magnetic flux $Phi_B$ through the coil, then the *self-inductance* $L$ of the coil is: $
+      L = N Phi_B / I.
+    $
+  ]
+  
+- Solving for $Phi_B$ gives $Phi_B = L I slash N$. This allows us to find the self-induced emf:
+  $
+    varcal(E) = -N dv(Phi_B, t) = -N dv(, t) (L I / N) = cgreen(-L dv(I, t)).
+  $
+
+#example("Self-Inductance of a Solenoid")[
+  What is the self-inductance of a long solenoid with turn density $n$ and volume $Omega$?
+  #lorange
+
+  Let the solenoid have $N$ turns, length $ell$, and cross-sectional area $A$. Then $n = N slash ell$ and $Omega = ell A$.
+
+  The magnetic field inside a long solenoid is $B = mu_0 N I slash ell$. The magnetic flux through each turn of the solenoid is $Phi_B = B A = mu_0 N I A slash ell$. 
+
+  The self-inductance is then: $
+    L = N Phi_B / I = N (mu_0 N I A slash ell) / I = (mu_0 N^2 A) / ell.
+  $
+
+  We can rewrite this in terms of the turn density and volume: $
+    L = (mu_0 N^2 A ell) / ell^2 = cgreen(mu_0 n^2 Omega).
+  $
+]
+
+=== Mutual Inductance
+
+Now consider two nearby coils. A current $I_1$ in coil 1 produces a magnetic field, some fraction of whose flux $Phi_(2 1)$ passes through coil 2. Just as before, this flux linkage is proportional to the current: $
+  N_2 Phi_(2 1) = M_(2 1) thin I_1,
+$ where $M_(2 1)$ is called the *mutual inductance* of coil 2 with respect to coil 1.
+
+#note[
+  For a coil with $N$ turns, if the flux through each turn is $Phi_B$, then the
+  "total flux" through the entire coil is $N Phi_B$, and this quantity is 
+  called *flux linkage*.
+]
+
+Mutual inductance is symmetric: $
+  M_(1 2) = M_(2 1) = M.
+$
+
+The idea behind mutual inductance is that if $I_1$ changes, an emf is induced in coil 2: $
+  varcal(E)_2 = -M dv(I_1, t).
+$
+
+// === Energy in a Magnetic Field
+
+// To build up a current $I$ in an inductor from zero, the source must do work against the back emf. The instantaneous power delivered to the inductor is $
+//   P = I thin varcal(E)_L = L thin I dv(I, t).
+// $ Integrating from 0 to the final current $I$: $
+//   U = integral_0^I L thin I' thin d I' = 1/2 L I^2.
+// $
+
+// Where is this energy stored? _Inside the magnetic field itself._ For the solenoid above, substituting $L = mu_0 n^2 ell A$ and $I = B \/ (mu_0 n)$ into $U = 1/2 L I^2$ and dividing by the interior volume $ell A$, we obtain the *magnetic energy density*: $
+//   u_B = B^2 / (2 mu_0).
+// $ Although we derived this from a solenoid, the result holds for _any_ magnetic field configuration in vacuum.
+
+// === Electric Power Absorbed by an Inductor
+
+// Unlike a resistor, an ideal inductor does not _dissipate_ energy — it stores it and returns it. The voltage across an inductor is $V_L = L thin d I \/ d t$, so the instantaneous power absorbed is $
+//   P = I thin V_L = L thin I dv(I, t) = dv(, t) (1/2 L I^2).
+// $
+
+// The sign tells the full story:
+// - When $I$ is _increasing_, $P > 0$: the inductor absorbs energy from the circuit, building up its magnetic field.
+// - When $I$ is _decreasing_, $P < 0$: the inductor _returns_ energy to the circuit as the field collapses.
+
+// Averaged over a full cycle of a sinusoidal AC current, an ideal inductor absorbs _zero_ net power — it is a purely reactive element.
+
+== Circuits with Inductors
+
+=== Inductor-Resistor (LR) Circuits
+
+=== Inductor-Capacitor (LC) Circuits
+
+=== Inductor-Resistor-Capacitor (LRC) Circuits
+
+== Alternating Current (AC) Circuits
+
+== Electromagnetic Transformers
+
+#pagebreak()
