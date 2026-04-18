@@ -21,21 +21,21 @@
 #let crn = "30949"
 #let submission_date = "April xx, 2026"
 
-// #align(horizon + center)[
-//   #title(name)
-//   #v(1em)
-//   #date
-//   #v(4em)
-//   #author
+#align(horizon + center)[
+  #title(name)
+  #v(1em)
+  #date
+  #v(4em)
+  #author
 
-//   Lab Partner: #labmates
+  Lab Partner: #labmates
 
-//   #course CRN #crn
+  #course CRN #crn
 
-//   #prof
-//   #v(2em)
-//   #subtext[Submitted #submission_date]
-// ]
+  #prof
+  #v(2em)
+  #subtext[Submitted #submission_date]
+]
 
 #set page(numbering: "1", header: align(right)[
   #author \
@@ -64,6 +64,7 @@
 
 #let unit-T = zi.declare("T")
 #let unit-mT = zi.declare("mT")
+#let unit-Wb = zi.declare("Wb")
 
 #set-unit(fraction: "inline")
 
@@ -71,12 +72,7 @@
  * Section I: Pre-lab
  */
 
-// = Pre-lab Questions
-
-= Prelab 11: Faraday's Law
-#date
-
-#let unit-Wb = zi.declare("Wb")
+= Pre-lab Questions
 
 #line(length: 100%, stroke: 0.5pt)
 
@@ -103,12 +99,86 @@
 
 #align(center, image("lab-11-0.png", height: 160pt))
 
-// == Magnetic Flux Derivation
+#pagebreak()
 
-// The function generator creates a potential $V(t)$ which follows:
-// $
-//   V(t) = V_0 sin(omega t) "where" omega = 2 pi f.
-// $
-// $V_0$ is the amplitude (max potential), and $f$ is the frequency set on the function generator.
+= Part 1: Time-dependent Magnetic Flux from Permanent Magnet Dropped through a Coil of Wire
+#lthin
 
-// If the coil has resistance $R$ 
+== Questions
+
++ When the magnet is dropped through the coil with the south pole down, why do we see two peaks and why are the two peaks in opposite directions?
+
++ How do the two peaks change if the magnet is dropped with the north pole down?
+
++ Why is the second peak higher than the incoming peak?
+
++ What does the area under the curve Potential vs. Time represent?
+
++ Are the two areas the same? Why or why not?
+
++ How does the magnitude of the induced EMF depend on the speed of the magnet?
+
++ How does the magnitude of the induced EMF depend on the strength of the magnet?
+
++ How would the magnitude of the induced EMF change it two magnets were taped together so that:
+  #set enum(numbering: "a.")
+  + both south ends were together?
+  + south end of one magnet is taped to north end of the other?
+  
++ Would the experiment give similar results if the magnet would be stationary and the coil would be dropped?
+
++ Using your data and the known geometries, estimate the strength of the magnetic field of the two bar magnets? Assume magnetic field is confined to the magnet. What extra measurements do you need? Compare your estimate with an actual measurement of the magnetic field using the magnetic field sensor.
+
+#pagebreak()
+
+= Part 2: Primary and Secondary Coils
+#lthin
+
+== Magnetic Flux Derivation
+
+Let $f$ be the frequency of the function generator, so $omega = 2pi f$ is the angular frequency of the potential.
+Let $V_0$ be the amplitude of the potential created by the function generator.
+
+The function generator creates a potential $V(t)$ which follows:
+$
+  V(t) = V_0 sin(omega t) = V_0 sin(2pi f t).
+$
+
+Let the primary solenoid have turn density $n_1$, resistance $R$, and cross-sectional area $A$.
+
+The current through the primary coil is given by Ohm's law:
+$
+  I(t) = V(t) / R = (V_0 sin(2pi f t)) / R.
+$
+
+The magnetic field inside the solenoid is:
+$
+  B(t) = mu_0 n_1 I(t) = (mu_0 n_1 V_0 sin(2pi f t)) / R.
+$
+
+The magnetic flux through one turn of the coil is:
+$
+  Phi_B (t) = B(t) A = (mu_0 n_1 A V_0 sin(2pi f t)) / R.
+$
+
+Since we are given $n_1 = N_1 slash L$, where $N_1$ is the number of turns and $L$ is the length of the solenoid, as well as $A = pi r^2$ for the cross-sectional area (our solenoid is circular with radius $r$), we can rewrite the magnetic flux as:
+$
+  Phi_B (t) = cgreen((mu_0 pi r^2 N_1 V_0 sin(2pi f t)) / (L R)).
+$
+
+== Questions
+
++ Write the expression for the magnetic flux in the primary/inner coil.
+
++ Use the expression from (1) to derive an expression for the induced emf in the secondary/outer coil.
+
+  The secondary coil will experience the same magnetic flux over its $N_2$ turns, so by Faraday's law, the emf induced in the secondary coil is:
+  $
+    varcal(E)(t) = -N_2 dv(Phi_B, t) = -N_2 dv(, t) (mu_0 n_1 A V_0 sin(omega t)) / R &= - (mu_0 n_1 N_2 A V_0 omega cos(omega t)) / R \
+    &= - (mu_0 pi r^2 N_1 N_2 V_0 2 pi f cos(2pi f t)) / (L R) \
+    &= cgreen(-(2 mu_0 pi^2 r^2 N_1 N_2 V_0 f cos(2pi f t)) / (L R)).
+  $
+
++ Use the expression from (2) to interpret the two graphs you produced in Part II.
+
++ Does the data from your measurements match your theoretical expressions?

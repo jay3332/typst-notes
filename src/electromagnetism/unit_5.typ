@@ -155,7 +155,7 @@ Realize that as the conductor moves, it feels a magnetic force $arrow(F) = q arr
   As the coil falls, the magnetic flux through 
 ]
 
-=== Deriving Motional Emf using Newton's Second Law
+=== Deriving Motional Emf using Newton's Second Law <emf-n2law>
 
 We can arrive at the same result without ever invoking Faraday's Law, by looking directly at the forces on the charges inside the moving rod.
 
@@ -168,20 +168,52 @@ As charge accumulates at the ends, an electric field $arrow(E)$ builds up along 
 $ 
 
 The potential difference across the rod is then just $E$ integrated along its length: $
-  varcal(E) = integral_0^L E thin d ell = B L v,
+  varcal(E) = integral_0^L E dd(s) = integral_0^L v B dd(s) = B L v,
 $ matching the result from Faraday's Law. The sign simply depends on which end we call positive.
 
 This derivation makes clear where the emf physically comes from: it is the magnetic force on the charge carriers, reinterpreted as an effective electric field along the rod.
 
 === Power Dissipated by Motional Emf
 
-To maintain a constant velocity $v$ of the conductor, an external force must be applied to counteract the magnetic force on the charges in the conductor. 
+To maintain a constant velocity $v$ of the conductor, an external force must be applied to counteract the magnetic force on the charges in the conductor.
 
 As current flows along the $hat(j)$ direction in the conductor, the magnetic force on the wire is $arrow(F) = I L hat(j) times B hat(k) = I L B thin hat(i)$. We must apply an external force $arrow(F)_a = -I L B thin hat(i)$ to maintain a constant velocity. The power dissipated by the motional emf is: $
   P = arrow(F) dot arrow(v) = -I L B thin hat(i) dot v thin hat(i) = I L B v.
 $
 
-// === Electric Motors and Back Emf
+=== Electric Motors and Back Emf
+
+- An *electric motor* is a device that converts electrical energy into mechanical energy. It consists of a current-carrying coil placed in a magnetic field. The magnetic field exerts a torque on the coil, causing it to rotate.
+
+- As the coil rotates, the magnetic flux through it changes, and Faraday's Law tells us an emf must be induced. By Lenz's Law, this induced emf opposes the applied voltage driving the motor. This is called the *back emf*, $varcal(E)_"back"$.
+
+- Applying Kirchhoff's voltage law around the motor circuit: $
+    V - varcal(E)_"back" = I R #h(1em) -> #h(1em) I = (V - varcal(E)_"back") / R.
+  $
+
+=== Hall Effect
+
+When a current-carrying conductor is placed in a magnetic field perpendicular to the current, the magnetic force $arrow(F)_b = q arrow(v) times arrow(B)$ pushes charge carriers sideways, causing them to accumulate on one face of the conductor. This charge buildup creates an electric field that opposes further accumulation. At equilibrium the electric and magnetic forces balance, producing a steady *Hall voltage* $V_H$ or *Hall emf* across the width of the conductor.
+
+#define("Hall Voltage")[
+  For a conductor of thickness $d$ carrying current $I$ in a magnetic field $arrow(B)$, the *Hall voltage* is:
+  $
+    V_H = (I B) / (n q d),
+  $
+  where $n$ is the charge-carrier number density and $q$ is the carrier charge.
+]
+
+#note[
+  While the Hall emf is not a motional emf, it is derived the same way as the motional emf was derived using 
+  #link(<emf-n2law>)[Newton's Second Law].
+]
+
+- The *sign* of $V_H$ reveals whether the carriers are positive or negative (electrons vs. holes).
+- Measuring $V_H$ for a known $I$ and $B$ allows direct determination of $n$, the carrier density.
+- A *Hall-effect sensor* is a device that uses the Hall effect to measure magnetic field strength. By applying a known current $I$ and measuring the resulting Hall voltage $V_H$, we can calculate the magnetic field using the formula above:
+  $
+    B = (n q d V_H) / I.
+  $
 
 // An electric motor is, at its core, a current-carrying coil placed in a magnetic field. The field exerts a torque on the coil, causing it to rotate — electrical energy is converted into mechanical energy.
 

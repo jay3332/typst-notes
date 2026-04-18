@@ -1449,6 +1449,7 @@ If $A$ is an $m times n$ matrix, then:
   + $nul(A) = {bf(0)}.$
   + $"nullity"(A) = 0.$
   + $det(A) != 0.$ _(from Section 3.1)_
+  + $0$ is not an eigenvalue of $A$. _(from Section 5.1)_
 ]
 
 #pagebreak()
@@ -1626,8 +1627,8 @@ The *Casorati matrix* is a matrix used to determine the linear independence of a
   Then:
   $
     A bf(v)_j &= A(c_1 bf(v)_1 + c_2 bf(v)_2 + ... + c_(j - 1) bf(v)_(j - 1)) & #h(1em) "by left-multiplying both sides by" A \
-    A_j bf(v)_j &= c_1 A bf(v)_1 + c_2 A bf(v)_2 + ... + c_(j - 1) A bf(v)_(j - 1) & #h(1em) "by distributing" A "on the rhs" \
-    lambda_j bf(v)_j &= c_1 lambda_1 bf(v)_1 + c_2 lambda_2 bf(v)_2 + ... + c_(j - 1) lambda_(j - 1) bf(v)_(j - 1) #h(1em) & "by performing the substitution" A_i bf(v)_i = lambda_i bf(v)_i
+    A bf(v)_j &= c_1 A bf(v)_1 + c_2 A bf(v)_2 + ... + c_(j - 1) A bf(v)_(j - 1) & #h(1em) "by distributing" A "on the rhs" \
+    lambda_j bf(v)_j &= c_1 lambda_1 bf(v)_1 + c_2 lambda_2 bf(v)_2 + ... + c_(j - 1) lambda_(j - 1) bf(v)_(j - 1) #h(1em) & "by performing the substitution" A bf(v)_i = lambda_i bf(v)_i
   $
   Also:
   $
@@ -1849,4 +1850,8 @@ If $A$ has complex eigenvalues, then $A$ is similar to a *block-diagonal* matrix
 
 == Discrete Dynamical Systems
 
+= Orthogonality and Least Squares
 
+== Inner Product and Orthogonality
+
+Recall that the *dot product* of two 

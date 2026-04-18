@@ -342,15 +342,36 @@ $
 A *junction* is a point in a circuit where charges have to possibility of taking more than one path.
 
 #let junction = zap.circuit({
-  zap.wire((-1, 0), (0, 0))
-  zap.wire((0, -1), (0, 1))
-  zap.wire((0, 1), (2, 1))
-  zap.wire((0, -1), (2, -1))
-  zap.node("junct1", (0, 0))
+  import cetz.draw: *
+
+  zap.wire((-1, 0), (1, 0))
+  zap.wire((1, -1), (1, 1))
+  zap.wire((1, 1), (2, 1))
+  zap.wire((1, -1), (2, -1))
+  zap.node("junct1", (1, 0))
   
+  line((-0.8, 0.1), (0, 0.1), stroke: 1pt,
+    mark: (end: ">", fill: black))
+  content((-0.4, 0.3), anchor: "south")[$I_"in"$]
+
+  line((1.2, 0.1), (1.2, 0.9), stroke: 1pt,
+    mark: (end: ">", fill: black))
+  content((1.2, 0.5), anchor: "west", padding: 4pt)[$I_1$]
+
+  line((1.2, -0.1), (1.2, -0.9), stroke: 1pt,
+    mark: (end: ">", fill: black))
+  content((1.2, -0.5), anchor: "west", padding: 4pt)[$I_2$]
 })
 
-#junction
+#grid(
+  columns: (0.6fr, 1fr),
+  gutter: 3em,
+  align: (horizon + right, horizon + left),
+  junction,
+  [
+    In this example, the dot represents a junction where the current $I_"in"$ splits into two currents $I_1$ and $I_2$. By Kirchhoff's Junction Rule, we have $I_"in" = I_1 + I_2$.
+  ]
+)
 
 #let example-circuit = zap.circuit({
   zap.resistor("r1", (0, 0), (0, 4), variant: "ieee", label: $R_1$)
