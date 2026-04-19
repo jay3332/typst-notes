@@ -296,6 +296,25 @@ When a current-carrying conductor is placed in a magnetic field perpendicular to
   $
 ]
 
+#note[
+  The solenoid formula above assumed free space ($mu_0$) inside the coil. If the core is filled with a linear magnetic material of permeability $mu = mu_r mu_0$, the field inside becomes $arrow(B) = mu n I$, and the self-inductance is amplified by the same factor:
+  $
+    L = mu_r mu_0 n^2 Omega = mu_r L_0.
+  $
+]
+
+#example("Self-Inductance of a Toroid")[
+  A *circular toroid* is a solenoid bent into a circle. What is the self-inductance of a toroid with $N$ turns, _mean inner radius_ $r$, and cross-sectional area $A$?
+  #lorange
+  The magnetic field inside a toroid is $B = mu_0 N I slash (2 pi r)$. The magnetic flux through each turn of the toroid is $Phi_B = B A = mu_0 N I A slash (2 pi r)$.
+
+  The self-inductance is then: $
+    L = N Phi_B / I = N (mu_0 N I A slash (2 pi r)) / I = cgreen((mu_0 N^2 A) / (2 pi r)).
+  $
+]
+
+#pagebreak()
+
 === Mutual Inductance
 
 Now consider two nearby coils. A current $I_1$ in coil 1 produces a magnetic field, some fraction of whose flux $Phi_(2 1)$ passes through coil 2. Just as before, this flux linkage is proportional to the current: $

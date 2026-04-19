@@ -69,6 +69,37 @@
     I = n q v_d A.
   $
 
+=== Continuity Equation
+
+The *continuity equation* follows directly from conservation of electric charge. Consider an arbitrary closed volume $V$ bounded by a surface $S$. The total charge enclosed is $Q = integral.triple_V rho thin dd(V)$.
+
+Any decrease in $Q$ must appear as current flowing outward through $S$:
+$
+  integral.surf_S arrow(J) dot dd(arrow(A)) = -dv(Q, t) = -dv(, t) integral.triple_V rho thin dd(V) = -integral.triple_V pdv(rho, t) thin dd(V).
+$
+
+Applying the Divergence Theorem to the left side:
+$
+  integral.triple_V (grad dot arrow(J)) thin dd(V) = -integral.triple_V pdv(rho, t) thin dd(V).
+$
+
+So, the integrands must be equal:
+$
+  grad dot arrow(J) = -pdv(rho, t).
+$
+
+#define("Continuity Equation")[
+  Let $rho$ be the volumetric charge density and $arrow(J)$ be the current density. Conservation of charge requires:
+  $
+    grad dot arrow(J) = -pdv(rho, t).
+  $
+  An outward divergence of current at a point must be accompanied by a decrease in charge density there, and vice versa.
+]
+
+- In *steady state*, $partial rho slash partial t = 0$ everywhere, so $grad dot arrow(J) = 0$: current lines neither originate nor terminate inside a conductor. Current flows continuously around closed loops.
+
+- In integral form: $display(I_S = -dv(Q_"enc", t))$: the net current leaving a closed surface $S$ equals the rate at which the charge enclosed by $S$ is decreasing.
+
 #pagebreak()
 
 == Electric Circuits
@@ -271,6 +302,31 @@ Resistors placed in parallel have their currents add up but share the same poten
 
 - An *ohmmeter* #inline-circuit(ohmmeter-symbol) is a tool used to measure the resistance of a circuit element. It works by sending a small current through the element and measuring the potential difference across it, then using Ohm's Law to calculate the resistance.
   - Effectively, an ohmmeter is a combination of an ammeter and a voltmeter.
+
+=== Microscopic Derivation of Conductivity
+
+In a conductor, free electrons are constantly colliding with the lattice ions of the material, which causes them to lose momentum and change direction. When an electric field is applied, it exerts a force on the electrons, causing them to accelerate between collisions. The average time between collisions is called the *relaxation time* $tau$.
+
+The average drift speed of the electrons can be derived using Newton's Second Law: $
+  m a = m dv(v_d, t) = q E + (m v_d) / tau.
+$
+
+In steady state, $inlinedv(v, t) = 0$, so we can solve for the average drift speed: $
+  v_d = abs(-(q tau) / m E) = (q tau) / m E.
+$
+
+Substituting this into the equation for current density, we get: $
+  J = n q v_d = n q ((q tau) / m E) = (n q^2 tau) / m E.
+$
+
+Thus, the conductivity of the material is:
+
+#define("Conductivity (Microscopic)")[
+  The *conductivity* $sigma$ of a material with charge carrier density $n$, charge per carrier $q$, mass $m$, and relaxation time $tau$, the conductivity is given by:
+  $
+    sigma = cgreen((n q^2 tau) / m).
+  $
+]
 
 #pagebreak()
 

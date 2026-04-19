@@ -280,21 +280,133 @@ $
 
 == Magnetic Properties of Materials <types-of-mm>
 
-=== Magnetic Susceptibility and Permeability
+=== Magnetization and the $H$-field
 
-- *Magnetic susceptibility* $chi$ is a dimensionless quantity that measures how much a material becomes magnetized in response to an applied magnetic field.
+At the microscopic level, electrons have a property called *spin* that gives them an intrinsic magnetic dipole moment. 
+- Most electrons are paired up with another electron of opposite spin, so their magnetic dipole moments cancel each other out.
+- Some materials have unpaired electrons, resulting in a _net dipole moment_, which can interact (i.e., align) with external magnetic fields.
 
-- *Magnetic permeability* $mu$ measures how easily a material supports a magnetic field. It is written $mu = mu_r mu_0$, where $mu_r$ is the dimensionless *relative permeability* of the material. It holds that $mu_r = 1 + chi$.
+The density of these microscopic dipoles is called the *magnetization* of the material:
+#define("Magnetization")[
+  The *magnetization* or *magnetic polarization* $arrow(M)$ is the net magnetic dipole moment per unit volume:
+  $
+    arrow(M) = dv(arrow(mu), V) #h(1em) -> #h(1em) arrow(mu) = integral.triple_V arrow(M) dd(V).
+  $
+  For this reason, magnetization is sometimes called _magnetic moment density_.
+]
+
+- An unmagnetized object has $arrow(M) = arrow(0)$ everywhere (i.e., dipoles cancel) 
+- Magnetization is a vector quantity, measured in units of $"A/m"$.
+
+While $arrow(M)$ is the internal or _bound_ magnetization of the material, an external or _applied_
+magnetic field created by other currents can realign the dipoles. The applied magnetic field
+is called the *$H$-field* or *magnetic field intensity*, denoted $arrow(H)$:
+
+#define([Magnetic Field Intensity ($H$-field)])[
+  The net magnetic field $arrow(B)$ inside a material is proportional to the sum of the applied field $arrow(H)$ and the field created by the magnetization of the material $arrow(M)$:
+  $
+    arrow(B) = mu_0 (arrow(H) + arrow(M)).
+  $
+  The constant of proportionality $mu_0$ is the permeability of free space.
+]
+- In the above equation, we are strictly looking at the magnetic field _inside_ the material.
+- The $H$-field is measured in units of $"A/m"$, the same as magnetization.
+- The $H$-field is the magnetic field that would exist in the absence of any magnetization. It is the field that we apply to a material to induce magnetization.
+
+#pagebreak()
+
+=== Linear Magnetic Materials and Magnetic Permeability
+
+A *linear magnetic material* is one where its magnetization is proportional to the $H$-field:
+$
+  arrow(M) = chi arrow(H) "for a linear magnetic material",
+$
+where the constant of proportionality $chi$ is called the *magnetic susceptibility* of the material. It is a dimensionless quantity that measures how much a material becomes magnetized in response to an applied magnetic field. Most materials are approximately #footnote[
+  Most materials are approximately linear for sufficiently small $H$-fields, 
+  but some materials (e.g. ferromagnets) can become noticeably nonlinear at higher field strengths.
+] linear.
+
+- For certain materials, $chi$ can be negative! This means that the material becomes magnetized in the _opposite_ direction of the applied field (see #link(<diamagnetism>)[diamagnetism]). 
+
+- If $abs(chi)$ is high, then the material is easily able to form internal magnetic fields in response to an external magnetic field.
+
+Since $arrow(M) = chi arrow(H)$, then for a linear magnetic material: $
+  arrow(B) = mu_0 (arrow(H) + arrow(M)) = mu_0 (arrow(H) + chi arrow(H)) = mu_0 (1 + chi) arrow(H).
+$
+
+The *absolute magnetic permeability* $mu$ is the constant of proportionality between $arrow(B)$ and $arrow(H)$:
+$
+  arrow(B) = mu arrow(H).
+$
+
+Magnetic permeability measures how strongly a material _supports_ an applied magnetic field.
+It is measured in units of $"T m/A"$. The *relative magnetic permeability* $mu_r$ of a material is the ratio of its absolute permeability to the permeability of free space:
+$
+  mu_r =^"def" mu / mu_0 = (mu_0 (1 + chi)) / mu_0 = 1 + chi.
+$
+#rsubtext[$kappa$ or $kappa_m$ can be used to denote $mu_r$ (similar to how either $epsilon_r$ or $kappa$ can be used for relative permittivity).]
+
+// ==== Bound Currents
+
+// A spatially non-uniform magnetization acts as an effective source of magnetic field. The microscopic current loops of aligned dipoles do not cancel perfectly at the boundaries of magnetized regions, giving rise to *bound currents*:
+
+// - *Volume bound current density:* $arrow(J)_b = grad times arrow(M)$
+// - *Surface bound current density:* $arrow(K)_b = arrow(M) times hat(n)$
+
+// The total magnetic field satisfies:
+// $
+//   grad times arrow(B) = mu_0 (arrow(J)_"free" + arrow(J)_b) = mu_0 (arrow(J)_"free" + grad times arrow(M))
+// $
+// which can be rearranged to:
+// $
+//   grad times (arrow(B) / mu_0 - arrow(M)) = arrow(J)_"free".
+// $
+
+// #note[
+//   The free current $arrow(J)_"free"$ is the ordinary conduction current (e.g.\ from electrons in a wire).
+//   Bound currents $arrow(J)_b$ arise entirely from the magnetization of the material and require no external circuit.
+// ]
+
+// The rearranged equation above motivates defining the *magnetic field intensity* (or *$H$-field*):
+
+// #define([Magnetic Field Intensity ($H$-field)])[
+//   $
+//     arrow(H) = arrow(B) / mu_0 - arrow(M) #h(1em) -> #h(1em) cgreen(arrow(B) = mu_0 (arrow(H) + arrow(M))).
+//   $
+// ]
+
+// With this definition, Ampere's Law generalizes cleanly to matter:
+
+// #define("Ampere's Law for Magnetic Materials")[
+//   $
+//     grad times arrow(H) = arrow(J)_"free" #h(2em) <=> #h(2em) integral.cont_C arrow(H) dot dd(arrow(s)) = I_"free, enc".
+//   $
+//   $arrow(H)$ is sourced _only_ by free currents. The material's magnetic response is entirely encoded in $arrow(M)$, which need not be known to apply this law.
+// ]
+
+// - In free space $arrow(M) = arrow(0)$, so $arrow(H) = arrow(B) slash mu_0$ and this reduces to the ordinary Ampere's Law $grad times arrow(B) = mu_0 arrow(J)$.
+// - $arrow(B)$ is the physical field that exerts forces on charges; $arrow(H)$ is the auxiliary field that simplifies calculations when free currents are the known quantity.
+
+// ==== Linear Response
+// For *linear* magnetic materials, the magnetization is proportional to the applied H-field:
+// $
+//   arrow(M) = chi arrow(H).
+// $
+// Substituting into $arrow(B) = mu_0 (arrow(H) + arrow(M))$:
+// $
+//   arrow(B) = mu_0 (1 + chi) arrow(H) = cgreen(mu_r mu_0 arrow(H) = mu arrow(H)).
+// $
+// This connects the microscopic magnetization $arrow(M)$ to the macroscopic material constants $chi$, $mu_r$, and $mu$ described in the next section.
 
 === Types of Magnetic Materials
 
-There are three main types of magnetic materials, which differ in how they respond to an external magnetic field:
+Magnetic materials are generally classified in terms of their magnetic susceptibility $chi$: 
 
-- *Paramagnetic* materials such as aluminum have a small positive magnetic susceptibility ($chi > 0 -> mu_r > 1$), meaning they are weakly attracted to magnetic fields.
+- *Paramagnetic* materials such as aluminum have a small positive magnetic susceptibility ($chi > 0$), meaning they are weakly attracted to magnetic fields.
 
-- *Diamagnetic* materials such as copper have a small negative magnetic susceptibility ($chi < 0 -> mu_r < 1$), meaning they are weakly repelled by magnetic fields.
+- *Diamagnetic* materials such as copper have a small negative magnetic susceptibility ($chi < 0$), meaning they are weakly repelled by magnetic fields. <diamagnetism>
 
-- *Ferromagnetic* materials such as iron have a large positive magnetic susceptibility ($chi >> 0 -> mu_r >> 1$), meaning they are strongly attracted to magnetic fields and can retain magnetization even after the external field is removed (_"permanent magnets"_).
+- *Ferromagnetic* materials such as iron have a large positive magnetic susceptibility ($chi >> 0$), meaning they are strongly attracted to magnetic fields and can retain magnetization even after the external field is removed (_"permanent magnets"_).
   - Ferromagnetic materials are made up of small regions called *magnetic domains*, where the magnetic moments of atoms are aligned in the same direction. When an external magnetic field is applied, these domains can grow and align with the field, leading to a strong overall magnetization.
 
 // - *Magnetic permeability* $mu$ measures how easily a material supports a magnetic field. It is written $mu = mu_r mu_0$, where $mu_r$ is the dimensionless *relative permeability* of the material.
