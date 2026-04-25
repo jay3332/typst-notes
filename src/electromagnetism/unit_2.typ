@@ -5,6 +5,7 @@
 #import "@preview/wrap-it:0.1.1": wrap-content
 
 #show: set_unit_number.with(2)
+#show math.ell: varell
 
 = Electric Potential and Capacitors
 

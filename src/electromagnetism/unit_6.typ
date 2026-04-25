@@ -4,6 +4,7 @@
 #import "@preview/cetz:0.4.2"
 
 #show: set_unit_number.with(6)
+#show math.ell: varell
 
 = Electromagnetic Waves
 
@@ -21,7 +22,7 @@ Recall Ampere's Law
 #define("Ampere's Law with Maxwell's Correction")[
   Let $S$ be a surface bounded by a closed curve $C$. Let $I_"enc"$ be the current passing through $S$ and $Phi_E$ be the electric flux through $S$. Then, the *Ampere-Maxwell* law states that:
   $
-    integral.cont_C arrow(B) dot dd(arrow(s)) = mu_0(I_"enc" + I_"disp") = mu_0(I_"enc" + epsilon_0 pdv(Phi_E, t)).
+    integral.cont_C arrow(B) dot dd(arrow(ell)) = mu_0(I_"enc" + I_"disp") = mu_0(I_"enc" + epsilon_0 pdv(Phi_E, t)).
   $
   This is the fourth of Maxwell's equations.
 ]
@@ -30,12 +31,12 @@ Recall Ampere's Law
 
 Using the definition of $Phi_E$ gives:
 $
-  integral.cont_C arrow(B) dot dd(arrow(s)) = mu_0 (I_"enc" + epsilon_0 pdv(, t) integral.double_S arrow(E) dot dd(arrow(A))).
+  integral.cont_C arrow(B) dot dd(arrow(ell)) = mu_0 (I_"enc" + epsilon_0 pdv(, t) integral.double_S arrow(E) dot dd(arrow(A))).
 $
 
 We can also rewrite $I_"enc"$ as a surface integral of the current density $arrow(J)$ over $S$:
 $
-  integral.cont_C arrow(B) dot dd(arrow(s)) &= mu_0 (integral.double_S arrow(J) dot dd(arrow(A)) + epsilon_0 pdv(, t) integral.double_S arrow(E) dot dd(arrow(A))) \
+  integral.cont_C arrow(B) dot dd(arrow(ell)) &= mu_0 (integral.double_S arrow(J) dot dd(arrow(A)) + epsilon_0 pdv(, t) integral.double_S arrow(E) dot dd(arrow(A))) \
   &= integral.double_S mu_0 (arrow(J) + epsilon_0 pdv(arrow(E), t)) dot dd(arrow(A)).
 $
 

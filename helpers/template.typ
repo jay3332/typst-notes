@@ -12,6 +12,7 @@
   $lr(chevron.l #inner chevron.r)$
 }
 #let varcal(it) = text(font: "New Computer Modern Math", math.cal(it))
+#let varell = text(font: "New Computer Modern Math", math.ell)
 #let grad = $arrow(nabla "")$
 #let transpose = $sans(upright(T))$
 #let evaluated(expr, size: 100%) = $lr(#expr|, size: #size)$

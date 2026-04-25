@@ -5,6 +5,7 @@
 #import "@preview/cetz:0.4.2"
 
 #show: set_unit_number.with(4)
+#show math.ell: varell
 
 = Magnetic Fields and Electromagnetism
 
@@ -80,12 +81,12 @@ $
 
   - The magnetic force on a charge moving through a wire segment is proportional to the length of that segment, the current through that segment, and the magnetic field strength.
 
-  - For a wire that isn't straight, we can divide the wire into tiny segments of length $dd(arrow(s))$ to get:
+  - For a wire that isn't straight, we can divide the wire into tiny segments of length $dd(arrow(ell))$ to get:
     $
-      dd(arrow(F)_b) = I dd(arrow(s)) times arrow(B) #h(1em) -> #h(1em) arrow(F)_b = integral_C I dd(arrow(s)) times arrow(B).
+      dd(arrow(F)_b) = I dd(arrow(ell)) times arrow(B) #h(1em) -> #h(1em) arrow(F)_b = integral_C I dd(arrow(ell)) times arrow(B).
     $
 
-- A *coil* has no net magnetic force on it, since the magnetic forces on opposite sides of the coil cancel each other out ($display(integral.cont I dd(arrow(s)) times arrow(B)) = 0$). However, a coil can still _produce_ a magnetic field.
+- A *coil* has no net magnetic force on it, since the magnetic forces on opposite sides of the coil cancel each other out ($display(integral.cont I dd(arrow(ell)) times arrow(B)) = 0$). However, a coil can still _produce_ a magnetic field.
 
 - A *solenoid* is a long coil of wire (a wire formed from multiple coils). The magnetic field inside a solenoid is approximately uniform and parallel to the axis of the solenoid, while the magnetic field outside a solenoid is weak and non-uniform.
 
@@ -134,15 +135,17 @@ In summary,
 
 #pagebreak()
 
-== Biot-Savart Law
+== Magnetic Fields from Moving Charges
+
+=== Biot-Savart Law
 
 Whereas the formulas above allow us to find the magnetic force on a moving charge in an _existing_ magnetic field (the first part of electromagnetism), moving charges also create their _own_ magnetic fields (the second part of electromagnetism). 
 
 The *Biot-Savart Law* allows us to calculate the magnetic field _created_ by a moving charge or current.
 
 #define("Biot-Savart Law")[
-  Let $I$ be the current through a small wire segment $dd(arrow(s))$. The magnetic field $dd(arrow(B))$ at a point $P$ due to this wire segment is: $
-    dd(arrow(B)) = (mu_0)/(4pi) (I dd(arrow(s)) times hat(r))/r^2
+  Let $I$ be the current through a small wire segment $dd(arrow(ell))$. The magnetic field $dd(arrow(B))$ at a point $P$ due to this wire segment is: $
+    dd(arrow(B)) = (mu_0)/(4pi) (I dd(arrow(ell)) times hat(r))/r^2
   $
   where:
   - $mu_0 = 4pi dot 10^(-7) #unit("N/A^2")$ is the *permeability of free space*
@@ -150,7 +153,7 @@ The *Biot-Savart Law* allows us to calculate the magnetic field _created_ by a m
   - $r$ is the distance from the wire segment to point $P$
 
   If a wire is curved in a path $C$, then the total magnetic field at point $P$ is: $
-    arrow(B) = (mu_0)/(4pi) integral_C (I dd(arrow(s)) times hat(r))/r^2.
+    arrow(B) = (mu_0)/(4pi) integral_C (I dd(arrow(ell)) times hat(r))/r^2.
   $
 
   For point charge $q$ with velocity $arrow(v)$, the Biot-Savart Law can be simplified as: $
@@ -159,29 +162,29 @@ The *Biot-Savart Law* allows us to calculate the magnetic field _created_ by a m
 ]
 
 By the definition of the cross product, the magnitude of the magnetic field contribution from the wire segment is: $
-  abs(dd(arrow(B))) = dd(B) = (mu_0)/(4pi) (I dd(s) sin theta)/r^2
-$ where $theta$ is the angle between $dd(arrow(s))$ and $hat(r)$.
+  abs(dd(arrow(B))) = dd(B) = (mu_0)/(4pi) (I dd(ell) sin theta)/r^2
+$ where $theta$ is the angle between $dd(arrow(ell))$ and $hat(r)$.
 
 #example("Magnetic field from a straight current-carrying wire")[
   An infinitely long, straight wire carries a current $I$. What is the magnetic field $arrow(B)$ at a point $P$ a distance $h$ away from the wire?
   #lorange
 
   By the Biot-Savart Law, the magnetic field at point $P$ is: $
-    arrow(B) = (mu_0)/(4pi) integral_"wire" (I dd(arrow(s)) times hat(r))/r^2.
+    arrow(B) = (mu_0)/(4pi) integral_"wire" (I dd(arrow(ell)) times hat(r))/r^2.
   $
 
   Say that the wire lies along the $x$-axis, and point $P$ is at coordinates $(0, h)$. 
   Along the wire, $I$ is constant, so:
   $
-    arrow(B) = (mu_0 I)/(4pi) integral_"wire" (dd(arrow(s)) times hat(r))/r^2.
+    arrow(B) = (mu_0 I)/(4pi) integral_"wire" (dd(arrow(ell)) times hat(r))/r^2.
   $
 
-  Evaluate $dd(arrow(s)) times hat(r)$ using the definition of the cross product:
+  Evaluate $dd(arrow(ell)) times hat(r)$ using the definition of the cross product:
   $
-    dd(arrow(s)) times hat(r) = dd(s) sin theta thin hat(n).
+    dd(arrow(ell)) times hat(r) = dd(ell) sin theta thin hat(n).
   $
 
-  Notice that $hat(n)$ is perpendicular to the plane formed by $dd(arrow(s))$ and $hat(r)$, so it is constant. However, $sin theta$ is _not_ constant. Together, we get:
+  Notice that $hat(n)$ is perpendicular to the plane formed by $dd(arrow(ell))$ and $hat(r)$, so it is constant. However, $sin theta$ is _not_ constant. Together, we get:
   $
     arrow(B) = (mu_0 I hat(n))/(4pi) integral_(-oo)^(+oo) (dd(x) sin theta)/r^2.
   $
@@ -198,7 +201,7 @@ $ where $theta$ is the angle between $dd(arrow(s))$ and $hat(r)$.
 
 #pagebreak()
 
-== Ampere's Law
+=== Ampere's Law
 
 The Biot-Savart Law allows us to calculate the magnetic field created by a current, but it can be difficult to apply in practice.
 
@@ -255,7 +258,7 @@ The Biot-Savart Law allows us to calculate the magnetic field created by a curre
   - If our loop encloses $N$ turns of the solenoid, then the total current enclosed by the loop is $N I$.
 
   Thus, by Ampere's Law: $
-    integral.cont_C arrow(B) dot dd(arrow(s)) = B L = mu_0 N I #h(1em) -> #h(1em) cgreen(B = (mu_0 N I)/L).
+    integral.cont_C arrow(B) dot dd(arrow(ell)) = B L = mu_0 N I #h(1em) -> #h(1em) cgreen(B = (mu_0 N I)/L).
   $ 
 
 - We call $n = N slash L$ the *turn density* of the solenoid, which is the number of turns per unit length. \
@@ -266,7 +269,7 @@ The Biot-Savart Law allows us to calculate the magnetic field created by a curre
 === Differential Form of Ampere's Law
 
 Using Stokes' Theorem and the integral definition of current density, we can rewrite Ampere's Law in differential form: $
-  integral.cont_C arrow(B) dot dd(arrow(s)) &= mu_0 I_"enclosed" \
+  integral.cont_C arrow(B) dot dd(arrow(ell)) &= mu_0 I_"enclosed" \
   integral.double_S (grad times arrow(B)) dot dd(arrow(A)) &= mu_0 integral.double_S arrow(J) dot dd(arrow(A)) \
   cgreen(grad times arrow(B) &= mu_0 arrow(J)).
 $
@@ -277,6 +280,54 @@ $
   $
   That is, the _curl_ of the magnetic field is proportional to the current density that produces it. 
 ]
+
+=== Extension: Magnetic Vector Potential <magnetic-vector-potential>
+
+_Recall:_ the electric field $arrow(E)$ can be expressed using the gradient of the _electric potential_ $V$: $arrow(E) = -grad V.$
+
+Similarly, the magnetic field $arrow(B)$ can be expressed as the curl of a vector field called the *magnetic vector potential* $arrow(A)$: $
+  arrow(B) = grad times arrow(A).
+$
+
+_Recall that the divergence of the magnetc field is zero ($grad dot arrow(B) = 0$, Gauss' Law for Magnetism), which means that the magnetic field is guaranteed to be the curl of some vector field._
+
+#define("Magnetic Vector Potential")[
+  The *magnetic vector potential* $arrow(A)$ is a vector field whose curl gives the magnetic field $arrow(B)$: $
+    arrow(B) = grad times arrow(A).
+  $
+]
+- The magnetic vector potential is a mathematical tool that allows us to calculate the magnetic field in certain situations, especially when dealing with complex geometries or time-varying fields.
+
+- The magnetic vector potential has units of $"T m" equiv "Wb/m"$.
+
+- The magnetic vector potential is _not_ unique, since we can add the gradient of any scalar field
+  to $arrow(A)$ without changing the magnetic field (since the curl of a gradient is zero)
+
+#define("Biot-Savart Law (Vector Potential Form)")[
+  // Let $arrow(J)$ be a current density in a region $V$ that has space-varying magnetic field. 
+  // The magnetic vector potential $arrow(A)$ at any point $P$ in $V$ is given by: $
+  //   arrow(A) = (mu_0)/(4pi) integral.triple_V arrow(J) / r dd(V),
+  // $
+  // where $r$ is the distance from point of integration to $P$. (That is, the integral body can be written as $arrow(J) slash r(x, y, z) dd(x) dd(y) dd(z)$.)
+
+  Let $I$ be the current through a wire segment $dd(arrow(ell))$. The magnetic vector potential $dd(arrow(A))$ at a point $P$ due to this wire segment is: $
+    dd(arrow(A)) = mu_0/(4pi) (I dd(arrow(ell))) / r,
+  $
+  where $r$ is the distance from the wire segment to point $P$.
+]
+
+Ampere's Law in magnetic vector potential form can be derived by substituting $arrow(B) = grad times arrow(A)$: $
+  grad times (grad times arrow(A)) &= mu_0 arrow(J) \
+  grad cancel((grad dot arrow(A))) - nabla^2 arrow(A) &= mu_0 arrow(J) \
+  cgreen(nabla^2 arrow(A) &= -mu_0 arrow(J)).
+$
+
+Also, by Stokes' Theorem, if $C$ is a closed loop and $S$ is any surface with boundary $C$, then: $
+  integral.cont_C arrow(A) dot dd(arrow(ell)) = integral.double_S (grad times arrow(A)) dot dd(arrow(A)) = integral.double_S arrow(B) dot dd(arrow(A)) = Phi_B.
+$
+_The circulation of the magnetic vector potential around a closed loop is equal to the #link(<mflux>)[magnetic flux] $Phi_B$ through any surface bounded by that loop._
+
+#pagebreak()
 
 == Magnetic Properties of Materials <types-of-mm>
 

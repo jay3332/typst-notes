@@ -1850,8 +1850,191 @@ If $A$ has complex eigenvalues, then $A$ is similar to a *block-diagonal* matrix
 
 == Discrete Dynamical Systems
 
+#pagebreak()
+
+
 = Orthogonality and Least Squares
 
 == Inner Product and Orthogonality
 
-Recall that the *dot product* of two 
+Recall that the *dot product* of two vectors in matrix form is $bf(u)^transpose bf(v)$, and this is often called the *inner product*. 
+
+=== Orthogonal Subspaces
+
+
+- *Orthogonal complements* only act on _subspaces_.
+
+- If $W$ is a subspace of $RR^n$, then the *orthogonal complement* of $W$, denoted $W^perp$, is the set of all vectors in $RR^n$ that are orthogonal to every vector in $W$:
+  $
+    W^perp = {bf(v) in RR^n | bf(v)^transpose bf(w) = 0 "for all" bf(w) in W}.
+  $
+
+  - To show that $bf(v) in W^perp$, show that $bf(v)^transpose bf(w) = 0$ for all $bf(w) in W$.
+
+  - If $S$ is a spanning set for $W^perp$, then $(bf(v)^transpose bf(s) = 0$ for all $bf(s) in S) <==> (bf(v) in W^perp)$.
+
+- To find $W^perp$, find the null space of the matrix whose rows are the basis vectors of $W$:
+  $
+    W^perp = nul(mat(bf(w)_1^transpose; bf(w)_2^transpose; ...; bf(w)_k^transpose)).
+  $
+
+  In other words, if $W = col(A)$, then $W^perp = nul(A^transpose)$.
+
+  - $nul(A) = (row(A))^perp$
+  - $nul(A^transpose) = (col(A))^perp$
+
+- It holds that $dim(W) + dim(W^perp) = n$, where $n$ is the dimension of the _ambient space_ $RR^n$.
+
+  - This has many implications. For example, if $W$ is geometrically a plane in $RR^3$, then $W^perp$ is geometrically a line in $RR^3$ that is perpendicular to the plane, such that the dimensions of the plane and line add up to $3$. That is, only points along a line perpendicular to the plane are orthogonal to every point in the plane.
+
+#derivation([Proof: if $W$ is a subspace of $RR^n$, then $W^perp$ is also subspace of $RR^n$])[
+  Let $W$ be a subspace of $RR^n$. We want to show that $W^perp$ is also a subspace of $RR^n$. 
+
+  + First, we show that $bf(0) in W^perp$. Since $bf(0)^transpose bf(w) = 0$ for all $bf(w) in W$, we have $bf(0) in W^perp$.
+
+  + Next, we show that if $bf(u), bf(v) in W^perp$, then $bf(u) + bf(v) in W^perp$. Since $bf(u)^transpose bf(w) = 0$ and $bf(v)^transpose bf(w) = 0$ for all $bf(w) in W$, we have:
+    $
+      (bf(u) + bf(v))^transpose bf(w) = bf(u)^transpose bf(w) + bf(v)^transpose bf(w) = 0 + 0 = 0.
+    $
+    Thus, $bf(u) + bf(v) in W^perp$.
+
+  + Finally, we show that if $bf(u) in W^perp$ and $c$ is a scalar, then $c bf(u) in W^perp$. Since $bf(u)^transpose bf(w) = 0$ for all $bf(w) in W$, we have:
+    $
+      (c bf(u))^transpose bf(w) = c (bf(u)^transpose bf(w)) = c dot 0 = 0.
+    $
+    Thus, $c bf(u) in W^perp$.
+
+  Therefore, since $W^perp$ contains the zero vector and is closed under vector addition and scalar multiplication, we conclude that $W^perp$ is a subspace of $RR^n$. $qed$
+]
+
+#pagebreak()
+
+== Orthogonal and Orthonormal Sets
+
+- An *orthogonal set* is a set of vectors that are orthogonal to each other.
+  - Formally, a set of vectors ${bf(v)_1, bf(v)_2, ..., bf(v)_k}$ is an orthogonal set if $bf(v)_i^transpose bf(v)_j = 0$ for all $i != j$.
+  - All orthogonal set of nonzero vectors is linearly independent.
+
+#derivation([Proof: An orthogonal set of nonzero vectors is linearly independent])[
+  Let ${bf(v)_1, bf(v)_2, ..., bf(v)_k}$ be an orthogonal set of nonzero vectors.
+
+  For scalars $c_1, c_2, ..., c_n$, suppose that
+  $c_1 bf(v)_1 + c_2 bf(v)_2 + ... + c_n bf(v)_n = bf(0)$.
+
+  Then, for each $i = 1, 2, ..., n$, we have:
+  $
+    (c_1 bf(v)_1 + c_2 bf(v)_2 + ... + c_n bf(v)_n)^transpose bf(v)_i &= c_1 bf(v)_1^transpose bf(v)_i + c_2 bf(v)_2^transpose bf(v)_i + ... + c_n bf(v)_n^transpose bf(v)_i \
+    &= c_i bf(v)_i^transpose bf(v)_i \
+    &= c_i ||bf(v)_i||^2 = 0 \
+    &-> c_i = 0 "since all vectors are nonzero".
+  $
+  So, $c_1 = c_2 = ... = c_n = 0$, which means that the set ${bf(v)_1, bf(v)_2, ..., bf(v)_k}$ is linearly independent. $qed$
+]
+
+- An *orthogonal basis* for a vector space is a basis consisting of orthogonal vectors.
+
+  - If $varcal(B) = {bf(b)_1, bf(b)_2, ..., bf(b)_n}$ is an orthogonal basis for a vector space $V$, and $bf(x) in V$, then:
+  $
+    bf(x) = c_1 bf(b)_1 + c_2 bf(b)_2 + ... + c_n bf(b)_n, "where" c_i = (bf(x) dot bf(b)_i) / (bf(b)_i dot bf(b)_i).
+  $
+
+- Let $L$ be the line spanned by a nonzero vector $bf(v)$. That is, let $L = span{bf(v)}$. 
+  Then any vector $bf(x)$ not on $L$ can be written as the sum of a vector on $L$ and a vector orthogonal to $L$. In particular, we can write $bf(x) = bf(p) + bf(q)$, where $bf(p) in L$ and $bf(q) in L^perp$.
+
+  - $bf(p)$ is called the *orthogonal projection* of $bf(x)$ onto $L$, denoted $hat(bf(x))$, and is given by:
+    $
+      bf(p) = "proj"_L (bf(x)) = hat(bf(x)) = ((bf(x) dot bf(v)) / (bf(v) dot bf(v))) bf(v).
+    $
+  - $bf(q)$ is called the *orthogonal component* of $bf(x)$ with respect to $L$, and is given by:
+    $
+      bf(q) = bf(x) - hat(bf(x)) = bf(x) - ((bf(x) dot bf(v)) / (bf(v) dot bf(v))) bf(v).
+    $
+  - The form $bf(p) + bf(q)$ is called the *orthogonal decomposition* of $bf(x)$ with respect to $L$.
+  - The magnitude $abs(bf(q))$ is the distance from $bf(x)$ to the line $L$.
+
+#pagebreak()
+
+=== Orthonormal Sets
+
+- An *orthonormal set* is an orthogonal set of vectors where each vector has a length of $1$.
+
+  - Formally, a set of vectors ${bf(v)_1, bf(v)_2, ..., bf(v)_k}$ is an orthonormal set if:
+    $
+      bf(v)_i^transpose bf(v)_j = 0 &"for all" i != j "and" \
+      bf(v)_i^transpose bf(v)_j = 1 &"for all" i = j.
+    $
+
+- If $U$ is a matrix, then $U^transpose U = I$ *iff*
+  the columns of $U$ form an orthonormal set.
+  - Similarly, $U U^transpose = I$ *iff* the rows of $U$ form an orthonormal set.
+
+- If $U$ has orthonormal columns, then the following properties hold:
+  - $abs(U bf(x)) = abs(bf(x))$ (transformation by $U$ preserves length)
+  - $(U bf(x))^transpose (U bf(y)) = bf(x)^transpose bf(y)$ (transformation by $U$ preserves inner product)
+  - $(U bf(x))^transpose (U bf(y)) = 0 <==> bf(x)^transpose bf(y) = 0$ (transformation by $U$ preserves orthogonality)
+
+- If a matrix $U$ is square, then the following are equivalent:
+  - $U$ has orthonormal columns
+  - $U$ has orthonormal rows
+  - $U^transpose U = U U^transpose = I$.
+  - $U$ is invertible, and $U^(-1) = U^transpose$.
+  - $U$ is an *orthogonal matrix*.
+
+#pagebreak()
+
+== Orthogonal Decomposition
+
+Let $W$ be a subspace of $RR^n$, and let $bf(x) in RR^n$. Then, we can write $bf(x) = bf(p) + bf(q)$, where $bf(p) in W$ and $bf(q) in W^perp$.
+
+If ${bf(b)_1, bf(b)_2, ..., bf(b)_k}$ is an orthogonal basis for $W$, then:
+$
+  bf(p) = "proj"_W (bf(x)) = hat(bf(x)) = ((bf(x) dot bf(b)_1) / (bf(b)_1 dot bf(b)_1)) bf(b)_1 + ((bf(x) dot bf(b)_2) / (bf(b)_2 dot bf(b)_2)) bf(b)_2 + ... + ((bf(x) dot bf(b)_k) / (bf(b)_k dot bf(b)_k)) bf(b)_k.
+$
+- Trivially, $bf(q) = bf(x) - hat(bf(x))$.
+- $bf(p)$ is called the *orthogonal projection* of $bf(x)$ onto $W$.
+- $bf(q)$ is called the *orthogonal component* of $bf(x)$ with respect to $W$. 
+- The form $bf(p) + bf(q)$ is called the *orthogonal decomposition* of $bf(x)$ with respect to $W$.
+
+#let oproj = $op("proj", limits: #true)$
+
+If ${H_1, H_2, ..., H_p}$ is a partition of the orthogonal basis ${bf(b)_1, bf(b)_2, ..., bf(b)_k}$, then:
+$
+  bf(p) = "proj"_W (bf(x)) = hat(bf(x)) = oproj_span(H_1) bf(x) + oproj_span(H_2) bf(x) + ... + oproj_span(H_p) bf(x).
+$
+
+#define("Best Approximation Theorem")[
+  Let $W$ be a subspace of $RR^n$, and let $bf(x) in RR^n$. Then, the vector $hat(bf(x)) = "proj"_W (bf(x))$ is the closest vector in $W$ to $bf(x)$, in the sense that:
+  $
+    abs(bf(x) - hat(bf(x))) <= abs(bf(x) - bf(w)) "for all" bf(w) in W.
+  $
+  In which case, the quantity $abs(bf(x) - hat(bf(x)))$ is called the *distance* from $bf(x)$ to the subspace $W$.
+]
+
+- Realize that if the basis ${bf(b)_1, bf(b)_2, ..., bf(b)_k}$ is _orthonormal_, then:
+  $
+    bf(p) = "proj"_W (bf(x)) = hat(bf(x)) = (bf(x) dot bf(b)_1) bf(b)_1 + (bf(x) dot bf(b)_2) bf(b)_2 + ... + (bf(x) dot bf(b)_k) bf(b)_k.
+  $
+  If $U = display(mat(bf(b)_1, bf(b)_2, ..., bf(b)_k))$, then $hat(bf(x)) = U U^transpose bf(x)$. 
+
+#pagebreak()
+
+=== Gram-Schmidt Process
+
+To find an orthogonal basis for a subspace $W$ of $RR^n$, we can apply the *Gram-Schmidt process* to any basis of $W$.
+
+Let ${bf(w)_1, bf(w)_2, ..., bf(w)_k}$ be _any_ basis for $W$. Then, we can construct an orthogonal basis ${bf(b)_1, bf(b)_2, ..., bf(b)_k}$ for $W$ as follows:
+
+$
+  bf(b)_1 &= bf(w)_1 \
+  bf(b)_2 &= bf(w)_2 - ((bf(w)_2 dot bf(b)_1) / (bf(b)_1 dot bf(b)_1)) bf(b)_1 &&= bf(w)_2 - oproj_(span{bf(b)_1}) bf(w)_2 \
+  bf(b)_3 &= bf(w)_3 - ((bf(w)_3 dot bf(b)_1) / (bf(b)_1 dot bf(b)_1)) bf(b)_1 - ((bf(w)_3 dot bf(b)_2) / (bf(b)_2 dot bf(b)_2)) bf(b)_2 
+  &&= bf(w)_3 -  op("proj", limits: #true)_(span{bf(b)_1, bf(b)_2}) bf(w)_3 \
+  &dots.v &&dots.v \
+  bf(b)_k &= bf(w)_k - ((bf(w)_k dot bf(b)_1) / (bf(b)_1 dot bf(b)_1)) bf(b)_1 - ((bf(w)_k dot bf(b)_2) / (bf(b)_2 dot bf(b)_2)) bf(b)_2 - ... - ((bf(w)_k dot bf(b)_(k - 1)) / (bf(b)_(k - 1) dot bf(b)_(k - 1))) bf(b)_(k - 1)
+  &&= bf(w)_k -  op("proj", limits: #true)_(span{bf(b)_1, bf(b)_2, ..., bf(b)_(k - 1)}) bf(w)_k.
+$
+
+We can add a _normalization step_ to find an orthonormal basis ${bf(u)_1, bf(u)_2, ..., bf(u)_k}$ for $W$:
+$
+  bf(u)_i = bf(b)_i / abs(bf(b)_i) "for all" i = 1, 2, ..., k.
+$

@@ -4,6 +4,7 @@
 #import "@preview/cetz:0.4.2"
 
 #show: set_unit_number.with(1)
+#show math.ell: varell
 
 = Electric Charges and Fields
 
@@ -632,7 +633,7 @@ If charge density is constant, the object is *uniformly charged*.
   $
 ]
   
-== Electric Flux
+== Electric Flux & Gauss's Law
 
 #define("Electric Flux")[
   Let $arrow(E)$ be the electric field and $dd(arrow(A))$ be a vector element of area on a surface $S$. The *electric flux* $Phi_E$ through the surface is:  
@@ -837,7 +838,7 @@ If charge density is constant, the object is *uniformly charged*.
 
 #pagebreak()
 
-== Gauss' Law 
+=== Gauss' Law 
 
 Assume an isolated point charge of magnitude $q$ is situated at the center of a sphere of radius $r$. What is the total electric flux over the surface $S$ of the sphere?
 
@@ -854,20 +855,17 @@ Thus, the formula for electric flux simplifies: $
 $
 
 Since $A$ would simply be the surface area of the sphere $A = 4pi r^2$: $
-  Phi_E = E A &= (k_e q/r^2) (4pi r^2) \
-  &= (1/(cancel(4pi) epsilon_0) q/cancel(r^2)) cancel(4pi r^2) \
-  &= cgreen(q/epsilon_0)
+  Phi_E = E A &= (k_e q/r^2) (4pi r^2)
+  = (1/(cancel(4pi) epsilon_0) q/cancel(r^2)) cancel(4pi r^2) = cgreen(q/epsilon_0).
 $
 
 It turns out that _all closed surfaces_ which enclose a volume ("*Gaussian surfaces*") can be projected as spheres, and thus this formula applies to all such surfaces. Formally:
 
 #define("Gauss' Law (Integral Form)")[
   Let $Phi_E$ be the _electric flux_ through a *closed surface* $S$. Then: $
-    Phi_E = integral.surf_S arrow(E) dot dd(arrow(A)) = Q_"enclosed"/epsilon_0 
+    Phi_E = integral.surf_S arrow(E) dot dd(arrow(A)) = Q_"enclosed"/epsilon_0,
   $
   where:
-  - $arrow(E)$ is the electric field
-  - $dd(arrow(A))$ is the area vector differential ($dd(arrow(A)) = hat(n) dd(A)$ where $hat(n)$ is the unit normal to $S$)
   - $Q_"enclosed"$ is the total charge *inside* the volume enclosed by $S$ 
   - $epsilon_0$ is the permittivity of free space. 
 ]
