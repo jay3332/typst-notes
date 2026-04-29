@@ -555,32 +555,49 @@ Realize that:
 #let graph-q-max = 1
 #let graph-t-max = 4
 
-#let q-graph = cetz.canvas({
-  plot.plot(size: (6, 3),
-    x-min: 0,
-    x-max: graph-t-max,
-    x-tick-step: 1,
-    x-format: (x) => if x == 0 [0] else if x == 1 [$tau$] else [$#x tau$],
-    x-grid: true,
-    x-label: [Time since charging, $t$],
-    y-min: 0,
-    y-max: 1.2 * graph-q-max,
-    y-tick-step: none,
-    y-ticks: ((graph-q-max, $C varcal(E)$),),
-    y-label: [Charge on capacitor, $q$],
-    {
-      plot.add(
-        domain: (0, graph-t-max),
-        style: (stroke: blue + 1pt),
-        (t) => graph-q-max * (1 - calc.exp(-t))
-      )
-      // Asymptote at 1.0
-      plot.add-hline(graph-q-max, style: (stroke: (paint: gray, dash: "dashed")))
-    }
-  )
-})
+#let q-graph(title, fn, color: blue, x-label: []) = align(center)[
+  *#title*
 
-#v(3em)
-#align(center, q-graph)
+  #cetz.canvas({
+    plot.plot(size: (6, 3),
+      x-min: 0,
+      x-max: graph-t-max,
+      x-tick-step: 1,
+      x-format: (x) => if x == 0 [0] else if x == 1 [$tau$] else [$#x tau$],
+      x-grid: true,
+      x-label: [#x-label, $t$],
+      y-min: 0,
+      y-max: 1.2 * graph-q-max,
+      y-tick-step: none,
+      y-ticks: ((graph-q-max, $C varcal(E)$),),
+      y-label: [Charge on capacitor, $q$],
+      {
+        plot.add(
+          domain: (0, graph-t-max),
+          style: (stroke: color + 1pt),
+          fn
+        )
+        // Asymptote at 1.0
+        plot.add-hline(graph-q-max, style: (stroke: (paint: gray, dash: "dashed")))
+      }
+    )
+  })
+]
+#lthin
+#grid(
+  columns: (1fr, 1fr),
+  align: horizon + center,
+  q-graph(
+    "Charge on Capacitor after Charging",
+    (t) => graph-q-max * (1 - calc.exp(-t)),
+    x-label: "Time since charging"
+  ),
+  q-graph(
+    "Charge on Capacitor after Discharging",
+    (t) => graph-q-max * calc.exp(-t),
+    x-label: "Time since discharging",
+    color: red,
+  )
+)
 
 #pagebreak()

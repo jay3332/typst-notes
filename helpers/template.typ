@@ -129,6 +129,7 @@
   title: "", 
   description: "", 
   toc_depth: 2,
+  toc_size: 1em,
   font: "sans",
   body,
 ) = [
@@ -290,7 +291,7 @@
     Jaysen Tsao
   ]
 
-  #outline(title: [], depth: toc_depth)
+  #text(size: toc_size, outline(title: [], depth: toc_depth))
   #v(1fr)
 
   #pagebreak()

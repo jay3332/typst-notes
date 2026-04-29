@@ -117,6 +117,16 @@ By Lenz's Law, eddy currents flow in whichever direction opposes the change in f
 
 In other words, _a changing magnetic flux through a bulk conductor induces eddy currents, which are small, isolated loops of current that create magnetic fields to oppose the change in flux._
 
+=== Electric Motors and Back Emf
+
+- An *electric motor* is a device that converts electrical energy into mechanical energy. It consists of a current-carrying coil placed in a magnetic field. The magnetic field exerts a torque on the coil, causing it to rotate.
+
+- As the coil rotates, the magnetic flux through it changes, and Faraday's Law tells us an emf must be induced. By Lenz's Law, this induced emf opposes the applied voltage driving the motor. This is called the *back emf*, $varcal(E)_"back"$.
+
+- Applying Kirchhoff's voltage law around the motor circuit: $
+    V - varcal(E)_"back" = I R #h(1em) -> #h(1em) I = (V - varcal(E)_"back") / R.
+  $
+
 #pagebreak()
 
 == Motional Electromotive Force
@@ -224,15 +234,7 @@ As current flows along the $hat(j)$ direction in the conductor, the magnetic for
   P = arrow(F) dot arrow(v) = -I ell B thin hat(i) dot v thin hat(i) = I ell B v.
 $
 
-=== Electric Motors and Back Emf
-
-- An *electric motor* is a device that converts electrical energy into mechanical energy. It consists of a current-carrying coil placed in a magnetic field. The magnetic field exerts a torque on the coil, causing it to rotate.
-
-- As the coil rotates, the magnetic flux through it changes, and Faraday's Law tells us an emf must be induced. By Lenz's Law, this induced emf opposes the applied voltage driving the motor. This is called the *back emf*, $varcal(E)_"back"$.
-
-- Applying Kirchhoff's voltage law around the motor circuit: $
-    V - varcal(E)_"back" = I R #h(1em) -> #h(1em) I = (V - varcal(E)_"back") / R.
-  $
+#pagebreak()
 
 === Hall Effect
 
@@ -581,214 +583,256 @@ $
 
 #pagebreak()
 
-
-
 == Circuits with Inductors (LR, LC, LRC)
 
-- in the direction of current flow, if current is increasing, then the inductor will act like an opposing ("back") emf (voltage drop)
-- in the direction of current flow, if current is decreasing, then the inductor will act like a source of emf (voltage gain)
+An inductor produces an emf that opposes changes in current, creating a potential difference across it.
+The direction of this potential difference depends on whether the current is increasing or decreasing:
 
-#zap.circuit({
-  import zap: *
+- In the direction of current flow, if current is increasing, then the inductor will act like an opposing/_back_ emf (voltage drop).
+- In the direction of current flow, if current is decreasing, then the inductor will act like a source of emf (voltage gain).
 
-  inductor("l1", (-1, 0), (1, 0), variant: "ieee")
-})
+The magnitude of the voltage drop or gain is given by Faraday's Law:
+$
+  abs(Delta V_L) = abs(varcal(E)_L) = L abs(dv(I, t)).
+$
+
+If other inductors in the circuit couple with the inductor, then we also need to include mutual inductances: $
+  abs(Delta V_k) = L_k abs(dv(I_k, t)) + sum_(i != k) plus.minus M_(i k) abs(dv(I_i, t)).
+$
 
 === Inductor-Resistor (LR) Circuits
+
+An *LR circuit* is one containing an inductor $L$ and a resistor $R$. Like RC circuits, its behavior is described by a first-order linear ODE. When an EMF source is present, the inductor *energizes* as current builds up. When the EMF source is removed, the inductor *de-energizes* as the current decays. 
+
+==== Energizing an LR Circuit
 
 #let lr-circuit = zap.circuit({
   battery("bat", (0, 0), (0, -2), label: (content: $varcal(E)$, anchor: "south"), cells: 2, width: .15, show-polarity: true)
   zap.inductor("ind", (3, 0), (3, -2), variant: "ieee", label: $L$)
   zap.resistor("res", (0, 0), (3, 0), variant: "ieee", label: $R$)
-  zap.switch("sw", (0, -2), (3, -2), variant: "ieee", closed: false)
-  zap.node("n1", (1.1, -2))
-  zap.node("n2", (1.9, -2))
+  zap.switch("sw", (0, -2), (3, -2), variant: "ieee", closed: true)
 })
 
-#lr-circuit
+#grid(
+  columns: (1fr, auto),
+  gutter: 2em,
+  align: (left + horizon, right + horizon),
+  [
+    Assume the circuit has been open for a long time, so $i(0) = 0$. At $t = 0$, the switch is closed. Applying Kirchhoff's Loop Rule:
+    $
+      varcal(E) - i R - L dv(i, t) = 0 space ==> space L dv(i, t) + R i = varcal(E).
+    $
+    This is a first-order linear ODE whose solution (with $i(0) = 0$) is:
+    $
+      cgreen(i(t) = varcal(E)/R (1 - e^(-R t slash L))).
+    $
+    The voltage across the inductor at any time $t$ is:
+    $
+      Delta V_L (t) = L dv(i, t) = varcal(E) e^(-R t slash L).
+    $
+  ],
+  lr-circuit,
+)
 
-$tau = L / R$
+The quantity $tau = L slash R$ is the *LR time constant*, such that the exponential can be simplified to $e^(-t slash tau)$.
 
-=== Inductor-Capacitor (LC) Circuits
+Note the following limits:
+- $i(0) = 0$: no current flows initially, so the inductor resists any sudden change in current.
+- $display(lim_(t -> oo) i(t)) = varcal(E) slash R$: at steady state, the inductor acts as a short circuit, and current is limited only by $R$.
+- $display(lim_(t -> oo) Delta V_L (t)) = 0$: the inductor's back emf decays as the current stabilizes.
 
-$
-  q(t) = Q cos(omega t + phi) \
-  i(t) = -omega Q sin(omega t + phi) \
-  omega = 1 / sqrt(L C)
-$
- derivation:
-$
-  varcal(E) &= -L dv(i, t) \
-  q/C &= -L dv(i, t) \
-  q/C &= -L ndv(q, t, 2) \
-  1/(L C) q &= -ndv(q, t, 2) \
-  // ndv(q, t, 2) + 1/(L C) q &= 0
-$
-characteristic equation:
-$
-  r^2 + 1/(L C) = 0 #h(1em) -> #h(1em) r = plus.minus 1 / sqrt(L C) i.
-$
-thus:
-$
-  q(t) = c_1 cos(1/sqrt(L C) t) + c_2 sin(1/sqrt(L C) t).
-$
-Let $Q = sqrt(c_1^2 + c_2^2)$ and $phi = arctan(c_2 slash c_1)$:
-$
-  q(t) = Q cos(1/sqrt(L C) t + phi).
-$
+==== De-energizing an LR Circuit
 
-=== Inductor-Resistor-Capacitor (LRC) Circuits
+#let lr-circuit-2 = zap.circuit({
+  zap.wire((0, 0), (0, -2))
+  zap.inductor("ind", (3, 0), (3, -2), variant: "ieee", label: $L$)
+  zap.resistor("res", (0, 0), (3, 0), variant: "ieee", label: $R$)
+  zap.switch("sw", (0, -2), (3, -2), variant: "ieee", closed: true)
+})
 
-derivation:
-$
-  varcal(E) = integral.cont_"loop" dd(V) &= -L dv(i, t) \
-  q/C + R i &= -L dv(i, t) \
-  q/C + R dv(q, t) &= -L ndv(q, t, 2) \
-  L ndv(q, t, 2) + R dv(q, t) + 1/C q &= 0 \
-  ndv(q, t, 2) + R/L dv(q, t) + 1/(L C) q &= 0
-$
-characteristic equation:
-$
-  r^2 + R/L r + 1/(L C) = 0 #h(1em) -> #h(1em) r = 1/2(-R/L plus.minus sqrt(R^2/L^2 - 4/(L C))) = -R/(2L) plus.minus sqrt(R^2/(4 L^2) - 1/(L C)).
-$
-if $R^2 < (4 L)/C$, then the roots are complex and we have underdamped oscillations:
-$
-  q(t) = e^(-R/(2L) t) (c_1 cos(omega t) + c_2 sin(omega t)) \
-  omega = sqrt(1/(L C) - R^2/(4 L^2)).
-$
-Let $Q = sqrt(c_1^2 + c_2^2)$, $phi = arctan(c_2 slash c_1)$, and $tau = 2L slash R$:
-$
-  q(t) = Q e^(-t slash tau) cos(omega t + phi).
-$
+#grid(
+  columns: (1fr, auto),
+  gutter: 2em,
+  align: (left + horizon, right + horizon),
+  [
+    Now suppose the battery is removed when the inductor carries current $i(0) = I_0 = varcal(E) slash R$.
+    By Kirchhoff's Loop Rule (no emf source):
+    $
+      -i R - L dv(i, t) = 0 space ==> space L dv(i, t) + R i = 0.
+    $
+    This separable ODE gives:
+    $
+      cblue(i(t) = I_0 e^(-t slash tau)).
+    $
+  ],
+  lr-circuit-2,
+)
 
-if $R^2 = (4 L)/C$, then the roots are real and equal, and we have critically damped oscillations:
-$
-  q(t) = (c_1 + c_2 t) e^(-t slash tau).
-$
+- $i(0) = I_0$: current starts at its maximum value.
+- $display(lim_(t -> oo) i(t)) = 0$: the energy stored in the inductor is dissipated as heat in $R$.
 
-if $R^2 > (4 L)/C$, then the roots are real and distinct, and we have overdamped oscillations:
-$
-  q(t) = c_1 e^(r_1 t) + c_2 e^(r_2 t) \
-  r_1 = -R/(2L) + sqrt(R^2/(4 L^2) - 1/(L C)) \
-  r_2 = -R/(2L) - sqrt(R^2/(4 L^2) - 1/(L C)) \
-$
+#define("LR Circuit")[
+  For an LR circuit with emf $varcal(E)$, resistance $R$, and inductance $L$, the *LR time constant* $tau$ is: $
+    tau = L / R.
+  $
+  *Energizing* (switch closes at $t = 0$, $i(0) = 0$):
+  $
+    i(t) = varcal(E)/R (1 - e^(-t slash tau))
+    #h(3em) Delta V_L (t) = varcal(E) e^(-t slash tau)
+  $
+  *De-energizing* (battery removed at $t = 0$, $i(0) = I_0$):
+  $
+    i(t) = I_0 e^(-t slash tau)
+    #h(3em) Delta V_L (t) = -I_0 R e^(-t slash tau)
+  $
+]
 
 #pagebreak()
 
-== Alternating Current (AC) Circuits
+=== Inductor-Capacitor (LC) Circuits
 
-- An *alternating current* (AC) is a current that oscillates back and forth in a circuit, as opposed to a *direct current* (DC) which flows in only one direction.
-
-#let ac-circuit-symbol = zap.circuit({
-  zap.acvsource("ac", (-1, 0), (1, 0))
+#let lc-circuit = zap.circuit({
+  zap.inductor("ind", (0, 0), (3, 0), variant: "ieee", label: $L$)
+  zap.capacitor("cap", (3, 0), (3, -2), variant: "ieee", label: $C$)
+  zap.wire((0, 0), (0, -2))
+  zap.wire((0, -2), (3, -2))
 })
 
-- An *alternating voltage source* #inline-circuit(ac-circuit-symbol) is a source of emf that produces an alternating current. A common example is the power outlet in your home, which provides an AC voltage.
+#grid(
+  columns: (1fr, auto),
+  gutter: 2em,
+  align: (left + horizon, right + horizon),
+  [
+    An *LC circuit* contains only an inductor $L$ and capacitor $C$ with no resistor and no battery. Suppose the capacitor starts fully charged to $q(0) = Q_0$ and the initial current $i(0) = 0$.
 
-- There are many types of *waveforms* for AC signals:
-  
-  - The *sinusoidal* waveform is the most common and is described by $V(t) = V_0 sin(omega t + phi)$, where $V_0$ is the amplitude, $omega$ is the angular frequency, and $phi$ is the phase.
-  
-  - A *rectangular wave* "jumps" between two levels with a _duty cycle_ $delta$, for $0 < delta < 1$.
-    - The duty cycle is the fraction of one period in which the signal is "high".
-    - A *square wave* has a duty cycle of $delta = 0.5$.
-  
-  - A *triangular wave* linearly ramps up and down between two levels.
-
-- There are two common ways to describe the strength of an AC signal:
-  - *Amplitude* or *peak*: the maximum value. If $V(t) = V_0 sin(omega t + phi)$, then the amplitude is $V_0$.
-  - *Root mean square (RMS)*: typical way to quantify the "effective" value of an AC signal.
-    Take the square of the signal, and find the mean value of the squared signal over one period, then take the square root of that mean:
+    By Kirchhoff's Loop Rule:
     $
-      V_"rms" = sqrt(1/T integral_0^T V^2 (t) dd(t)).
+      Delta V_C - L dv(i, t) = 0 space ==> space q/C = L dv(i, t).
     $
+    Since $i = inlinedv(q, t)$, this becomes a second-order ODE in $q$:
+    $
+      L ndv(q, t, 2) + 1/C q = 0 space ==> space ndv(q, t, 2) + omega_0^2 q = 0,
+    $
+    where $omega_0 = 1 slash sqrt(L C)$ is the *natural angular frequency* of the circuit.
+  ],
+  lc-circuit,
+)
 
-    - For a sinusoidal signal, the RMS value is $V_"rms" = V_0 slash sqrt(2)$.
-    - For a rectangular wave with duty cycle $delta$, the RMS value is $V_"rms" = V_0 sqrt(delta)$.
-    - For a triangular wave, the RMS value is $V_"rms" = V_0 slash sqrt(3)$.
+This models *simple harmonic motion* in charge. The characteristic equation $r^2 + omega_0^2 = 0$ has roots $r = plus.minus omega_0 i$, giving the general solution:
+$
+  q(t) = c_1 cos(omega_0 t) + c_2 sin(omega_0 t).
+$
 
-=== Phasors
+Applying initial conditions $q(0) = Q_0$ and $i(0) = dot(q)(0) = 0$:
+$
+  c_1 = Q_0, c_2 = 0 #h(1em) -> #h(1em) cgreen(q(t) = Q_0 cos(omega_0 t)).
+$
 
-To analyze a sinusoidal AC circuit, we can use *phasors*, which represent both the amplitude and phase of 
-certain sinusoidal quantities (e.g. voltage and current) as complex numbers.
-#rsubtext[Visually, a phasor can be thought of as a vector in the complex plane.]
+Differentiating to find the current and capacitor voltage:
+$
+  i(t) = dv(q, t) = cgreen(-Q_0 omega_0 sin(omega_0 t))
+  #h(3em) Delta V_C (t) = q(t)/C = cgreen(Q_0/C cos(omega_0 t)).
+$
 
-#note[
-  Since $i$ is already used to represent current, we will use $j$ to represent the imaginary number.
+The energy in the circuit oscillates between the capacitor and the inductor, with total energy conserved:
+$
+  U_C = q^2 / (2C) = (Q_0^2)/(2C) cos^2(omega_0 t),
+  #h(2em)
+  U_L = 1/2 L i^2 = (Q_0^2)/(2C) sin^2(omega_0 t),
+  #h(2em)
+  U = U_C + U_L = (Q_0^2)/(2C).
+$
+
+#define("LC Circuit")[
+  For an LC circuit with inductance $L$ and capacitance $C$, the charge oscillates at the *natural angular frequency*:
+  $
+    omega_0 = 1 / sqrt(L C).
+  $
+  With initial conditions $q(0) = Q_0$ and $i(0) = 0$:
+  $
+    q(t) = Q_0 cos(omega_0 t)
+    #h(3em) i(t) = -Q_0 omega_0 sin(omega_0 t)
+    #h(3em) Delta V_C (t) = Q_0/C cos(omega_0 t).
+  $
+  The total energy $U = Q_0^2 slash (2C)$ is conserved.
 ]
 
-#let Re = "Re"
-#let Im = "Im"
+#pagebreak()
 
-Take a sinusoidal voltage $V(t) = V_0 cos(omega t)$. The phasor for this voltage is $tilde(V) (t) = V_0 e^(j omega t)$.
-Realize that $V(t) = Re(tilde(V)) = Re(V_0 e^(j omega t))$, since by Euler's formula:
+=== Inductor-Resistor-Capacitor (LRC) Circuits
+
+#let lrc-circuit = zap.circuit({
+  zap.resistor("res", (0, 0), (2, 0), variant: "ieee", label: $R$)
+  zap.inductor("ind", (2, 0), (4, 0), variant: "ieee", label: $L$)
+  zap.capacitor("cap", (4, 0), (4, -2), variant: "ieee", label: $C$)
+  zap.wire((0, 0), (0, -2))
+  zap.wire((0, -2), (4, -2))
+})
+
+#grid(
+  columns: (1fr, auto),
+  gutter: 2em,
+  align: (left + horizon, right + horizon),
+  [
+    An *LRC circuit* has an inductor $L$, resistor $R$, and capacitor $C$ all in series. The resistor dissipates energy, so unlike the LC circuit, oscillations are *damped* and eventually decay to zero.
+
+    With $i = inlinedv(q, t)$, Kirchhoff's Loop Rule gives:
+    $
+      L ndv(q, t, 2) + R dv(q, t) + 1/C q = 0.
+    $
+    Define the *damping coefficient* $gamma = R slash (2L)$ and *natural frequency* $omega_0 = 1 slash sqrt(L C)$:
+    $
+      ndv(q, t, 2) + 2 gamma dv(q, t) + omega_0^2 q = 0.
+    $
+  ],
+  lrc-circuit,
+)
+
+The characteristic equation $r^2 + 2 gamma r + omega_0^2 = 0$ has roots:
 $
-  Re(tilde(V)) = Re(V_0 e^(j omega t)) = V_0 Re(cos(omega t) + j sin(omega t)) = V_0 cos(omega t).
+  r = -gamma plus.minus sqrt(gamma^2 - omega_0^2).
 $
 
-#define("Phasor Representation of Sinusoidal Signals")[
-  A sinusoidal signal $V(t) = V_0 cos(omega t + phi)$ can be represented as its *phasor* $tilde(V)(t)$ 
-  by adding an imaginary component $V_0 sin(omega t + phi) j$ to $V(t)$:
+The three qualitatively distinct regimes depend on whether $gamma$ is less than, equal to, or greater than $omega_0$:
+
+==== Underdamped ($gamma < omega_0$, i.e. $R^2 < 4L slash C$)
+
+The roots are complex: $r = -gamma plus.minus i omega_d$ where $omega_d = sqrt(omega_0^2 - gamma^2)$ is the *damped angular frequency*. The general solution is:
+$
+  q(t) = e^(-gamma t)(c_1 cos(omega_d t) + c_2 sin(omega_d t)).
+$
+In amplitude-phase form with $Q = sqrt(c_1^2 + c_2^2)$ and $phi = arctan(c_2 slash c_1)$:
+$
+  cblue(q(t) = Q e^(-t slash tau) cos(omega_d t + phi)), #h(2em) tau = 1/gamma = (2L)/R.
+$
+The system oscillates at frequency $omega_d < omega_0$, with amplitude decaying exponentially. As $R -> 0$, $omega_d -> omega_0$ and we recover the undamped LC result.
+
+==== Critically Damped ($gamma = omega_0$, i.e. $R^2 = 4L slash C$)
+
+The roots are real and equal: $r = -gamma$. The general solution is:
+$
+  cblue(q(t) = (c_1 + c_2 t) e^(-gamma t)).
+$
+This is the boundary between oscillatory and monotonic behavior. The system returns to equilibrium as fast as possible _without oscillating_.
+
+==== Overdamped ($gamma > omega_0$, i.e. $R^2 > 4L slash C$)
+
+The roots are real and distinct: $r_(1,2) = -gamma plus.minus sqrt(gamma^2 - omega_0^2)$. The general solution is:
+$
+  cblue(q(t) = c_1 e^(r_1 t) + c_2 e^(r_2 t)).
+$
+Both roots are negative, so $q(t) -> 0$ without oscillation, but more slowly than critical damping.
+
+#define("LRC Circuit")[
+  For an LRC circuit with inductance $L$, resistance $R$, and capacitance $C$, define: $
+    gamma = R / (2L) "(damping coefficient)"
+    #h(2em) omega_0 = 1 / sqrt(L C) "(natural frequency)".
   $
-    tilde(V) (t) = V_0 e^(j (omega t + phi)).
-  $
+  The charge satisfies $display(ndv(q, t, 2) + 2 gamma dv(q, t) + omega_0^2 q = 0)$.
+  The solution depends on the *damping regime*:
+  - *Underdamped* ($gamma < omega_0$): $q(t) = Q e^(-gamma t) cos(omega_d t + phi)$, where $omega_d = sqrt(omega_0^2 - gamma^2)$.
+  - *Critically damped* ($gamma = omega_0$): $q(t) = (c_1 + c_2 t) e^(-gamma t)$.
+  - *Overdamped* ($gamma > omega_0$): $q(t) = c_1 e^(r_1 t) + c_2 e^(r_2 t)$, where $r_(1,2) = -gamma plus.minus sqrt(gamma^2 - omega_0^2)$.
 ]
-
-- Visually, the phasor $tilde(V)$ is a "vector" of length $V_0$ that rotates counterclockwise in the complex plane at an angular velocity of $omega$. By projecting $tilde(V)$ onto the real axis, we obtain the voltage $V(t)$ at any given time.
-
-  - Two phasors $tilde(u)(t) = u_0 e^(j omega t + phi_1)$ and $tilde(y)(t) = v_0 e^(j omega t + phi_2)$ with the same angular velocity $omega$ can be added together as follows:
-    $
-      tilde(u)(t) + tilde(v)(t) &= u_0 e^(j (omega t + phi_1)) + v_0 e^(j (omega t + phi_2)) \
-      &= (u_0 e^(j phi_1) + v_0 e^(j phi_2)) e^(j omega t) \
-      &= (u_0 cos phi_1 + v_0 cos phi_2 + j (u_0 sin phi_1 + v_0 sin phi_2)) e^(j omega t) \
-      &= (u_0 cos phi_1 + v_0 cos phi_2) e^(j omega t) + j (u_0 sin phi_1 + v_0 sin phi_2) e^(j omega t) \
-      &= (Re(tilde(u)) + Re(tilde(v))) + j (Im(tilde(u)) + Im(tilde(v))). \
-    $
-    On the complex plane, this is just the vector sum of the two phasors $tilde(u)$ and $tilde(v)$. That is,
-    phasors can be added together using vector addition.
-
-- Realize that if $tilde(V) (t) = V_0 e^(j omega t)$, then $inlinedv(tilde(V), t) = j omega V_0 e^(j omega t)$. This means that taking the time-derivative of a phasor corresponds to multiplying it by $j omega$. Since $j = e^(j pi slash 2)$, the phase is shifted counterclockwise by $pi slash 2$ radians (i.e. 90 degrees) when we take the time derivative of a phasor. 
-
-  - Conversely, _integrating_ a phasor corresponds to _dividing_ by $j omega$, i.e. phase shift _clockwise_ by $pi slash 2$.
-  - Since the time-derivative of $sin(omega t)$ is $omega cos(omega t) = omega sin(omega t + pi slash 2)$, a transformation equivalent
-    to what we achieved using phasors.
-
-- If two phasors have the same phase shift, then they are said to be *in phase*.
-  - If a phasor $tilde(u)$ is shifted counterclockwise by $theta$ relative to another phasor $tilde(v)$, then
-    $tilde(u)$ is said to *lead* $tilde(v)$ by $theta$, and $tilde(v)$ is said to *lag* $tilde(u)$ by $theta$.
-
-
-
-=== Reactance
-
-- The *reactance* of a circuit element measures how much it resists the flow of non-linear current.
-  - Recall that a resistor is _linear_ if the potential difference across it is directly proportional to the current through it, as described by Ohm's Law: $V = I R$.
-  - A capacitor or inductor is _non-linear_ because the potential difference across it is
-
-$
-  q(t) = C V(t) = C V_0 sin(omega t + phi) \
-  i(t) = dv(q, t) = C V_0 omega cos(omega t + phi)
-$
-
-The *capacitive reactance* $X_C$ is defined as the ratio of the voltage amplitude to the current amplitude in a capacitor:
-$
-  X_C = V_0 / I_0 = V_0 / (C V_0 omega) = 1 / (C omega).
-$
-
-- *inductive reactance*
-
-$
-  i(t) = I_0 sin(omega t + phi) \
-  V_L (t) = L dv(i, t) = L I_0 omega cos(omega t + phi)
-$
-
-The *inductive reactance* $X_L$ is defined as the ratio of the voltage amplitude to the current amplitude in an inductor:
-$
-  X_L = V_0 / I_0 = (L I_0 omega) / I_0 = L omega.
-$
-
-=== Impedance
-
-
 
 #pagebreak()

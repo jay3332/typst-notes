@@ -3,6 +3,7 @@
 #show: template.with(
   title: "Electricity & Magnetism", 
   font: "times",
+  toc_size: 10pt,
 )
 
 #show figure: it => {
@@ -15,3 +16,4 @@
 #include("unit_4.typ")
 #include("unit_5.typ")
 #include("unit_6.typ")
+#include("unit_7.typ")

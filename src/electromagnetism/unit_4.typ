@@ -14,6 +14,8 @@
 - Magnetism is a fundamental force of nature that arises from the motion of electric charges. 
 
 - Magnetic fields are produced by moving charges (currents) and exert forces on other moving charges.
+  - Magnetic fields are a consequence of the special theory of relativity, and magnetic fields are really
+    just electric fields observed from different reference frames.
 
 - There are three types of magnetic materials (see #link(<types-of-mm>)[Types of Magnetic Materials]): 
   - *ferromagnetic* materials (e.g. iron) are _strongly_ attracted to magnetic fields and can be permanently magnetized. 
@@ -469,6 +471,5 @@ Magnetic materials are generally classified in terms of their magnetic susceptib
 // - *Diamagnetism*: $chi_m$ is small and negative ($mu_r$ slightly below 1). Induced orbital currents weakly oppose an external field. All materials are diamagnetic at some level; it is usually masked by stronger effects.
 
 // - *Ferromagnetism*: $mu_r >> 1$ (up to $tilde 10^4$ or more). Atoms in *magnetic domains* — small regions with uniformly aligned dipoles — switch orientation to align with an external field, producing a dramatically amplified response. Ferromagnets (iron, nickel, cobalt) can retain magnetization after the external field is removed (*permanent magnets*).
-
 
 #pagebreak()

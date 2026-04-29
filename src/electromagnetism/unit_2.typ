@@ -471,7 +471,7 @@ $
 
 - A *dielectric* is an insulating material placed between the conducting plates of a capacitor to _increase_ its capacitance.
 
-- When a dielectric is placed in an electric field, it becomes polarized, meaning that the positive and negative charges within the dielectric are slightly separated. 
+- When a dielectric is placed in an electric field, it becomes _polarized_, meaning that the positive and negative charges within the dielectric are slightly separated. 
   
   This creates an induced electric field that _opposes_ the original electric field, effectively reducing the potential difference between the plates.
   
@@ -504,8 +504,6 @@ $
 
 - In the discrete case, we can simply treat partial dielectrics as conductors in parallel/series. 
 
-#pagebreak()
-
 === Electric Potential Energy in Dielectrics
 
 - If $U_0$ is the energy stored by a capacitor with capacitance $C_0$ in a vaccum, then the energy stored by the same capacitor in a material with : $
@@ -516,6 +514,45 @@ $
     u = 1/2 epsilon E^2 = 1/2 kappa epsilon_0 E^2 = cgreen(kappa u_0).
   $
 
+=== Extension: Rigorous Definition of Polarization
+
+- Recall that _electric dipoles_ are pairs of equal and opposite charges separated by a small distance,
+  and the _dipole moment_ $arrow(p)$ is used to quantify the strength and direction of an electric dipole: $
+    arrow(p) = q arrow(d).
+  $
+
+- When an external electric field $arrow(E)$ passes through a dielectric material, dipoles within
+  the material align with the field, creating dipole moments throughout the material.
+
+  The *electric polarization* $arrow(P)$, sometimes called the _polarization density_, is then the 
+  dipole moment per unit volume: $
+    arrow(P) = dv(arrow(p), V) #h(1em) -> #h(1em) arrow(p)_"net" = integral.triple_"dielectric" arrow(P) dd(V). 
+  $
+
+- The *electric displacement field* $arrow(D)$ is thus the net "effective" electric field: $
+    arrow(D) = epsilon_0 arrow(E) + arrow(P) #h(1em) -> #h(1em) arrow(E)_"eff" = arrow(D)/epsilon_0 = arrow(E) + 1/epsilon_0 arrow(P).
+  $
+
+- A dielectric material is *linear* if the polarization $arrow(P)$ is directly proportional to the electric field $arrow(E)$:
+  $
+    arrow(P) = chi_e epsilon_0 arrow(E).
+  $
+  The constant of proportionality $chi_e$ is called the *electric susceptibility* of the material, and is a measure of how easily the material becomes polarized in response to an electric field.
+
+  For a linear dielectric, the electric displacement field can be rewritten as: $
+    arrow(D) = epsilon_0 arrow(E) + chi_e epsilon_0 arrow(E) = (1 + chi_e) epsilon_0 arrow(E) = epsilon arrow(E).
+  $
+  Here, we see that the absolute permittivity $epsilon$ is related to the electric susceptibility $chi_e$ by: $
+    epsilon = (1 + chi_e) epsilon_0.
+  $
+  Thus, the dielectric constant $kappa$ can also be expressed in terms of electric susceptibility: $
+    kappa = epsilon / epsilon_0 = 1 + chi_e.
+  $
+
+- At an atomic level, if a single dipole $arrow(p)$ arises in an atom from an electric field $arrow(E)$, then 
+  *atomic polarizability* $alpha$ can be defined as the ratio of the dipole moment to the electric field: $
+    alpha = p / E #h(1em) -> #h(1em) p = alpha E.
+  $ 
 
 // #cetz.canvas({
 //   import cetz.draw: *
