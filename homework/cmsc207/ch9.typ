@@ -26,7 +26,16 @@ May 10, 2026
     binom(n, k) dot binom(k, r) = binom(n, r) dot binom(n - r, k - r).
   $
 
-+ The binomial theorem states that for any numbers $a$ and $b$:
+#line(length: 100%, stroke: 0.5pt)
+
+_Proof._
+#pad(left: 1.33em)[
+  By the definition of 
+]
+
+#pagebreak()
+
+2. The binomial theorem states that for any numbers $a$ and $b$:
   $
     (a + b)^n = sum_(k = 0)^n binom(n, k) a^(n - k) b^k "for any integer" n >= 0.
   $

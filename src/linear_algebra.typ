@@ -2038,3 +2038,114 @@ We can add a _normalization step_ to find an orthonormal basis ${bf(u)_1, bf(u)_
 $
   bf(u)_i = bf(b)_i / abs(bf(b)_i) "for all" i = 1, 2, ..., k.
 $
+
+== Least Squares Problems
+
+The equation $A bf(x) = bf(b)$ is only consistent when $bf(b)$ can be made by taking a linear combination of the columns of $A$, where weights of that linear combination solve to be $bf(x)$. That is, the system is consistent *iff* $bf(b) in col(A)$.
+
+#pagebreak()
+
+
+
+= Symmetric Matrices and Quadratic Forms
+
+== Introduction to Symmetric Matrices
+
+- A *symmetric matrix* is a matrix which is equal to its transpose: $ A "is symmetric" <==> A = A^transpose. $
+
+- If $A$ is a symmetric matrix, then the eigenvectors corresponding to the distinct eigenvalues of $A$ form an orthogonal set.
+
+#derivation("Proof: Distinct eigenvalues of a symmetric matrix form an orthogonal set")[
+  Let $A$ be a symmetric matrix, and let $lambda_1$ and $lambda_2$ be distinct eigenvalues of $A$ with corresponding eigenvectors $bf(v)_1$ and $bf(v)_2$ respectively. Then:
+  $
+    lambda_1 (bf(v)_1^transpose bf(v)_2) &= (A bf(v)_1)^transpose bf(v)_2 & #h(1em) "by performing the substitution" A bf(v)_1 = lambda_1 bf(v)_1 \
+    &= bf(v)_1^transpose A^transpose bf(v)_2 & #h(1em) "by the property of transpose" (A B)^transpose = B^transpose A^transpose \
+    &= bf(v)_1^transpose A bf(v)_2 & #h(1em) "since" A "is symmetric" \
+    &= lambda_2 (bf(v)_1^transpose bf(v)_2) & #h(1em) "by performing the substitution" A bf(v)_2 = lambda_2 bf(v)_2
+  $
+  Since $lambda_1 != lambda_2$, we must have $bf(v)_1^transpose bf(v)_2 = 0$, which means that $bf(v)_1$ and $bf(v)_2$ are orthogonal. $qed$
+]
+
+- If $A$ is a symmetric _and_ diagonalizable $n times n$ matrix, then there exists an orthogonal basis $varcal(B)$ for $RR^n$ where:
+  - Eigenvectors corresponding to eigenvalues of multiplicity $1$ are in $varcal(B)$
+  - For each eigenvalue of multiplicity $m > 1$, we can take $m$ linearly independent eigenvectors corresponding to that eigenvalue, and apply the Gram-Schmidt process to those $m$ eigenvectors to get $m$ orthogonal eigenvectors corresponding to that eigenvalue, which are in $varcal(B)$.
+  - That is, the eigenbases correpsonding to the distinct eigenvalues of $A$ are _mutually orthogonal_.
+
+- $A$ is *orthogonally diagonalizable* iff there exists a diagonal matrix $D$ and an orthogonal matrix $U$ such that $A = U D U^transpose$.
+  - To find an orthogonal diagonalization for $A$, use the Gram-Schmidt process to find an orthonormal basis for every eigenbasis corresponding to an eigenvalue in $A$ with dimension $> 1$.
+
+#resource("Spectral Theorem")[ 
+  If $A$ is a symmetric $n times n$ matrix:
+  + $A$ has $n$ real eigenvalues, counting multiplicities
+  + The dimension of each eigenspace will equal the multiplicity of the corresponding eigenvalue.
+  + The eigenspaces of $A$ are _mutually orthogonal_.
+  + $A$ is orthogonally diagonalizable.
+  
+  In which case, the decomposition:
+  $
+    A = lambda_1 bf(u)_1 bf(u)_1^transpose + lambda_2 bf(u)_2 bf(u)_2^transpose + ... + lambda_n bf(u)_n bf(u)_n^transpose
+  $
+  is called the *spectral decomposition* of $A$.
+]
+
+#pagebreak()
+
+== Quadratic Form
+
+- A *quadratic form* over a set of variables ${x_1, x_2, ..., x_n}$ is a polynomial over ${x_1, x_2, ..., x_n}$ in which every term has degree $2$:
+  $
+    Q(x_1, x_2, ..., x_n) = sum_(i=1)^n sum_(j=1)^i a_(i j) x_i x_j.
+  $
+
+- Any quadratic form $Q(x_1, x_2, ..., x_n)$ can be represented in matrix-vector form as:
+  $
+    Q(bf(x)) = bf(x)^transpose A bf(x),
+  $
+  where $A$ is a symmetric $n times n$ matrix whose entries are given by:
+  $
+    a_(i j) = a_(j i) = cases(
+      display(a_(i j) / 2) & "if" i != j,
+      a_(i j) #h(2em) & "if" i = j.
+    )
+  $
+  where $a_(i j)$ is the coefficient of $x_i x_j$ and $bf(x) = display(mat(x_1, x_2, ..., x_n)^transpose)$.
+
+- Realize that if $A = I$, then $Q(bf(x)) = bf(x)^transpose bf(x) = abs(bf(x))^2 = x_1^2 + x_2^2 + ... + x_n^2$.
+
+#example("Represent a Quadratic Form as a Matrix-Vector Product")[
+  Let $Q(x, y) = 3 x^2 + 4 x y + 5 y^2$ be a quadratic form in $x$ and $y$. If $bf(x) = display(vec(x, y))$, then find the $A$
+  such that $Q(bf(x)) = bf(x)^transpose A bf(x)$.
+  #lorange
+  We have $a_(1 1) = 3, a_(1 2) = a_(2 1) = 4 slash 2 = 2, a_(2 2) = 5$. Thus:
+  $
+    A = mat(3, 2; 2, 5) #h(1em) -> #h(1em) Q(bf(x)) = mat(x, y) mat(3, 2; 2, 5) mat(x; y).
+  $
+]
+
+#pagebreak()
+
+=== Change of Variables in a Quadratic Form
+
+We can make the symmetric matrix $A$ diagonal by making use of the orthogonal diagonalization of $A$, which must exist since $A$ is symmetric.
+
+Let $A = U D U^transpose$ be an orthogonal diagonalization of $A$, such that $U$ is an orthogonal matrix and $D$ is a diagonal matrix (i.e. $U$ has orthonormal columns). 
+Then $D = U^transpose A U$.
+
+Let $bf(y)$ be the vector of our "new" variables, and define $bf(x) = U bf(y) -> bf(y) = U^(-1) bf(x) = U^transpose bf(x)$.
+
+Then, we have:
+$
+  Q_x (bf(x)) = bf(x)^transpose A bf(x) = bf(x)^transpose (U D U^transpose) bf(x) = (U^transpose bf(x))^transpose D (U^transpose bf(x)) = bf(y)^transpose D bf(y).
+$
+
+In which case, the columns of $U$ are the *principal axes* of the quadratic form. Since $D$ is a diagonal matrix, our quadratic form ends up only having $y_i^2$ terms:
+$
+  Q_y (bf(y)) = lambda_1 y_1^2 + lambda_2 y_2^2 + ... + lambda_n y_n^2.
+$
+
+Realize that the coefficients of $Q_y$ are the eigenvalues of $A$ (i.e. the entries on the main diagonal of $D$). They are called the *principal values* of the quadratic form, and they determine the shape of the graph of the quadratic form.
+
+For example, if all principal values are positive, then $Q$ will _only_ output positive numbers.
+If all principal values are negative, then $Q$ will _only_ output negative numbers.
+
+In general, if all eigenvalues are positive, then our quadratic form is *positive semidefinite*, and so is our symmetric matrix $A$. If all eigenvalues are negative, then our quadratic form is *negative semidefinite*. If some eigenvalues are positive and some are negative, then our quadratic form is *indefinite*.

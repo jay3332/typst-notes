@@ -600,11 +600,11 @@ If other inductors in the circuit couple with the inductor, then we also need to
   abs(Delta V_k) = L_k abs(dv(I_k, t)) + sum_(i != k) plus.minus M_(i k) abs(dv(I_i, t)).
 $
 
-=== Inductor-Resistor (LR) Circuits
+=== Inductor-Resistor (LR) Series Circuits
 
-An *LR circuit* is one containing an inductor $L$ and a resistor $R$. Like RC circuits, its behavior is described by a first-order linear ODE. When an EMF source is present, the inductor *energizes* as current builds up. When the EMF source is removed, the inductor *de-energizes* as the current decays. 
+An *LR series circuit* is one containing an inductor $L$ and a resistor $R$ in series. Like RC circuits, its behavior is described by a first-order linear ODE. When an EMF source is present, the inductor *energizes* as current builds up. When the EMF source is removed, the inductor *de-energizes* as the current decays. 
 
-==== Energizing an LR Circuit
+==== Energizing an LR Series Circuit
 
 #let lr-circuit = zap.circuit({
   battery("bat", (0, 0), (0, -2), label: (content: $varcal(E)$, anchor: "south"), cells: 2, width: .15, show-polarity: true)
@@ -641,7 +641,7 @@ Note the following limits:
 - $display(lim_(t -> oo) i(t)) = varcal(E) slash R$: at steady state, the inductor acts as a short circuit, and current is limited only by $R$.
 - $display(lim_(t -> oo) Delta V_L (t)) = 0$: the inductor's back emf decays as the current stabilizes.
 
-==== De-energizing an LR Circuit
+==== De-energizing an LR Series Circuit
 
 #let lr-circuit-2 = zap.circuit({
   zap.wire((0, 0), (0, -2))
@@ -671,8 +671,8 @@ Note the following limits:
 - $i(0) = I_0$: current starts at its maximum value.
 - $display(lim_(t -> oo) i(t)) = 0$: the energy stored in the inductor is dissipated as heat in $R$.
 
-#define("LR Circuit")[
-  For an LR circuit with emf $varcal(E)$, resistance $R$, and inductance $L$, the *LR time constant* $tau$ is: $
+#define("LR Series Circuit")[
+  For an LR series circuit with emf $varcal(E)$, resistance $R$, and inductance $L$, the *LR time constant* $tau$ is: $
     tau = L / R.
   $
   *Energizing* (switch closes at $t = 0$, $i(0) = 0$):
@@ -689,7 +689,7 @@ Note the following limits:
 
 #pagebreak()
 
-=== Inductor-Capacitor (LC) Circuits
+=== Inductor-Capacitor (LC) Series Circuits
 
 #let lc-circuit = zap.circuit({
   zap.inductor("ind", (0, 0), (3, 0), variant: "ieee", label: $L$)
@@ -703,7 +703,7 @@ Note the following limits:
   gutter: 2em,
   align: (left + horizon, right + horizon),
   [
-    An *LC circuit* contains only an inductor $L$ and capacitor $C$ with no resistor and no battery. Suppose the capacitor starts fully charged to $q(0) = Q_0$ and the initial current $i(0) = 0$.
+    An *LC series circuit* contains only an inductor $L$ and capacitor $C$ in series with no resistor and no battery. Suppose the capacitor starts fully charged to $q(0) = Q_0$ and the initial current $i(0) = 0$.
 
     By Kirchhoff's Loop Rule:
     $
@@ -743,8 +743,8 @@ $
   U = U_C + U_L = (Q_0^2)/(2C).
 $
 
-#define("LC Circuit")[
-  For an LC circuit with inductance $L$ and capacitance $C$, the charge oscillates at the *natural angular frequency*:
+#define("LC Series Circuit")[
+  For an LC series circuit with inductance $L$ and capacitance $C$, the charge oscillates at the *natural angular frequency*:
   $
     omega_0 = 1 / sqrt(L C).
   $
@@ -759,7 +759,7 @@ $
 
 #pagebreak()
 
-=== Inductor-Resistor-Capacitor (LRC) Circuits
+=== Inductor-Resistor-Capacitor (LRC) Series Circuits
 
 #let lrc-circuit = zap.circuit({
   zap.resistor("res", (0, 0), (2, 0), variant: "ieee", label: $R$)
@@ -774,7 +774,7 @@ $
   gutter: 2em,
   align: (left + horizon, right + horizon),
   [
-    An *LRC circuit* has an inductor $L$, resistor $R$, and capacitor $C$ all in series. The resistor dissipates energy, so unlike the LC circuit, oscillations are *damped* and eventually decay to zero.
+    An *LRC series circuit* has an inductor $L$, resistor $R$, and capacitor $C$ all in series. The resistor dissipates energy, so unlike the LC circuit, oscillations are *damped* and eventually decay to zero.
 
     With $i = inlinedv(q, t)$, Kirchhoff's Loop Rule gives:
     $
@@ -823,8 +823,8 @@ $
 $
 Both roots are negative, so $q(t) -> 0$ without oscillation, but more slowly than critical damping.
 
-#define("LRC Circuit")[
-  For an LRC circuit with inductance $L$, resistance $R$, and capacitance $C$, define: $
+#define("LRC Series Circuit")[
+  For an LRC series circuit with inductance $L$, resistance $R$, and capacitance $C$, define: $
     gamma = R / (2L) "(damping coefficient)"
     #h(2em) omega_0 = 1 / sqrt(L C) "(natural frequency)".
   $

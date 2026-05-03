@@ -450,7 +450,7 @@ A *junction* is a point in a circuit where charges have to possibility of taking
 
 #pagebreak()
 
-== Resistor-Capacitor (RC) Circuits
+== Resistor-Capacitor (RC) Series Circuits
 
 #let rc-circuit = zap.circuit({
   battery("bat", (0, 0), (0, -2), label: (content: $varcal(E)$, anchor: "south"), cells: 2, width: .15, show-polarity: true)
@@ -459,10 +459,10 @@ A *junction* is a point in a circuit where charges have to possibility of taking
   zap.switch("sw", (0, -2), (3, -2), variant: "ieee", closed: true)
 })
 
-=== Charging an RC Circuit
+=== Charging an RC Series Circuit
 
 #wrap-content(rc-circuit, align: right, [
-  An *RC-circuit* is a circuit which is equivalent to one with a resistor and a capacitor.
+  An *RC series circuit* is a circuit which is equivalent to one with a resistor and a capacitor in series.
 
   Let's assume that before we close the circuit, the capacitor is uncharged. We can assign $q(t)$ to represent the charge on the capacitor, so $q(0) = 0$.
 
@@ -506,7 +506,7 @@ Note the following limits:
 
 - $display(lim_(t -> oo) Delta V_C (t)) = varcal(E)$: After a very long time, the voltage across the capacitor approaches its maximum value of $Delta V_"C,max" = varcal(E)$.
 
-=== Discharging an RC Circuit
+=== Discharging an RC Series Circuit
 
 #let rc-circuit-2 = zap.circuit({
   zap.wire((0, 0), (0, -2))
@@ -516,7 +516,7 @@ Note the following limits:
 })
 
 #wrap-content(rc-circuit-2, align: right, [
-  Now, let's assume that we have an RC-circuit with a fully charged capacitor, so $q(0) = q_0$. Then, the battery used to charge the capactor is removed, and now the capacitor is allowed to discharge through the resistor. We call this *discharging the capacitor*.
+  Now, let's assume that we have an RC-series circuit with a fully charged capacitor, so $q(0) = q_0$. Then, the battery used to charge the capactor is removed, and now the capacitor is allowed to discharge through the resistor. We call this *discharging the capacitor*.
 
   By Kirchhoff's Loop Rule, we can write an equation for the circuit: $
     Delta V_R + Delta V_C = 0.

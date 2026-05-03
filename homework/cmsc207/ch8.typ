@@ -80,18 +80,21 @@ $
   S = {000, 001, 010, 011, 100, 101, 110, 111}.
 $
 
-By the definition of $R$, we can partition $S$ into the following equivalence classes:
-$
-  [000] &= {000, 001}. \
-  [010] &= {010, 011}. \
-  [100] &= {100, 101}. \
-  [110] &= {110, 111}.
-$
-
 Let $s$, $t$, and $u$ be arbitrary strings in $S$.
 
 _Proof: $R$ is reflexive._
 #pad(left: 1.33em)[
-  Since the two left-most characters of $s$ are the same as themselves, $s thin R thin s$, so $R$ is reflexive.  
+  Since the two left-most characters of $s$ are the same, $s thin R thin s$, so $R$ is reflexive.
 ]
 
+_Proof: $R$ is symmetric._
+#pad(left: 1.33em)[
+  Suppose $s thin R thin t$. By the definition of $R$, the two left-most characters of $s$ and $t$ are the same. This means that the two left-most characters of $t$ and $s$ are the same, since the equality of strings exhibit an equivalence relation. By the definition of $R$, $t thin R thin s$. Therefore, $R$ is symmetric.
+]
+
+_Proof: $R$ is transitive._
+#pad(left: 1.33em)[
+  Suppose $s thin R thin t$ and $t thin R thin u$. By the definition of $R$, the two left-most characters of $s$ and $t$ are the same, and the two left-most characters of $t$ and $u$ are the same. This means that the two left-most characters of $s$ and $u$ are the same, since the equality of strings exhibit an equivalence relation. By the definition of $R$, $s thin R thin u$. Therefore, $R$ is transitive.
+]
+
+Since $R$ is reflexive, symmetric, and transitive, $R$ is an equivalence relation on $S$. $qed$
