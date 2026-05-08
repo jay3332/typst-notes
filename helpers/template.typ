@@ -15,6 +15,7 @@
 #let varell = text(font: "New Computer Modern Math", math.ell)
 #let grad = $arrow(nabla "")$
 #let transpose = $sans(upright(T))$
+#let st = $mid(|)$
 #let evaluated(expr, size: 100%) = $lr(#expr|, size: #size)$
 
 #let tred(x) = text(fill: red, x)

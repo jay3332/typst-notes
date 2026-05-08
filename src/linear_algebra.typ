@@ -2096,6 +2096,7 @@ The equation $A bf(x) = bf(b)$ is only consistent when $bf(b)$ can be made by ta
   $
     Q(x_1, x_2, ..., x_n) = sum_(i=1)^n sum_(j=1)^i a_(i j) x_i x_j.
   $
+  In general, a quadratic form is a _homogeneous polynomial_ of degree 2.
 
 - Any quadratic form $Q(x_1, x_2, ..., x_n)$ can be represented in matrix-vector form as:
   $
@@ -2143,9 +2144,35 @@ $
   Q_y (bf(y)) = lambda_1 y_1^2 + lambda_2 y_2^2 + ... + lambda_n y_n^2.
 $
 
+#define("Change of Variables for a Quadratic Form")[
+  Let $Q(bf(x)) = bf(x)^transpose A bf(x)$ be a quadratic form, where $A$ is a symmetric matrix. If $lambda_1, lambda_2, ..., lambda_n$ are the eigenvalues of $A$, then:
+  $
+    bf(x)^transpose A bf(x) = lambda_1 y_1^2 + lambda_2 y_2^2 + ... + lambda_n y_n^2.
+  $
+]
+
 Realize that the coefficients of $Q_y$ are the eigenvalues of $A$ (i.e. the entries on the main diagonal of $D$). They are called the *principal values* of the quadratic form, and they determine the shape of the graph of the quadratic form.
 
 For example, if all principal values are positive, then $Q$ will _only_ output positive numbers.
 If all principal values are negative, then $Q$ will _only_ output negative numbers.
 
-In general, if all eigenvalues are positive, then our quadratic form is *positive semidefinite*, and so is our symmetric matrix $A$. If all eigenvalues are negative, then our quadratic form is *negative semidefinite*. If some eigenvalues are positive and some are negative, then our quadratic form is *indefinite*.
+In general, if all eigenvalues are positive, then our quadratic form is *positive definite*, and so is our symmetric matrix $A$. If all eigenvalues are negative, then our quadratic form is *negative definite*. 
+
+If all eigenvalues are non-negative (i.e. positive or zero), then our quadratic form is *positive semidefinite*, and if all eigenvalues are non-positive (i.e. negative or zero), then our quadratic form is *negative semidefinite*.
+
+If some eigenvalues are positive and some are negative, then our quadratic form is *indefinite*.
+
+#pagebreak()
+
+== Constrained Optimization
+
+A quadratic form $Q(bf(x)) = bf(x)^transpose A bf(x)$ subject to the constraint $bf(x)^transpose bf(x) = norm(bf(x))^2 = 1$ attains a *maximum* of its maximum eigenvalue $lambda_1$ when $bf(x) = bf(u)$, where $bf(u)$ is a corresponding unit eigenvector of $lambda_1$. Similarly, $Q$ attains a *minimum* of its minimum eigenvalue $lambda_p$ when $bf(x) = bf(v)$, where $bf(v)$ is a corresponding unit eigenvector of $lambda_p$.
+
+Similarly, if $lambda_k$ is the $k$#th greatest eigenvalue of $A$ with $bf(u)_k$ a corresponding unit eigenvector, then for all $k$, $lambda_k$ is the maximum value of $Q(bf(x))$ when subject to the constraints:
+$
+  bf(x)^transpose bf(x) = 1 #h(2em)
+  bf(x)^transpose bf(u)_1 = 0 #h(2em)
+  bf(x)^transpose bf(u)_2 = 0 #h(2em)
+  ... #h(2em)
+  bf(x)^transpose bf(u)_(k - 1) = 0.
+$

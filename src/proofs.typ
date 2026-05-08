@@ -1,4 +1,7 @@
 #import "../helpers/template.typ": *
+#import "@preview/itemize:0.2.0" as el
+
+#show: el.default-enum-list
 
 #show: template.with(title: "A Collection of Proofs", font: "times")
 #set math.mat(delim: "(")
@@ -14,13 +17,13 @@
 
 == Logic, Sets, Quantifiers
 
-+ *Cardinality of Power Sets.* If $A$ is a finite set, then $abs(cal(P)(A)) = 2^abs(A)$.
++ *Cardinality of Power Sets.* If $A$ is a finite set with $n$ elements, then $abs(cal(P)(A)) = 2^n$.
 
 + *Commutability of Nested Quantifiers.* If $exists x space forall y space P(x, y)$, then $forall y space exists x space P(x, y)$. However, the converse is not necessarily true.
 
-+ *Functional Completeness of ${not, and}$.* The set of logical connectives ${not, and}$ is functionally complete, every Boolean function ${0, 1}^n -> {0, 1}$ can be expressed using only the connectives $not$ and $and$.
++ *Functional Completeness of ${not, and}$.* The set of logical connectives ${not, and}$ is functionally complete. That is, every Boolean function ${0, 1}^n -> {0, 1}$ can be expressed using only the connectives $not$ and $and$.
 
-+ *Russell's Paradox.* For any set $A$, the set ${x in A | x in.not x}$ is not an element of $A$.
++ *Russell's Paradox.* For any set $A$, the set ${x in A st x in.not x}$ is not an element of $A$.
 
 == Functions, Inverses, Composition
 
@@ -65,6 +68,10 @@
 
 == Combinatorics, Probability
 
++ *Formula for Combination.* For any integers $n >= 0$ and $0 <= k <= n$, the number of ways to choose $k$ elements from a set of $n$ distinct elements is given by the formula: $
+    binom(n, r) = n!/(r! (n-r)!).
+  $
+
 + *Pascal's Identity.* For any integers $n >= 1$ and $0 < k <= n$: $
     binom(n, k) = binom(n - 1, k - 1) + binom(n - 1, k).
   $
@@ -103,13 +110,15 @@
 
 == Vector Spaces, Subspaces, Linear Independence
 
-#let span = "span"
-#let col = "col"
-#let ker = "ker"
-#let nul = "nul"
-#let row = "row"
-#let nullity = "nullity"
-#let rank = "rank"
+#let span = $op("span")$
+#let col = $op("col")$
+#let ker = $op("ker")$
+#let nul = $op("nul")$
+#let row = $op("row")$
+#let nullity = $op("nullity")$
+#let rank = $op("rank")$
+#let adj = $op("adj")$
+#let proj = $op("proj")$
 #let inner(u, v) = $lr(chevron.l #u, #v chevron.r)$
 
 Let $V$ be a vector space.
@@ -124,6 +133,8 @@ Let $V$ be a vector space.
 
 + If ${bf(v)_1, bf(v)_2, ..., bf(v)_n}$ is linearly independent but ${bf(v)_1, bf(v)_2, ..., bf(v)_n, bf(w)}$ is linearly dependent, then \ $bf(w) in span{bf(v)_1, bf(v)_2, ..., bf(v)_n}$.
 
++ *Telescoping Linear Independence.* Suppose ${bf(v)_1, bf(v)_2, ..., bf(v)_n}$ is a linearly independent set of vectors in $V$. Define a new set of vectors $W = {bf(w)_1, bf(w)_2, ..., bf(w)_n}$ by $bf(w)_i = sum_(j=1)^i bf(v)_j$ for $i = 1, 2, ..., n$, so $W = {bf(v)_1, bf(v)_1 + bf(v)_2, ..., bf(v)_1 + bf(v)_2 + ... + bf(v)_n}$. Then $W$ is also a linearly independent set.
+
 + *Steinitz Exchange Lemma.* Let $U = {bf(u)_1, bf(u)_2, ..., bf(u)_m} subset.eq V$ and $W = {bf(w)_1, bf(w)_2, ..., bf(w)_n} subset.eq V$. If $U$ is linearly independent and $W$ spans $V$, then $m <= n$, and we can replace $m$ vectors from $W$ with the $m$ vectors from $U$ to get a spanning set for $V$.
 
 + *Basis Theorem.* If $V$ has dimension $n$, then:
@@ -132,7 +143,15 @@ Let $V$ be a vector space.
 
 + If $S$ spans $V$, then a basis $varcal(B)$ for $V$ can be formed using only vectors in $S$, i.e. $varcal(B) subset.eq S$.
 
-+ For any two subspaces $V_1$ and $V_2$ of $V$, $dim(V_1) + dim(V_2) = dim(V_1) + dim(V_2) - dim(V_1 inter V_2)$.
++ For any two subspaces $V_1$ and $V_2$ of $V$, $dim(V_1 + V_2) = dim(V_1) + dim(V_2) - dim(V_1 inter V_2)$.
+
++ *Invariant Intersections.* Suppose $V$ is finite-dimensional, and $U$ and $W$ are subspaces of $V$ such that $dim U + dim W > dim V$. Then $U inter W$ must contain a nonzero vector.
+
++ Let $a_1, a_2, ..., a_n$ be distinct scalars in $RR$. Then the set of 
+  functions ${e^(a_1 x), e^(a_2 x), ..., e^(a_n x)}$ is linearly independent
+  in the set of continuous functions $C(RR)$.
+
++ $RR^oo$ is the infinite-dimensional vector space containing all infinite sequences of real numbers $(a_1, a_2, a_3, ...)$. It holds that ${(1, b, b^2, b^3, ...) in RR^oo st b in RR}$ is a linearly independent set in $RR^oo$.
 
 #pagebreak()
 
@@ -146,14 +165,25 @@ _Note:_ A linear map is also called a linear transformation. The image of a line
 
 + *Rank-Nullity Theorem for Matrices.* For any $m times n$ matrix $A$, $rank(A) + nullity(A) = n$.
 
-+ *Rank-Nullity Theorem for Linear Maps.* Let $T: V -> W$ be a linear map, where $V$ is finite-dimensional. Then: $ dim(ker T)) + dim(im thick T)) = dim(V). $
++ *Rank-Nullity Theorem for Linear Maps.* Let $T: V -> W$ be a linear map, where $V$ is finite-dimensional. Then: $ dim(ker thick T) + dim(im thick T) = dim(V). $
 
 + *Equivalence of Column and Row Ranks.* If $A$ is an $m times n$ matrix, then: $ dim(col thin A) = dim(row thin A) = rank(A). $
+
++ *Sylvester's Law of Nullity.* For linear maps $T: U -> V$ and $S: V -> W$, then: $
+    nullity(S compose T) <= nullity(S) + nullity(T).
+  $
+
++ *Sylvester's Rank Inequality.* For linear maps $T: U -> V$ and $S: V -> W$, then: $
+    rank(S compose T) >= rank(S) + rank(T) - dim(V).
+  $
 
 + *Frobenius Rank Inequality.* For matrices $A, B, C$ of compatible dimensions:
   $
     rank(A B) + rank(B C) <= rank(B) + rank(A B C).
   $
+
++ *Rank of Compositions.* For linear maps $T: U -> V$ and $S: V -> W$, then:
+  $ rank(T compose S) <= min(rank(T), rank(S)). $
 
 + *Existence and Uniqueness of Linear Maps.* 
   + *Uniqueness.* Suppose $T, S: V -> W$ are linear maps, and $varcal(B) = {bf(v)_1, bf(v)_2, ..., bf(v)_n}$ is a basis of $V$ such that $T(bf(v)_i) = S(bf(v)_i)$ for $i = 1, 2, ..., n$. Then $T = S$.
@@ -173,6 +203,14 @@ _Note:_ A linear map is also called a linear transformation. The image of a line
   + $ker(T^*) = (im T)^perp$.
   + $T$ is self-adjoint ($T^* = T$) *iff* the associated matrix of $T$ is a Hermitian matrix.
 
++ Let $L, R: RR^oo -> RR^oo$ be the left and right shift operators on $RR^oo$, respectively, defined by $L(a_1, a_2, a_3, ...) = (a_2, a_3, a_4, ...)$ and $R(a_1, a_2, a_3, ...) = (0, a_1, a_2, a_3, ...)$. Then $L compose R = id_(RR^oo)$, but $R compose L != id_(RR^oo)$, where $id_(RR^oo)$ is the identity operator on $RR^oo$ ($bf(v) |-> bf(v)$).
+
+/*Let $T: V \to V$ be a linear operator on a finite-dimensional space. Prove that if $\text{im}(T) = \text{im}(T^2)$, then $\text{ker}(T) \cap \text{im}(T) = \{0\}$.*/
+
++ Let $T: V -> V$ be a linear map where $V$ is finite-dimensional. If $im(T) = im(T compose T)$, then \ $ker(T) inter im(T) = {bf(0)}$.
+
++ Let $T: V -> W$ be a linear map. If $T$ is an isomorphism and ${bf(v)_1, bf(v)_2, ..., bf(v)_n}$ is a basis for $V$, then ${T(bf(v)_1), T(bf(v)_2), ..., T(bf(v)_n)}$ is a basis for $W$.
+
 #pagebreak()
 
 == Matrix Operations, Inverses, Determinants
@@ -186,6 +224,16 @@ _Note:_ A linear map is also called a linear transformation. The image of a line
 + If $A$ is invertible, then $display(det(A^(-1)) = 1 / det(A))$.
 
 + If $A$ is an $n times n$ real matrix, then for some $k in RR$, $display(det(k A) = k^n det(A))$.
+
++ If $A$ is an $n times n$ matrix such that $A^2 = A$, then $det(A) in {0, 1}$.
+
++ If $A$ is a triangular matrix, then $det A$ is the product of the entries on the main diagonal of $A$.
+
++ If $A$ is invertible, then $A^transpose A$ is also invertible, and $A^(-1) = (A^transpose A)^(-1) A^transpose$.
+
++ Suppose $A$ and $B$ are matrices such that the product $A B$ is defined and $A$ and $A B$ are both invertible. Then $B$ is also invertible.
+
++ Let $A$ be an $n times n$ matrix. If $A^2 = 0_(n times n)$ where $0_(n times n)$ is the $n times n$ zero matrix, then $A$ is singular.
 
 + *Cramer's Rule.* Let $A$ be an invertible $n times n$ matrix, and let $bf(b)$ be a vector in $RR^n$. Then the unique solution to the equation $A bf(x) = bf(b)$ is given by:
   $
@@ -246,6 +294,16 @@ _Note:_ A linear map is also called a linear transformation. The image of a line
   + $ det A = lambda_1 lambda_2 ... lambda_n = product_(i=1)^n lambda_i. $ 
   + $ tr A = lambda_1 + lambda_2 + ... + lambda_n = sum_(i=1)^n lambda_i. $
 
++ If all eigenvalues of $A$ have an absolute value less than 1, then $I - A$ is invertible.
+
++ If $lambda$ is an eigenvalue of an $n times n$ matrix $A$, then for all integers $k >= 1$, $lambda^k$ is an eigenvalue of $A^k$.
+
++ If $A$ is a triangular matrix, then all eigenvalues of $A$ are on the main diagonal of $A$.
+
++ If $A$ is a $2 times 2$ matrix with repeated eigenvalue $lambda$, then $A$ is diagonalizable *iff* $A = display(mat(lambda, 0; 0, lambda))$.
+
++ If $A$ and $B$ are $n times n$ matrices with the same $n$ distinct eigenvalues, then $A$ is similar to $B$.
+
 #pagebreak()
 
 == Inner Product Spaces, Orthogonality
@@ -261,6 +319,17 @@ Let $V$ be an inner product space.
 + *Triangle Inequality.* Let $bf(u)$ and $bf(v)$ be vectors in $V$. Then $norm(bf(u) + bf(v)) <= norm(bf(u)) + norm(bf(v))$.
 
 + *Cauchy-Schwarz Inequality.* Let $bf(u)$ and $bf(v)$ be vectors in $V$. Then $abs(inner(bf(u), bf(v))) <= norm(bf(u)) norm(bf(v))$.
+
++ *Bessel's Inequality.* Let $varcal(B) = {bf(v)_1, bf(v)_2, ..., bf(v)_n}$ be an orthonormal set of vectors in $V$, and let $bf(v)$ be any vector in $V$. Then: $
+    sum_(i=1)^n abs(inner(bf(v), bf(v)_i))^2 <= norm(bf(v))^2.
+  $
+
++ *Best Approximation Theorem.* Let $W$ be a finite-dimensional subspace of $V$, and let $bf(v) in V$. Then 
+  for all $bf(w) in W$ such that $bf(w) != proj_W (bf(v))$: $
+    norm(bf(v) - proj_W (bf(v))) < norm(bf(v) - bf(w)).
+  $
+
++ *Eigenvalues of an Orthogonal Matrix.* If $Q$ is an orthogonal matrix, then every eigenvalue of $Q$ has an absolute value of $1$.
 
 + *Fundamental Theorem of Linear Algebra.* Let $A$ be an $m times n$ matrix. Then:
   + $nul(A) = (row A)^perp$ in the auxiliary inner product space $RR^n$.

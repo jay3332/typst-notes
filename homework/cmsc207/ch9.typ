@@ -30,7 +30,32 @@ May 10, 2026
 
 _Proof._
 #pad(left: 1.33em)[
-  By the definition of 
+  *Lemma 1.* The factorial expansion of $binom(n, r)$ is: <lemma-1>
+  $
+    binom(n, r) = n!/(r! (n - r)!).
+  $
+
+  By #link(<lemma-1>)[Lemma 1], we can rewrite the left-hand side of the equation as follows:
+  $
+    binom(n, k) dot binom(k, r) 
+    &= (n!/(k! (n - k)!)) dot (k!/(r! (k - r)!)) \
+    &= (n! k!)/(k! r! (n - k)! (k - r)!) \
+    &= n!/(r! (n - k)! (k - r)!).
+  $
+
+  By #link(<lemma-1>)[Lemma 1], we can rewrite the right-hand side of the equation as follows:
+  $
+    binom(n, r) dot binom(n - r, k - r) 
+    &= (n!/(r! (n - r)!)) dot ((n - r)!/((k - r)! ((n - r) - (k - r))!)) \
+    &= (n! (n - r)!)/(r! (n - r)! (k - r)! ((n - r) - (k - r))!) \
+    &= n!/(r! (k - r)! (n - k)!).
+  $
+
+  Since multiplication is commutative under $ZZ$, we have:
+  $
+    n!/(r! (n - k)! (k - r)!) = n!/(r! (k - r)! (n - k)!).
+  $
+  Thus, the LHS and RHS of the equation are equal, so $display(binom(n, k) dot binom(k, r) = binom(n, r) dot binom(n - r, k - r))$. $qed$
 ]
 
 #pagebreak()
@@ -43,3 +68,29 @@ _Proof._
   $
     sum_(k = 0)^n (-1)^k binom(n, k) 3^(n - k) 2^k = 1.
   $
+  #line(length: 100%, stroke: 0.5pt)
+
+_Proof._
+
+#pad(left: 1.33em)[
+  By the binomial theorem, we have:
+  $
+    (3 - 2)^n = sum_(k = 0)^n binom(n, k) 3^(n - k) (-2)^k.
+  $
+  Since $3 - 2 = 1$, we have:
+  $
+    1^n = sum_(k = 0)^n binom(n, k) 3^(n - k) (-2)^k.
+  $
+  Since $1^n = 1$ for all integers $n >= 0$, we have:
+  $
+    sum_(k = 0)^n binom(n, k) 3^(n - k) (-2)^k = 1.
+  $
+  Since $(-2)^k = (-1)^k dot 2^k$ for all integers $k >= 0$, we have:
+  $
+    sum_(k = 0)^n binom(n, k) 3^(n - k) (-1)^k dot 2^k = sum_(k = 0)^n (-1)^k binom(n, k) 3^(n - k) dot 2^k.
+  $
+  Thus, we have shown that:
+  $
+    sum_(k = 0)^n (-1)^k binom(n, k) 3^(n - k) 2^k = 1. #h(1em) qed
+  $
+]
