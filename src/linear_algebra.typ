@@ -2043,6 +2043,20 @@ $
 
 The equation $A bf(x) = bf(b)$ is only consistent when $bf(b)$ can be made by taking a linear combination of the columns of $A$, where weights of that linear combination solve to be $bf(x)$. That is, the system is consistent *iff* $bf(b) in col(A)$.
 
+== Inner Product Spaces
+
+An *inner product space* is a vector space $V$ along with a binary operator called the *inner product* $ang(dot, dot): V times V -> RR$. The inner product must satisfy the following properties for all $bf(u), bf(v), bf(w) in V$ and scalar $c$:
+- commutativity: $ang(bf(u), bf(v)) = ang(bf(v), bf(u))$.
+- linearity in the first argument: $ang(c bf(u) + bf(w), bf(v)) = c ang(bf(u), bf(v)) + ang(bf(w), bf(v))$.
+- positive-definiteness: $ang(bf(v), bf(v)) >= 0$, and $ang(bf(v), bf(v)) = 0$ iff $bf(v) = bf(0)$.
+
+A *normed vector space* is a vector space $V$ along with a unary operator called the *norm* $norm(dot): V -> RR$ that satisfies the following properties for all $bf(u), bf(v) in V$ and scalar $c$:
+- positive-definiteness: $norm(bf(v)) >= 0$, and $norm(bf(v)) = 0$ iff $bf(v) = bf(0)$.
+- homogeneity: $norm(c bf(v)) = abs(c) norm(bf(v))$.
+- triangle inequality: $norm(bf(u) + bf(v)) <= norm(bf(u)) + norm(bf(v))$.
+
+All inner product spaces are normed vector spaces. The norm operator of an inner product space is defined as $norm(bf(v)) = sqrt(ang(bf(v), bf(v)))$, called the norm *induced* by the inner product space.
+
 #pagebreak()
 
 
@@ -2175,4 +2189,26 @@ $
   bf(x)^transpose bf(u)_2 = 0 #h(2em)
   ... #h(2em)
   bf(x)^transpose bf(u)_(k - 1) = 0.
+$
+
+== Singular Value Decomposition
+
+The *singular values* of a matrix $A$ are the square roots of the eigenvalues of $A^transpose A$. The singular values of $A$ are always non-negative, and they are typically arranged in non-increasing order: $sigma_1 >= sigma_2 >= ... >= sigma_p >= 0$, where $p = min(m, n)$. It holds that for all $sigma_i$, $sigma_i^2$ is an eigenvalue of $A^transpose A$, so $sigma_i = sqrt(lambda_i)$ if $lambda_i$ is an eigenvalue of $A^transpose A$.
+
+If $A$ is an $m times n$ matrix, then there exists an $m times m$ orthogonal matrix $U$, an $n times n$ orthogonal matrix $V$, and an $m times n$ diagonal matrix $Sigma$ such that:
+$
+  A = U Sigma V^transpose.
+$
+This is called the *singular value decomposition* of $A$.
+
+- $U$ is the matrix whose columns are eigenvectors of $A^transpose A$.
+- $V$ is the matrix whose columns are eigenvectors of $A A^transpose$.
+
+A *truncated* singular value decomposition of $A$ is given by:
+$
+  A_k = sigma_1 bf(u)_1 bf(v)_1^transpose + sigma_2 bf(u)_2 bf(v)_2^transpose + ... + sigma_k bf(u)_k bf(v)_k^transpose,
+$
+where $k < p$ and $bf(u)_i$ and $bf(v)_i$ are the $i$#th columns of $U$ and $V$ respectively. The truncated singular value decomposition of $A$ is the best rank-$k$ approximation of $A$, in the sense that:
+$
+  abs(A - A_k) <= abs(A - B) "for all" rank(B) <= k.
 $

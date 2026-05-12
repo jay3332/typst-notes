@@ -304,6 +304,8 @@ _Note:_ A linear map is also called a linear transformation. The image of a line
 
 + If $A$ and $B$ are $n times n$ matrices with the same $n$ distinct eigenvalues, then $A$ is similar to $B$.
 
++ If $A$ is similar to $B$, then the characteristic polynomials of $A$ and $B$ are the same.
+
 #pagebreak()
 
 == Inner Product Spaces, Orthogonality
